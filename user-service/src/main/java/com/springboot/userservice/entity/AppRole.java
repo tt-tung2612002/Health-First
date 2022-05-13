@@ -16,13 +16,13 @@ import lombok.NonNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "app_role", uniqueConstraints = {
-        @UniqueConstraint(name = "UNI_ROLE", columnNames = "name")
+@Table(name = "role", uniqueConstraints = {
+        @UniqueConstraint(name = "uni_role", columnNames = "name")
 })
 public class AppRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NonNull
     private String name;
