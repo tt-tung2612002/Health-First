@@ -1,10 +1,13 @@
 package com.springboot.userservice.services;
 
+import java.util.List;
+
 import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface UserService {
     AppUser getUser(String username);
 

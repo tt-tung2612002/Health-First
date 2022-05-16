@@ -40,7 +40,7 @@ public class JwtTokenUtils {
 
     @SuppressWarnings("unchecked")
     public String getRoleFromToken(String token) {
-        var claims = getAllClaimsFromToken(token);
+        Claims claims = getAllClaimsFromToken(token);
         ArrayList<String> roles = claims.get("roles", ArrayList.class);
         return roles.stream().collect(Collectors.joining(","));
     }

@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().anyRequest().authenticated();
 
         // apply filter for authentication and authorization
-        var tokenUtils = new JwtTokenUtils();
+        JwtTokenUtils tokenUtils = new JwtTokenUtils();
         http.addFilter(new JwtAuthenticationFilter(authenticationManagerBean(), tokenUtils));
         http.addFilterBefore(new UserAuthorizationFilter(tokenUtils),
                 UsernamePasswordAuthenticationFilter.class);

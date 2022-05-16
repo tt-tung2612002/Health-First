@@ -1,10 +1,14 @@
 package com.springboot.userservice.services;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
 import com.springboot.userservice.repository.AppRoleRepository;
 import com.springboot.userservice.repository.AppUserRepository;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,9 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -60,7 +62,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-        Collection<GrantedAuthority> grantedAuthorities = user.getRoles().stream().map(role -> (GrantedAuthority) role::getName).collect(Collectors.toList());
+        Collection<GrantedAuthority> grantedAuthorities = user.getRoles().stream()
+                .map(role -> (GrantedAuthority) role::getName).collect(Collectors.toList());
         return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 }
