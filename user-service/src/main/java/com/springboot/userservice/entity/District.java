@@ -1,13 +1,17 @@
 package com.springboot.userservice.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +22,9 @@ import lombok.NonNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "district")
+@Table(name = "district", uniqueConstraints = {
+        @UniqueConstraint(name = "uni_districtName", columnNames = "name")
+})
 public class District {
 
     @Id
@@ -28,7 +34,14 @@ public class District {
     @NonNull
     private String name;
 
-    @OneToMany(mappedBy = "district") 
-    private Set<Address> addresses;
+    @OneToMany(mappedBy = "district")
+    private Set<Ward> wards = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "province_id", nullable = false)
+    private Province province;
+
+    // @NonNull
+    // @Column(name = "province_id")
+    // private Integer provinceId;
 }

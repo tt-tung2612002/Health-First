@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WardRepository extends JpaRepository<Ward, Long> {
+    Ward findByName(String name);
+
+    Ward findById(Integer id);
 }

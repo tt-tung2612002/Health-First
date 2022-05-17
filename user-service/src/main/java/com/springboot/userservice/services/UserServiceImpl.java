@@ -4,8 +4,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.springboot.userservice.entity.Address;
 import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
+import com.springboot.userservice.repository.AddressRepository;
 import com.springboot.userservice.repository.AppRoleRepository;
 import com.springboot.userservice.repository.AppUserRepository;
 
@@ -26,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final AppUserRepository userRepository;
     private final AppRoleRepository roleRepository;
+    private final AddressRepository addressRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -65,5 +68,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Collection<GrantedAuthority> grantedAuthorities = user.getRoles().stream()
                 .map(role -> (GrantedAuthority) role::getName).collect(Collectors.toList());
         return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
+    }
+
+    @Override
+    public void addAddressToUser(Integer id, String username) {
+        AppUser user = userRepository.findByUsername(username);
+        Address address = addressRepository.findById(id);
+        user.getAddresses().add(address);
     }
 }

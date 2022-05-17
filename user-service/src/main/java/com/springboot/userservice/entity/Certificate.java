@@ -1,7 +1,6 @@
 package com.springboot.userservice.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -24,35 +23,33 @@ import lombok.NonNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "facility", uniqueConstraints = {
-        @UniqueConstraint(name = "uni_facility_name", columnNames = "name")
+@Table(name = "certificate", uniqueConstraints = {
+        @UniqueConstraint(name = "uni_certificate_code", columnNames = "certificate_number")
 })
-public class Facility {
+public class Certificate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NonNull
-    @Column(name = "facility_code")
-    private String facilityCode;
+    @Column(name = "certificate_number")
+    private String certificateNumber;
 
     @NonNull
-    private String name;
+    @Column(name = "published_date")
+    private Date publishedDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id")
-    private Address address;
+    @NonNull
+    @Column(name = "expired_date")
+    private Date expiredDate;
+
+    @ManyToOne
+    @JoinColumn(name = "facility_id", nullable = false)
+    private Facility facility;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "state_id")
-    private FacilityState facilityState;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "business_type_id")
-    private BusinessType businessType;
-
-    @OneToMany(mappedBy = "facility")
-    private Set<Certificate> certificates = new HashSet<>();
+    private CertificateState certificateState;
 
 }

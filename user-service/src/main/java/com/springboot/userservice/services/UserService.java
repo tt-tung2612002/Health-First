@@ -18,4 +18,6 @@ public interface UserService {
     void addRoleToUser(String username, String role);
 
     List<AppUser> getUsers();
+
+    void addAddressToUser(Integer Id, String username);
 }

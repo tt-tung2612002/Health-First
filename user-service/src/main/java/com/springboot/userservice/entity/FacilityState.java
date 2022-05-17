@@ -1,10 +1,13 @@
 package com.springboot.userservice.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,19 +18,20 @@ import lombok.NonNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "address")
-public class Address {
+@Table(name = "facility_state", uniqueConstraints = {
+        @UniqueConstraint(name = "uni_facility_state", columnNames = "name")
+})
+public class FacilityState {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer Id;
 
     @NonNull
-    private String name;
+    @Column(name = "name")
+    String name;
 
-    // @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    // @JoinColumn(name = "ward_id", nullable = false)
-    // private Ward ward;
-    @NonNull
-    private Integer wardId;
+    @OneToOne(mappedBy = "facilityState")
+    private Facility facility;
+
 }

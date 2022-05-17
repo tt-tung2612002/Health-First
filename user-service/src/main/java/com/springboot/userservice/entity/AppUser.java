@@ -28,6 +28,7 @@ import lombok.NonNull;
                 @UniqueConstraint(name = "uni_username", columnNames = "username")
 })
 public class AppUser {
+
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer id;
@@ -47,5 +48,9 @@ public class AppUser {
         @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
         @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
         private Set<AppRole> roles = new HashSet<>();
+
+        @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+        @JoinTable(name = "user_region_management", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "address_id"))
+        private Set<Address> addresses = new HashSet<>();
 
 }
