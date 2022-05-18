@@ -48,7 +48,7 @@ public class Certificate {
     @JoinColumn(name = "facility_id", nullable = false)
     private Facility facility;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "state_id")
     private CertificateState certificateState;
 

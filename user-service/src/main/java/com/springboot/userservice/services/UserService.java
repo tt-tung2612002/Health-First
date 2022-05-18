@@ -2,6 +2,7 @@ package com.springboot.userservice.services;
 
 import java.util.List;
 
+import com.springboot.userservice.entity.Address;
 import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
 
@@ -20,4 +21,6 @@ public interface UserService {
     List<AppUser> getUsers();
 
     void addAddressToUser(Integer Id, String username);
+
+    void addAddressToUser(Address address, String username);
 }

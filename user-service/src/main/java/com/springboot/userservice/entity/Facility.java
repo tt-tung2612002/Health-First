@@ -40,19 +40,22 @@ public class Facility {
     @NonNull
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "state_id")
     private FacilityState facilityState;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "business_type_id")
     private BusinessType businessType;
 
     @OneToMany(mappedBy = "facility")
     private Set<Certificate> certificates = new HashSet<>();
+
+    @OneToMany(mappedBy = "facility")
+    private Set<Activity> activities = new HashSet<>();
 
 }

@@ -76,4 +76,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Address address = addressRepository.findById(id);
         user.getAddresses().add(address);
     }
+
+    @Override
+    public void addAddressToUser(Address address, String username) {
+        AppUser user = userRepository.findByUsername(username);
+        user.getAddresses().add(address);
+    }
 }

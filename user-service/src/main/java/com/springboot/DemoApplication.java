@@ -36,19 +36,19 @@ public class DemoApplication extends SpringBootServletInitializer {
     CommandLineRunner run(FacilityService facilityService, UserService userService) {
         return args -> {
             // Province province = new Province();
-            // province.setName("Thanh Hoa");
+            // province.setName("Ha Noi");
             // facilityService.saveProvince(province);
 
             // District district = new District();
-            // district.setName("Thanh Hoa City");
+            // district.setName("Ha Noi City");
             // facilityService.saveDistrictByProvince(district, province);
 
             // Ward ward = new Ward();
-            // ward.setName("Ngoc Trao");
+            // ward.setName("Bac Tu Liem");
             // facilityService.saveWardByDistrict(ward, district);
 
             // Address address = new Address();
-            // address.setName("108 Ngoc Trao TP Thanh Hoa");
+            // address.setName("117 Nguyen Van Giap");
             // address = facilityService.saveAddress(address, ward);
 
             // userService.saveRole(new AppRole(null, "ROLE_ADMIN"));
@@ -60,9 +60,35 @@ public class DemoApplication extends SpringBootServletInitializer {
             // "tt.tung261@gmail.com", "Thanh Tung",
             // null, null));
 
-            // userService.addRoleToUser("tt.tung2612002", "ROLE_ADMIN");
-            // userService.addRoleToUser("tt.tung2612002", "ROLE_USER");
+            // userService.addRoleToUser("tt-tung261", "ROLE_ADMIN");
+            // userService.addRoleToUser("tt-tung261", "ROLE_USER");
             // userService.addAddressToUser(1, "tt-tung261");
+
+            // // Address address = new Address();
+            // // address.setName("108 Ngoc Trao TP Thanh Hoa");
+            // // address.setWardId(1);
+            // Facility facility = new Facility();
+            // facility.setFacilityCode("FAC-001");
+            // facility.setAddress(facilityService.getAddressById(1));
+            // facility.setName("Highway to hell!");
+            // facility.setFacilityState(facilityService.getFacilityStateByName("active"));
+            // facility.setBusinessType(facilityService.getBusinessTypeById(1));
+            // facilityService.saveFacility(facility);
+
+            // create new certificate.
+            // Certificate certificate = new Certificate();
+            // certificate.setCertificateNumber("CERT-001");
+            // certificate.setFacility(facilityService.findFacilityById(1));
+            // certificate.setPublishedDate(new java.sql.Date(System.currentTimeMillis()));
+
+            // // set expired date equal to published date + 1 year.
+            // certificate.setExpiredDate(new java.sql.Date(System.currentTimeMillis() +
+            // (1000 * 60 * 60 * 24 * 365)));
+
+            // certificate.setCertificateState(facilityService.getCertificateStateByName("active"));
+
+            // facilityService.saveCertificate(certificate);
+
         };
     }
 

@@ -1,10 +1,14 @@
 package com.springboot.userservice.entity;
 
+import java.sql.Date;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -18,20 +22,26 @@ import lombok.NonNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "facility_state", uniqueConstraints = {
-        @UniqueConstraint(name = "uni_facility_state", columnNames = "name")
-})
-public class FacilityState {
+@Table(name = "plan", uniqueConstraints = {
+        @UniqueConstraint(name = "uni_plan_name", columnNames = "name") })
+public class Plan {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NonNull
-    @Column(name = "name")
-    String name;
+    private String name;
 
-    @OneToOne(mappedBy = "facilityState")
-    private Facility facility;
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "state_id", nullable = false)
+    private PlanState planState;
+
+    @Column(name = "created_date")
+    private Date publishedDate;
+
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "user_id", nullable = false)
+    private AppUser createdUser;
 
 }
