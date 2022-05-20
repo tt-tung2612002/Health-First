@@ -1,20 +1,13 @@
 package com.springboot;
 
-import com.springboot.userservice.services.FacilityService;
-import com.springboot.userservice.services.UserService;
-
 import org.springframework.boot.Banner;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
-
-import lombok.RequiredArgsConstructor;
 
 @SpringBootApplication
-@RequiredArgsConstructor
+// @RequiredArgsConstructor
 public class DemoApplication extends SpringBootServletInitializer {
 
     @Override
@@ -32,64 +25,56 @@ public class DemoApplication extends SpringBootServletInitializer {
 
     private static Class<DemoApplication> applicationClass = DemoApplication.class;
 
-    @Bean
-    CommandLineRunner run(FacilityService facilityService, UserService userService) {
-        return args -> {
-            // Province province = new Province();
-            // province.setName("Ha Noi");
-            // facilityService.saveProvince(province);
+    // @Bean
+    // CommandLineRunner run(FacilityService facilityService, UserService
+    // userService,
+    // StaticDataService staticDataService) {
+    // return args -> {
 
-            // District district = new District();
-            // district.setName("Ha Noi City");
-            // facilityService.saveDistrictByProvince(district, province);
+    // // add a new user named duytuan28
 
-            // Ward ward = new Ward();
-            // ward.setName("Bac Tu Liem");
-            // facilityService.saveWardByDistrict(ward, district);
+    // // List<DistrictResponseDto> list =
+    // staticDataService.getDistrictsByProvince(1);
+    // // userService.saveRole(new AppRole(null, "ROLE_SUPER_ADMIN"));
+    // // userService.saveRole(new AppRole(null, "ROLE_ADMIN"));
+    // // userService.saveRole(new AppRole(null, "ROLE_USER"));
+    // // userService.saveRole(new AppRole(null, "ROLE_MANAGER"));
 
-            // Address address = new Address();
-            // address.setName("117 Nguyen Van Giap");
-            // address = facilityService.saveAddress(address, ward);
+    // // userService
+    // // .saveUser(new AppUser(null, "tt-tung261", "tung00deptrai",
+    // // "tt.tung261@gmail.com", "Thanh Tung",
+    // // new HashSet<>(), null, null));
 
-            // userService.saveRole(new AppRole(null, "ROLE_ADMIN"));
-            // userService.saveRole(new AppRole(null, "ROLE_USER"));
-            // userService.saveRole(new AppRole(null, "ROLE_MANAGER"));
+    // // userService.addRoleToUser("tt-tung261", "ROLE_ADMIN");
 
-            // userService
-            // .saveUser(new AppUser(null, "tt-tung261", "tung00deptrai",
-            // "tt.tung261@gmail.com", "Thanh Tung",
-            // null, null));
+    // // // Address address = new Address();
+    // // // address.setName("108 Ngoc Trao TP Thanh Hoa");
+    // // // address.setWardId(1);
+    // // Facility facility = new Facility();
+    // // facility.setFacilityCode("FAC-001");
+    // // facility.setAddress(facilityService.getAddressById(1));
+    // // facility.setName("Highway to hell!");
+    // //
+    // facility.setFacilityState(facilityService.getFacilityStateByName("active"));
+    // // facility.setBusinessType(facilityService.getBusinessTypeById(1));
+    // // facilityService.saveFacility(facility);
 
-            // userService.addRoleToUser("tt-tung261", "ROLE_ADMIN");
-            // userService.addRoleToUser("tt-tung261", "ROLE_USER");
-            // userService.addAddressToUser(1, "tt-tung261");
+    // // Certificate certificate = new Certificate();
+    // // certificate.setCertificateNumber("CERT-001");
+    // // certificate.setFacility(facilityService.findFacilityById(1));
+    // // certificate.setPublishedDate(new
+    // java.sql.Date(System.currentTimeMillis()));
 
-            // // Address address = new Address();
-            // // address.setName("108 Ngoc Trao TP Thanh Hoa");
-            // // address.setWardId(1);
-            // Facility facility = new Facility();
-            // facility.setFacilityCode("FAC-001");
-            // facility.setAddress(facilityService.getAddressById(1));
-            // facility.setName("Highway to hell!");
-            // facility.setFacilityState(facilityService.getFacilityStateByName("active"));
-            // facility.setBusinessType(facilityService.getBusinessTypeById(1));
-            // facilityService.saveFacility(facility);
+    // // // set expired date equal to published date + 1 year.
+    // // certificate.setExpiredDate(new java.sql.Date(System.currentTimeMillis() +
+    // // (1000 * 60 * 60 * 24 * 365)));
 
-            // create new certificate.
-            // Certificate certificate = new Certificate();
-            // certificate.setCertificateNumber("CERT-001");
-            // certificate.setFacility(facilityService.findFacilityById(1));
-            // certificate.setPublishedDate(new java.sql.Date(System.currentTimeMillis()));
+    // //
+    // certificate.setCertificateState(facilityService.getCertificateStateByName("active"));
 
-            // // set expired date equal to published date + 1 year.
-            // certificate.setExpiredDate(new java.sql.Date(System.currentTimeMillis() +
-            // (1000 * 60 * 60 * 24 * 365)));
+    // // facilityService.saveCertificate(certificate);
 
-            // certificate.setCertificateState(facilityService.getCertificateStateByName("active"));
-
-            // facilityService.saveCertificate(certificate);
-
-        };
-    }
+    // };
+    // }
 
 }

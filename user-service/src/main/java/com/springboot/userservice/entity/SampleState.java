@@ -1,32 +1,25 @@
 package com.springboot.userservice.entity;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.ToString;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "province", uniqueConstraints = {
-        @UniqueConstraint(name = "uni_provinceName", columnNames = "name")
-})
-public class Province {
+@Table(name = "sample_state", uniqueConstraints = {
+        @UniqueConstraint(name = "uni_sample_state_name", columnNames = "name") })
+public class SampleState {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,9 +28,7 @@ public class Province {
     @NonNull
     private String name;
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @OneToMany(mappedBy = "province")
-    @Transient
-    private Set<District> districts = new HashSet<>();
+    @OneToOne(mappedBy = "sampleState")
+    private Sample sample;
+
 }

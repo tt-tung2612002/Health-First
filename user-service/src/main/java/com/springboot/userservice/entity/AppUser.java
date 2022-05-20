@@ -55,4 +55,5 @@ public class AppUser {
 
         @OneToMany(mappedBy = "createdUser", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
         private Set<Activity> activities = new HashSet<>();
+
 }

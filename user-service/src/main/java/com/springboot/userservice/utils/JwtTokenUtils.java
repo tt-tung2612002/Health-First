@@ -100,7 +100,7 @@ public class JwtTokenUtils {
     }
 
     public Boolean validateToken(String token) {
-        token = token.substring(preToken.length());
+        token = token.substring("Bearer ".length() + preToken.length());
         final String username = getUsernameFromToken(token);
         final String role = getRoleFromToken(token);
         final String checksum = getChecksumFromToken(token);

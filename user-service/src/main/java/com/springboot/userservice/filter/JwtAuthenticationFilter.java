@@ -4,6 +4,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.userservice.utils.JwtTokenUtils;
 
+import org.json.JSONObject;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,11 +32,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
-        // log.info("username: " + username);
-        return authenticationManager.authenticate(token);
+        String body;
+        try {
+            body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            JSONObject jsonObject = new JSONObject(body);
+            String username = jsonObject.getString("username");
+            String password = jsonObject.getString("password");
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+
+            return authenticationManager.authenticate(token);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.springboot.userservice.entity;
 
 import java.sql.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -66,5 +68,8 @@ public class Activity {
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "facility_id", nullable = false)
     private Facility facility;
+
+    @OneToMany(mappedBy = "activity")
+    private Set<Sample> samples;
 
 }

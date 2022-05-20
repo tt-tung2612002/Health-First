@@ -31,7 +31,7 @@ public class UserAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } else {
             // authResult.getPrincipal();
-            String token = request.getHeader("authorization");
+            String token = request.getHeader("Authorization");
             // Authentication authentication =
             // authenticationManager.authenticate(authorizationHeader);
             if (token == null || token.isEmpty()) {
@@ -44,7 +44,7 @@ public class UserAuthorizationFilter extends OncePerRequestFilter {
                 return;
             }
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-            token = token.substring(JwtTokenUtils.preToken.length());
+            token = token.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
             String str = jwtTokenUtils.getRoleFromToken(token);
 
             String[] arr = str.split(",");
