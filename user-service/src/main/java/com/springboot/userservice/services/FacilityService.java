@@ -1,5 +1,8 @@
 package com.springboot.userservice.services;
 
+import java.util.List;
+
+import com.springboot.userservice.dto.response.FacilityResponseDto;
 import com.springboot.userservice.entity.Address;
 import com.springboot.userservice.entity.BusinessType;
 import com.springboot.userservice.entity.Certificate;
@@ -14,7 +17,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface FacilityService {
-    // Address getAddressByName(String name);
+
+    public List<FacilityResponseDto> getAllFacility();
+
+    public Facility saveFacility(Facility facility);
+
+    public Facility findFacilityById(Integer id);
+
     public Address getAddressById(Integer Id);
 
     public Address saveAddress(Address address, Ward ward);
@@ -28,10 +37,6 @@ public interface FacilityService {
     public Ward saveWardByDistrict(Ward ward, District district);
 
     public Ward getWardById(Integer i);
-
-    public Facility saveFacility(Facility facility);
-
-    public Facility findFacilityById(Integer id);
 
     public FacilityState getFacilityStateByName(String name);
 

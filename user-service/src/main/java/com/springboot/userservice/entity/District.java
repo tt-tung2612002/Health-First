@@ -43,7 +43,6 @@ public class District {
 
     @ManyToOne
     @JoinColumn(name = "province_id", nullable = false)
-    // @Transient
     private Province province;
 
     // @NonNull

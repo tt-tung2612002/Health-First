@@ -1,7 +1,11 @@
 package com.springboot.userservice.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.transaction.Transactional;
 
+import com.springboot.userservice.dto.response.FacilityResponseDto;
 import com.springboot.userservice.entity.Address;
 import com.springboot.userservice.entity.BusinessType;
 import com.springboot.userservice.entity.Certificate;
@@ -119,6 +123,13 @@ public class FacilityServiceImpl implements FacilityService {
     @Override
     public Certificate saveCertificate(Certificate certificate) {
         return certificateRepository.save(certificate);
+    }
+
+    @Override
+    public List<FacilityResponseDto> getAllFacility() {
+        return facilityRepository.findAll().stream()
+                .map(facility -> new FacilityResponseDto(facility))
+                .collect(Collectors.toList());
     }
 
 }

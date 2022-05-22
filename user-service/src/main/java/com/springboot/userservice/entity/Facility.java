@@ -13,12 +13,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -53,9 +56,15 @@ public class Facility {
     private BusinessType businessType;
 
     @OneToMany(mappedBy = "facility")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @Transient
     private Set<Certificate> certificates = new HashSet<>();
 
     @OneToMany(mappedBy = "facility")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @Transient
     private Set<Activity> activities = new HashSet<>();
 
 }
