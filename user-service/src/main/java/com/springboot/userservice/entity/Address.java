@@ -42,7 +42,7 @@ public class Address {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToOne(mappedBy = "address")
+    @OneToOne(mappedBy = "address", orphanRemoval = true)
     private Facility facility;
 
     @EqualsAndHashCode.Exclude

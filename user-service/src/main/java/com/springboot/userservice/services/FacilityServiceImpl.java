@@ -5,8 +5,10 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.springboot.userservice.dto.response.CertificateResponseDto;
 import com.springboot.userservice.dto.response.FacilityResponseDto;
 import com.springboot.userservice.entity.Address;
+import com.springboot.userservice.entity.AppUser;
 import com.springboot.userservice.entity.BusinessType;
 import com.springboot.userservice.entity.Certificate;
 import com.springboot.userservice.entity.CertificateState;
@@ -111,7 +113,7 @@ public class FacilityServiceImpl implements FacilityService {
     }
 
     @Override
-    public Facility findFacilityById(Integer id) {
+    public Facility getFacilityById(Integer id) {
         return facilityRepository.findById(id);
     }
 
@@ -126,10 +128,44 @@ public class FacilityServiceImpl implements FacilityService {
     }
 
     @Override
-    public List<FacilityResponseDto> getAllFacility() {
-        return facilityRepository.findAll().stream()
-                .map(facility -> new FacilityResponseDto(facility))
+    public List<FacilityResponseDto> getAllFacilityByUser(AppUser user) {
+
+        List<Facility> facilities = facilityRepository.getFacilitiesByUser(user.getId());
+        return facilities.stream()
+                .map(FacilityResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public BusinessType getBusinessTypeByName(String name) {
+        return businessTypeRepository.findByName(name);
+    }
+
+    @Override
+    public Long deleteFacility(Integer id) {
+        return facilityRepository.deleteById(id);
+    }
+
+    @Override
+    public List<CertificateResponseDto> getAllCertificate() {
+        return certificateRepository.findAll().stream()
+                .map(CertificateResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Certificate getCertificateByNumber(String number) {
+        return certificateRepository.findByCertificateNumber(number);
+    }
+
+    @Override
+    public Long deleteCertificateById(Integer id) {
+        return certificateRepository.deleteById(id);
+    }
+
+    @Override
+    public Long deleteCertificateByNumber(String number) {
+        return certificateRepository.deleteByCertificateNumber(number);
     }
 
 }

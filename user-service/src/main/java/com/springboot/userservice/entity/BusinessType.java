@@ -33,4 +33,5 @@ public class BusinessType {
 
     @OneToOne(mappedBy = "businessType")
     private Facility facility;
+    
 }

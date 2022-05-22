@@ -3,6 +3,7 @@ package com.springboot.userservice.controllers;
 import java.util.List;
 
 import com.springboot.userservice.dto.response.DistrictResponseDto;
+import com.springboot.userservice.dto.response.ProvinceResponseDto;
 import com.springboot.userservice.dto.response.WardResponseDto;
 import com.springboot.userservice.entity.District;
 import com.springboot.userservice.entity.Province;
@@ -24,7 +25,7 @@ public class StaticDataController {
     private final StaticDataService staticDataService;
 
     @PostMapping("/provinces")
-    public ResponseEntity<List<Province>> getProvinces() {
+    public ResponseEntity<List<ProvinceResponseDto>> getProvinces() {
         return ResponseEntity.ok().body(staticDataService.getProvinces());
     }
 

@@ -2,8 +2,10 @@ package com.springboot.userservice.services;
 
 import java.util.List;
 
+import com.springboot.userservice.dto.response.CertificateResponseDto;
 import com.springboot.userservice.dto.response.FacilityResponseDto;
 import com.springboot.userservice.entity.Address;
+import com.springboot.userservice.entity.AppUser;
 import com.springboot.userservice.entity.BusinessType;
 import com.springboot.userservice.entity.Certificate;
 import com.springboot.userservice.entity.CertificateState;
@@ -18,11 +20,31 @@ import org.springframework.stereotype.Service;
 @Service
 public interface FacilityService {
 
-    public List<FacilityResponseDto> getAllFacility();
+    public List<FacilityResponseDto> getAllFacilityByUser(AppUser user);
 
     public Facility saveFacility(Facility facility);
 
-    public Facility findFacilityById(Integer id);
+    public Facility getFacilityById(Integer id);
+
+    public Long deleteFacility(Integer id);
+
+    public FacilityState getFacilityStateByName(String name);
+
+    public Certificate getCertificateByNumber(String number);
+
+    public Certificate saveCertificate(Certificate certificate);
+
+    public Long deleteCertificateById(Integer id);
+
+    public Long deleteCertificateByNumber(String number);
+
+    public List<CertificateResponseDto> getAllCertificate();
+
+    public CertificateState getCertificateStateByName(String name);
+
+    public BusinessType getBusinessTypeById(Integer id);
+
+    public BusinessType getBusinessTypeByName(String name);
 
     public Address getAddressById(Integer Id);
 
@@ -37,13 +59,4 @@ public interface FacilityService {
     public Ward saveWardByDistrict(Ward ward, District district);
 
     public Ward getWardById(Integer i);
-
-    public FacilityState getFacilityStateByName(String name);
-
-    public CertificateState getCertificateStateByName(String name);
-
-    public Certificate saveCertificate(Certificate certificate);
-
-    public BusinessType getBusinessTypeById(Integer id);
-
 }

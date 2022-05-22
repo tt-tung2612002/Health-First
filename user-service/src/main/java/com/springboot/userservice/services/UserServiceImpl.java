@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public AppUser getUser(String username) {
+    public AppUser getCurrentUser(String username) {
         return userRepository.findByUsername(username);
     }
 

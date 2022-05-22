@@ -1,7 +1,5 @@
 package com.springboot.userservice.repository;
 
-import java.util.List;
-
 import com.springboot.userservice.entity.Province;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +11,4 @@ public interface ProvinceRepository extends JpaRepository<Province, Long> {
 
     Province findById(Integer Id);
 
-    List<Province> findAllById(Integer Id);
 }

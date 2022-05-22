@@ -36,8 +36,10 @@ public class Sample {
     @Column(name = "sample_code")
     private String sampleCode;
 
-    private Date date;
+    @Column(name = "created_date")
+    private Date createdDate;
 
+    @Column(name = "resulted_date")
     private Date resultedDate;
 
     @OneToOne(cascade = CascadeType.MERGE)

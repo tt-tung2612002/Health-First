@@ -40,29 +40,32 @@ public class DemoApplication extends SpringBootServletInitializer {
     // // // userService.saveRole(new AppRole(null, "ROLE_USER"));
     // // // userService.saveRole(new AppRole(null, "ROLE_MANAGER"));
 
-    // // // userService
-    // // // .saveUser(new AppUser(null, "tt-tung261", "tung00deptrai",
-    // // // "tt.tung261@gmail.com", "Thanh Tung",
-    // // // new HashSet<>(), null, null));
+    // // userService
+    // // .saveUser(new AppUser(null, "david208", "tung00deptrai",
+    // // "david@gmail.com", "Duy Tuan",
+    // // new HashSet<>(), null, null));
 
-    // // // userService.addRoleToUser("tt-tung261", "ROLE_ADMIN");
+    // // userService.addRoleToUser("david208", "ROLE_ADMIN");
 
     // // Address address = new Address();
-    // // address.setName("108 Ngoc Trao TP Thanh Hoa");
-    // // facilityService.saveAddress(address, facilityService.getWardById(1));
+    // // address.setName("117 Nguyen Van Giap");
+    // // facilityService.saveAddress(address, facilityService.getWardById(3));
 
-    // // Facility facility = new Facility();
-    // // facility.setFacilityCode("FAC-001");
-    // // facility.setAddress(address);
-    // // facility.setName("Highlands");
+    // // // add region to user.
+    // // userService.addAddressToUser(address, "david208");
+
+    // Facility facility = new Facility();
+    // facility.setFacilityCode("FAC-004");
+    // facility.setAddress(facilityService.getAddressById(19));
+    // facility.setName("The Coffee House");
 
     // //
     // facility.setFacilityState(facilityService.getFacilityStateByName("active"));
     // // facility.setBusinessType(facilityService.getBusinessTypeById(1));
 
     // Certificate certificate = new Certificate();
-    // certificate.setCertificateNumber("CERT-001");
-    // certificate.setFacility(facilityService.findFacilityById(9));
+    // certificate.setCertificateNumber("CERT-005");
+    // // certificate.setFacility(facility);
     // certificate.setPublishedDate(new java.sql.Date(System.currentTimeMillis()));
 
     // // // set expired date equal to published date + 1 year.
@@ -73,7 +76,7 @@ public class DemoApplication extends SpringBootServletInitializer {
     // facilityService.saveCertificate(certificate);
 
     // // facility.getCertificates().add(certificate);
-    // // facilityService.saveFacility(facility);
+    // facilityService.saveFacility(facility);
 
     // };
     // }

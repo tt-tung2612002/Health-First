@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.springboot.userservice.controllers.AppUserController;
+import com.springboot.userservice.services.UserService;
 import com.springboot.userservice.utils.JwtTokenUtils;
 
 import org.json.JSONObject;
@@ -25,6 +27,8 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+    private final UserService userService;
+
     private final AuthenticationManager authenticationManager;
 
     private final JwtTokenUtils jwtTokenUtils;
@@ -39,7 +43,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             String username = jsonObject.getString("username");
             String password = jsonObject.getString("password");
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
-
             return authenticationManager.authenticate(token);
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,13 +53,24 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
             Authentication authResult) throws IOException {
+
         User user = (User) authResult.getPrincipal();
         String accessToken = jwtTokenUtils.generateAccessToken(user);
         String refreshToken = jwtTokenUtils.generateRefreshToken(user);
+
+        String username = jwtTokenUtils.getUsernameFromToken(accessToken.substring("HealthFirst".length()));
+        AppUserController.currentUser = username;
+
+        String displayName = userService.getCurrentUser(username).getDisplayName();
+        String roles = userService.getCurrentUser(username).getRoles().stream().map(x -> x.getName())
+                .collect(Collectors.joining(", "));
+
         Map<String, String> tokenMap = new java.util.HashMap<>();
         tokenMap.put("accessToken", accessToken);
         tokenMap.put("refreshToken", refreshToken);
-        response.setHeader("access_token", accessToken);
+        tokenMap.put("username", username);
+        tokenMap.put("displayName", displayName);
+        tokenMap.put("roles", roles);
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getWriter(), tokenMap);
     }

@@ -1,13 +1,21 @@
 package com.springboot.userservice.repository;
 
+import java.util.List;
+
 import com.springboot.userservice.entity.Facility;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FacilityRepository extends JpaRepository<Facility, Long> {
-    Facility findById(Integer Id);
+    Facility findById(Integer id);
 
     Facility findByName(String name);
+
+    Long deleteById(Integer id);
+
+    @Query(value = "SELECT * FROM facility f INNER JOIN address a ON f.address_id = a.id INNER JOIN user_region_management u ON u.address_id = a.id INNER JOIN user ON user.id = u.user_id WHERE user.id = ?1", nativeQuery = true)
+    public List<Facility> getFacilitiesByUser(int id);
 }

@@ -24,6 +24,8 @@ import lombok.RequiredArgsConstructor;
 public class AppUserController {
     private final UserService userService;
 
+    public static String currentUser;
+
     @GetMapping("/list")
     public ResponseEntity<List<AppUser>> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());
@@ -31,14 +33,16 @@ public class AppUserController {
 
     @PostMapping("/create")
     public ResponseEntity<AppUser> saveUser(@RequestBody AppUser user) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/create").toUriString());
+        URI uri = URI
+                .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/create").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
     @PostMapping("/role/create")
     public ResponseEntity<AppRole> saveRole(@RequestBody AppRole role) {
         URI uri = URI
-                .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/role/create").toUriString());
+                .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/role/create")
+                        .toUriString());
         return ResponseEntity.created(uri).body(userService.saveRole(role));
     }
 
