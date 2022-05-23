@@ -24,8 +24,8 @@ import lombok.NonNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "plan", uniqueConstraints = {
-        @UniqueConstraint(name = "uni_plan_name", columnNames = "name") })
+@Table(name = "activity", uniqueConstraints = {
+        @UniqueConstraint(name = "uni_activity_name", columnNames = "name") })
 public class Activity {
 
     @Id
@@ -47,21 +47,21 @@ public class Activity {
     @NonNull
     private String conclusion;
 
-    // @ManyToOne(cascade = CascadeType.MERGE)
-    // @JoinColumn(name = "plan_id", nullable = false)
-    // private Plan plan;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "plan_id", nullable = false)
+    private Plan plan;
 
-    // @ManyToOne(cascade = CascadeType.MERGE)
-    // @JoinColumn(name = "user_id", nullable = false)
-    // private AppUser createdUser;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "created_user_id", nullable = false)
+    private AppUser createdUser;
 
-    // @OneToOne(cascade = CascadeType.MERGE)
-    // @JoinColumn(name = "activity_result_ier", nullable = false)
-    // private ActivityResult activityResult;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "result_id", nullable = false)
+    private ActivityResult activityResult;
 
-    // @OneToOne(cascade = CascadeType.MERGE)
-    // @JoinColumn(name = "activity_state_id", nullable = false)
-    // private ActivityState activityState;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "state_id", nullable = false)
+    private ActivityState activityState;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "facility_id", nullable = false)

@@ -27,6 +27,8 @@ public interface FacilityService {
 
     public Facility getFacilityById(Integer id);
 
+    public FacilityState getFacilityStateById(Integer id);
+
     public Long deleteFacility(Integer id);
 
     public FacilityState getFacilityStateByName(String name);

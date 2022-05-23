@@ -10,7 +10,11 @@ public class FacilityRequestDto {
 
     private String name;
 
-    private String FacilityState;
+    private Integer facilityStateId;
+
+    private String facilityState;
+
+    private Integer businessTypeId;
 
     private String businessType;
 

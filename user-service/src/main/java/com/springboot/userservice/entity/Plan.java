@@ -1,6 +1,8 @@
 package com.springboot.userservice.entity;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,14 +11,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -36,20 +41,20 @@ public class Plan {
     @NonNull
     private String description;
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "state_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "state_id", nullable = false)
     private PlanState planState;
 
     @Column(name = "created_date")
     private Date publishedDate;
 
-    // @ManyToOne(cascade = CascadeType.MERGE)
-    // @JoinColumn(name = "user_id", nullable = false)
-    // private AppUser createdUser;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "created_user_id", nullable = false)
+    private AppUser createdUser;
 
-    // @EqualsAndHashCode.Exclude
-    // @ToString.Exclude
-    // @OneToMany(mappedBy = "plan")
-    // private Set<Activity> activities = new HashSet<>();
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "plan")
+    private Set<Activity> activities = new HashSet<>();
 
 }

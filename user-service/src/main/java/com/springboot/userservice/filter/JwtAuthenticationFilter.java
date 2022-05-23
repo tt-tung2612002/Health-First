@@ -59,8 +59,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String username = jwtTokenUtils.getUsernameFromToken(accessToken.substring("HealthFirst".length()));
 
-        String displayName = userService.getCurrentUser(username).getDisplayName();
-        String roles = userService.getCurrentUser(username).getRoles().stream().map(x -> x.getName())
+        String displayName = userService.getCurrentUserByName(username).getDisplayName();
+        String roles = userService.getCurrentUserByName(username).getRoles().stream().map(x -> x.getName())
                 .collect(Collectors.joining(", "));
 
         Map<String, String> tokenMap = new java.util.HashMap<>();

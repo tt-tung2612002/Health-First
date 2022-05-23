@@ -41,7 +41,7 @@ public class FacilityController {
         String username = jwtTokenUtils.getUsernameFromToken(userToken);
         return ResponseEntity.ok()
                 .body(
-                        facilityService.getAllFacilityByUser(userService.getCurrentUser(username)));
+                        facilityService.getAllFacilityByUser(userService.getCurrentUserByName(username)));
     }
 
     @PostMapping("/create")
@@ -52,7 +52,7 @@ public class FacilityController {
                         .toUriString());
         Facility facility = new Facility();
         facility.setName(facilityDto.getName());
-        facility.setFacilityCode(facilityDto.getFacilityCode());
+        facility.setFacilityState(facilityService.getFacilityStateById(facilityDto.getFacilityStateId()));
         Address address = new Address();
         address.setName(facilityDto.getAddress());
         // address.setWard(facilityService.getWardById());
@@ -63,7 +63,7 @@ public class FacilityController {
         facilityState.setName(facilityDto.getFacilityState());
 
         facility.setFacilityState(facilityService.getFacilityStateByName(facilityDto.getFacilityState()));
-        facility.setBusinessType(facilityService.getBusinessTypeByName(facilityDto.getBusinessType()));
+        facility.setBusinessType(facilityService.getBusinessTypeById(facilityDto.getBusinessTypeId()));
         // facility.setAddress();
         facilityService.saveFacility(facility);
         return ResponseEntity.created(uri).body("Facility created successfully");

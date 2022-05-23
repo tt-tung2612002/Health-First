@@ -173,4 +173,9 @@ public class FacilityServiceImpl implements FacilityService {
         return certificateRepository.deleteByCertificateNumber(number);
     }
 
+    @Override
+    public FacilityState getFacilityStateById(Integer id) {
+        return facilityStateRepository.findById(id);
+    }
+
 }

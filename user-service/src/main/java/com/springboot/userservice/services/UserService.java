@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-    AppUser getCurrentUser(String username);
+    AppUser getCurrentUserByName(String username);
+
+    AppUser getCurrentUserById(Integer id);
 
     AppUser saveUser(AppUser user);
 

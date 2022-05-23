@@ -13,13 +13,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -53,15 +56,14 @@ public class AppUser {
         @JoinTable(name = "user_region_management", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "ward_id"))
         private Set<Ward> wards = new HashSet<>();
 
-        // @EqualsAndHashCode.Exclude
-        // @ToString.Exclude
-        // @OneToMany(mappedBy = "createdUser", cascade = CascadeType.MERGE, fetch =
-        // FetchType.EAGER)
-        // private Set<Activity> activities = new HashSet<>();
+        @EqualsAndHashCode.Exclude
+        @ToString.Exclude
+        @OneToMany(mappedBy = "createdUser", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+        private Set<Activity> activities = new HashSet<>();
 
-        // @EqualsAndHashCode.Exclude
-        // @ToString.Exclude
-        // @OneToMany(mappedBy = "createdUser")
-        // private Set<Plan> plans = new HashSet<>();
+        @EqualsAndHashCode.Exclude
+        @ToString.Exclude
+        @OneToMany(mappedBy = "createdUser")
+        private Set<Plan> plans = new HashSet<>();
 
 }

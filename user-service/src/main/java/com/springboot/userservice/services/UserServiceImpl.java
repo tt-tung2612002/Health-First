@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public AppUser getCurrentUser(String username) {
+    public AppUser getCurrentUserByName(String username) {
         return userRepository.findByUsername(username);
     }
 
@@ -81,5 +81,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void addRegionToUser(Ward ward, String username) {
         AppUser user = userRepository.findByUsername(username);
         user.getWards().add(ward);
+    }
+
+    @Override
+    public AppUser getCurrentUserById(Integer id) {
+        return userRepository.findById(id);
     }
 }

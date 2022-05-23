@@ -24,54 +24,57 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CertificateController {
 
-    private final FacilityService facilityService;
+        private final FacilityService facilityService;
 
-    private final JwtTokenUtils jwtTokenUtils;
+        private final JwtTokenUtils jwtTokenUtils;
 
-    private final UserService userService;
+        private final UserService userService;
 
-    @GetMapping("/list")
-    public ResponseEntity<BaseResponse> getAllCertificate(
-            @RequestHeader(name = "Authorization") String userToken) {
-        userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
-        String username = jwtTokenUtils.getUsernameFromToken(userToken);
-        BaseResponse response = new BaseResponse("0", "success",
-                facilityService.getAllCertificateByUser(userService.getCurrentUser(username).getId()));
-        return ResponseEntity.ok()
-                .body(response);
-    }
+        @GetMapping("/list")
+        public ResponseEntity<BaseResponse> getAllCertificate(
+                        @RequestHeader(name = "Authorization") String userToken) {
+                userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
+                String username = jwtTokenUtils.getUsernameFromToken(userToken);
+                BaseResponse response = new BaseResponse("0", "success",
+                                facilityService.getAllCertificateByUser(
+                                                userService.getCurrentUserByName(username).getId()));
+                return ResponseEntity.ok()
+                                .body(response);
+        }
 
-    @PostMapping("/create")
-    public ResponseEntity<?> addCertificateToFacility(
-            @RequestBody CertificateRequestDto certificateDto) {
-        // facilityService.addFacility(payload);
-        URI uri = URI
-                .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/certificates/create")
-                        .toUriString());
+        @PostMapping("/create")
+        public ResponseEntity<?> addCertificateToFacility(
+                        @RequestBody CertificateRequestDto certificateDto) {
+                // facilityService.addFacility(payload);
+                URI uri = URI
+                                .create(ServletUriComponentsBuilder.fromCurrentContextPath()
+                                                .path("/api/certificates/create")
+                                                .toUriString());
 
-        // certificate.setCertificateNumber(certificateDto.getCertificateNumber());
+                // certificate.setCertificateNumber(certificateDto.getCertificateNumber());
 
-        // // // convert string to SQL date.
-        // String publishedDateString = certificateDto.getPublishedDate();
-        // Date publishedDate = java.sql.Date.valueOf(publishedDateString);
-        // String expiredDateString = certificateDto.getExpiredDate();
-        // Date expiredDate = java.sql.Date.valueOf(expiredDateString);
-        int result = facilityService.saveCertificate(certificateDto);
-        BaseResponse response = new BaseResponse(result == 1 ? "0" : "-1",
-                result == 1 ? "Add certificate success" : "Add certificate failed", "");
-        return ResponseEntity.created(uri).body(response);
-    }
+                // // // convert string to SQL date.
+                // String publishedDateString = certificateDto.getPublishedDate();
+                // Date publishedDate = java.sql.Date.valueOf(publishedDateString);
+                // String expiredDateString = certificateDto.getExpiredDate();
+                // Date expiredDate = java.sql.Date.valueOf(expiredDateString);
+                int result = facilityService.saveCertificate(certificateDto);
+                BaseResponse response = new BaseResponse(result == 1 ? "0" : "-1",
+                                result == 1 ? "Add certificate success" : "Add certificate failed", "");
+                return ResponseEntity.created(uri).body(response);
+        }
 
-    @PostMapping("/delete")
-    public ResponseEntity<?> deleteCertificate(@RequestBody CertificateRequestDto certificateDto) {
-        // facilityService.addFacility(payload);
-        URI uri = URI
-                .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/certificates/delete")
-                        .toUriString());
+        @PostMapping("/delete")
+        public ResponseEntity<?> deleteCertificate(@RequestBody CertificateRequestDto certificateDto) {
+                // facilityService.addFacility(payload);
+                URI uri = URI
+                                .create(ServletUriComponentsBuilder.fromCurrentContextPath()
+                                                .path("/api/certificates/delete")
+                                                .toUriString());
 
-        // Facility facility =
-        // facilityService.getFacilityById(certificateDto.getFacilityId());
-        facilityService.deleteCertificateByNumber(certificateDto.getCertificateNumber());
-        return ResponseEntity.created(uri).body("Certificate deleted successfully");
-    }
+                // Facility facility =
+                // facilityService.getFacilityById(certificateDto.getFacilityId());
+                facilityService.deleteCertificateByNumber(certificateDto.getCertificateNumber());
+                return ResponseEntity.created(uri).body("Certificate deleted successfully");
+        }
 }
