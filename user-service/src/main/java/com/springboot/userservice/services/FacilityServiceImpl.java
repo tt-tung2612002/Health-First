@@ -1,10 +1,12 @@
 package com.springboot.userservice.services;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.springboot.userservice.dto.request.CertificateRequestDto;
 import com.springboot.userservice.dto.response.CertificateResponseDto;
 import com.springboot.userservice.dto.response.FacilityResponseDto;
 import com.springboot.userservice.entity.Address;
@@ -123,8 +125,10 @@ public class FacilityServiceImpl implements FacilityService {
     }
 
     @Override
-    public Certificate saveCertificate(Certificate certificate) {
-        return certificateRepository.save(certificate);
+    public int saveCertificate(CertificateRequestDto certificate) {
+
+        return certificateRepository.saveCertificate(certificate.getFacilityId(), certificate.getCertificateNumber(),
+                Date.valueOf(certificate.getPublishedDate()), Date.valueOf(certificate.getExpiredDate()));
     }
 
     @Override
@@ -137,6 +141,14 @@ public class FacilityServiceImpl implements FacilityService {
     }
 
     @Override
+    public List<CertificateResponseDto> getAllCertificateByUser(int id) {
+        List<Certificate> certificates = certificateRepository.findAllById(id);
+        return certificates.stream()
+                .map(CertificateResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public BusinessType getBusinessTypeByName(String name) {
         return businessTypeRepository.findByName(name);
     }
@@ -144,13 +156,6 @@ public class FacilityServiceImpl implements FacilityService {
     @Override
     public Long deleteFacility(Integer id) {
         return facilityRepository.deleteById(id);
-    }
-
-    @Override
-    public List<CertificateResponseDto> getAllCertificate() {
-        return certificateRepository.findAll().stream()
-                .map(CertificateResponseDto::new)
-                .collect(Collectors.toList());
     }
 
     @Override

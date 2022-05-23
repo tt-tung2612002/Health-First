@@ -5,6 +5,7 @@ import java.sql.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,8 +17,10 @@ import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -44,8 +47,11 @@ public class Certificate {
     @Column(name = "expired_date")
     private Date expiredDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "facility_id", nullable = false)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    // @Transient
     private Facility facility;
 
     @OneToOne(cascade = CascadeType.MERGE)

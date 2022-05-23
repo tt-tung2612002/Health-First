@@ -3,9 +3,12 @@ package com.springboot.userservice.controllers;
 import java.net.URI;
 import java.util.List;
 
+import com.springboot.userservice.dto.request.UserRegionDto;
 import com.springboot.userservice.dto.request.UserRoleDto;
 import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
+import com.springboot.userservice.entity.Ward;
+import com.springboot.userservice.services.FacilityService;
 import com.springboot.userservice.services.UserService;
 
 import org.springframework.http.ResponseEntity;
@@ -23,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AppUserController {
     private final UserService userService;
+
+    private final FacilityService facilityService;
 
     @GetMapping("/list")
     public ResponseEntity<List<AppUser>> getUsers() {
@@ -47,6 +52,13 @@ public class AppUserController {
     @PostMapping("/role/addToUser")
     public ResponseEntity<?> addRoleToUser(@RequestBody UserRoleDto payload) {
         userService.addRoleToUser(payload.getUsername(), payload.getRoleName());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/region/addToUser")
+    public ResponseEntity<?> addRegionToUser(@RequestBody UserRegionDto payload) {
+        Ward ward = facilityService.getWardById(payload.getWardId());
+        userService.addRegionToUser(ward, payload.getUsername());
         return ResponseEntity.ok().build();
     }
 }

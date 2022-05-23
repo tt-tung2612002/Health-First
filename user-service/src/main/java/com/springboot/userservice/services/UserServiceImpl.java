@@ -4,12 +4,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.springboot.userservice.entity.Address;
 import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
-import com.springboot.userservice.repository.AddressRepository;
+import com.springboot.userservice.entity.Ward;
 import com.springboot.userservice.repository.AppRoleRepository;
 import com.springboot.userservice.repository.AppUserRepository;
+import com.springboot.userservice.repository.WardRepository;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final AppUserRepository userRepository;
     private final AppRoleRepository roleRepository;
-    private final AddressRepository addressRepository;
+    private final WardRepository wardRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -71,15 +71,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void addAddressToUser(Integer id, String username) {
+    public void addRegionToUser(Integer id, String username) {
         AppUser user = userRepository.findByUsername(username);
-        Address address = addressRepository.findById(id);
-        user.getAddresses().add(address);
+        Ward ward = wardRepository.findById(id);
+        user.getWards().add(ward);
     }
 
     @Override
-    public void addAddressToUser(Address address, String username) {
+    public void addRegionToUser(Ward ward, String username) {
         AppUser user = userRepository.findByUsername(username);
-        user.getAddresses().add(address);
+        user.getWards().add(ward);
     }
 }

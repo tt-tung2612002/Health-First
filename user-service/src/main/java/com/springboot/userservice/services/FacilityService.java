@@ -2,6 +2,7 @@ package com.springboot.userservice.services;
 
 import java.util.List;
 
+import com.springboot.userservice.dto.request.CertificateRequestDto;
 import com.springboot.userservice.dto.response.CertificateResponseDto;
 import com.springboot.userservice.dto.response.FacilityResponseDto;
 import com.springboot.userservice.entity.Address;
@@ -32,13 +33,13 @@ public interface FacilityService {
 
     public Certificate getCertificateByNumber(String number);
 
-    public Certificate saveCertificate(Certificate certificate);
+    public int saveCertificate(CertificateRequestDto certificate);
 
     public Long deleteCertificateById(Integer id);
 
     public Long deleteCertificateByNumber(String number);
 
-    public List<CertificateResponseDto> getAllCertificate();
+    public List<CertificateResponseDto> getAllCertificateByUser(int id);
 
     public CertificateState getCertificateStateByName(String name);
 

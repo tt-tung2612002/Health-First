@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -42,7 +42,7 @@ public class AppUser {
         @NonNull
         private String email;
 
-        @NonNull
+        @Column(name = "display_name")
         private String displayName;
 
         @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -50,10 +50,18 @@ public class AppUser {
         private Set<AppRole> roles = new HashSet<>();
 
         @ManyToMany(fetch = FetchType.EAGER)
-        @JoinTable(name = "user_region_management", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "address_id"))
-        private Set<Address> addresses = new HashSet<>();
+        @JoinTable(name = "user_region_management", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "ward_id"))
+        private Set<Ward> wards = new HashSet<>();
 
-        @OneToMany(mappedBy = "createdUser", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-        private Set<Activity> activities = new HashSet<>();
+        // @EqualsAndHashCode.Exclude
+        // @ToString.Exclude
+        // @OneToMany(mappedBy = "createdUser", cascade = CascadeType.MERGE, fetch =
+        // FetchType.EAGER)
+        // private Set<Activity> activities = new HashSet<>();
+
+        // @EqualsAndHashCode.Exclude
+        // @ToString.Exclude
+        // @OneToMany(mappedBy = "createdUser")
+        // private Set<Plan> plans = new HashSet<>();
 
 }

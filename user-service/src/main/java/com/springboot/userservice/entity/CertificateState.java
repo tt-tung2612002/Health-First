@@ -10,8 +10,10 @@ import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -29,6 +31,8 @@ public class CertificateState {
     private String name;
 
     @OneToOne(mappedBy = "certificateState")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Certificate certificate;
 
 }

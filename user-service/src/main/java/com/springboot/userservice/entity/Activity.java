@@ -6,14 +6,12 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -49,23 +47,23 @@ public class Activity {
     @NonNull
     private String conclusion;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "plan_id", nullable = false)
-    private Plan plan;
+    // @ManyToOne(cascade = CascadeType.MERGE)
+    // @JoinColumn(name = "plan_id", nullable = false)
+    // private Plan plan;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
-    private AppUser createdUser;
+    // @ManyToOne(cascade = CascadeType.MERGE)
+    // @JoinColumn(name = "user_id", nullable = false)
+    // private AppUser createdUser;
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "activity_result_id", nullable = false)
-    private ActivityResult activityResult;
+    // @OneToOne(cascade = CascadeType.MERGE)
+    // @JoinColumn(name = "activity_result_ier", nullable = false)
+    // private ActivityResult activityResult;
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "activity_state_id", nullable = false)
-    private ActivityState activityState;
+    // @OneToOne(cascade = CascadeType.MERGE)
+    // @JoinColumn(name = "activity_state_id", nullable = false)
+    // private ActivityState activityState;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "facility_id", nullable = false)
     private Facility facility;
 

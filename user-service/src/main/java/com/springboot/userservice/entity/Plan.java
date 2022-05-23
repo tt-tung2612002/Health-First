@@ -33,15 +33,23 @@ public class Plan {
     @NonNull
     private String name;
 
+    @NonNull
+    private String description;
+
     @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "state_id", nullable = false)
+    @JoinColumn(name = "state_id")
     private PlanState planState;
 
     @Column(name = "created_date")
     private Date publishedDate;
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "user_id", nullable = false)
-    private AppUser createdUser;
+    // @ManyToOne(cascade = CascadeType.MERGE)
+    // @JoinColumn(name = "user_id", nullable = false)
+    // private AppUser createdUser;
+
+    // @EqualsAndHashCode.Exclude
+    // @ToString.Exclude
+    // @OneToMany(mappedBy = "plan")
+    // private Set<Activity> activities = new HashSet<>();
 
 }
