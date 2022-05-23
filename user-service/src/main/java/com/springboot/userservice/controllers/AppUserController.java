@@ -24,8 +24,6 @@ import lombok.RequiredArgsConstructor;
 public class AppUserController {
     private final UserService userService;
 
-    public static String currentUser;
-
     @GetMapping("/list")
     public ResponseEntity<List<AppUser>> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());

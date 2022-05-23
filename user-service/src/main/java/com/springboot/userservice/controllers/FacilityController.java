@@ -10,11 +10,13 @@ import com.springboot.userservice.entity.Facility;
 import com.springboot.userservice.entity.FacilityState;
 import com.springboot.userservice.services.FacilityService;
 import com.springboot.userservice.services.UserService;
+import com.springboot.userservice.utils.JwtTokenUtils;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -30,13 +32,16 @@ public class FacilityController {
 
     private final UserService userService;
 
-    private String currentUser = AppUserController.currentUser;
+    private final JwtTokenUtils jwtTokenUtils;
 
     @GetMapping("/list")
-    public ResponseEntity<List<FacilityResponseDto>> getAllFacility() {
-        currentUser = AppUserController.currentUser;
+    public ResponseEntity<List<FacilityResponseDto>> getAllFacility(
+            @RequestHeader(name = "Authorization") String userToken) {
+        userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
+        String username = jwtTokenUtils.getUsernameFromToken(userToken);
         return ResponseEntity.ok()
-                .body(facilityService.getAllFacilityByUser(userService.getCurrentUser(currentUser)));
+                .body(
+                        facilityService.getAllFacilityByUser(userService.getCurrentUser(username)));
     }
 
     @PostMapping("/create")

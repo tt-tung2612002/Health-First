@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springboot.userservice.controllers.AppUserController;
 import com.springboot.userservice.services.UserService;
 import com.springboot.userservice.utils.JwtTokenUtils;
 
@@ -59,7 +58,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String refreshToken = jwtTokenUtils.generateRefreshToken(user);
 
         String username = jwtTokenUtils.getUsernameFromToken(accessToken.substring("HealthFirst".length()));
-        AppUserController.currentUser = username;
 
         String displayName = userService.getCurrentUser(username).getDisplayName();
         String roles = userService.getCurrentUser(username).getRoles().stream().map(x -> x.getName())
