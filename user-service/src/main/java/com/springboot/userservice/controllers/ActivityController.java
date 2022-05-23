@@ -53,7 +53,7 @@ public class ActivityController {
 
         activity.setActivityState(activityService.getActivityStateById(activityDto.getActivityStateId()));
 
-        activity.setFacility(facilityService.getFacilityById(activityDto.getFacilityId()));
+        // activity.setFacility(facilityService.getFacilityById(activityDto.getFacilityId()));
 
         activity.setCreatedUser(userService.getCurrentUserById(activityDto.getCreatedUserId()));
 

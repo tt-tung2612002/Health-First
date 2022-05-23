@@ -62,9 +62,9 @@ public class Facility {
     @OneToMany(mappedBy = "facility", fetch = FetchType.EAGER, cascade = CascadeType.MERGE, orphanRemoval = true)
     private Set<Certificate> certificates = new HashSet<>();
 
-    @OneToMany(mappedBy = "facility")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Set<Activity> activities = new HashSet<>();
+    // @OneToMany(mappedBy = "facility")
+    // @EqualsAndHashCode.Exclude
+    // @ToString.Exclude
+    // private Set<Activity> activities = new HashSet<>();
 
 }
