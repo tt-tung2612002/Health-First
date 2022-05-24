@@ -9,7 +9,6 @@ import com.springboot.userservice.dto.response.AppUserResponseDto;
 import com.springboot.userservice.dto.response.BaseResponse;
 import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
-import com.springboot.userservice.services.FacilityService;
 import com.springboot.userservice.services.UserService;
 
 import org.springframework.http.ResponseEntity;
@@ -27,8 +26,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AppUserController {
     private final UserService userService;
-
-    private final FacilityService facilityService;
 
     @GetMapping("/list")
     public ResponseEntity<List<AppUserResponseDto>> getUsers() {
