@@ -22,4 +22,6 @@ public interface ActivityService {
 
     public ActivityResult getActivityResultById(Integer id);
 
+    public Long deleteActivityById(Integer id);
+
 }

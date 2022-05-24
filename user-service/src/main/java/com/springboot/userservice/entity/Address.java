@@ -12,14 +12,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "address")
@@ -36,8 +36,6 @@ public class Address {
     @JoinColumn(name = "ward_id", nullable = false)
     private Ward ward;
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     @OneToOne(mappedBy = "address", orphanRemoval = true)
     private Facility facility;
 

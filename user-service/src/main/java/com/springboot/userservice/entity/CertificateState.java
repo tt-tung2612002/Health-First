@@ -1,22 +1,26 @@
 package com.springboot.userservice.entity;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "certificate_state", uniqueConstraints = {
@@ -30,9 +34,8 @@ public class CertificateState {
     @NonNull
     private String name;
 
-    @OneToOne(mappedBy = "certificateState")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Certificate certificate;
+    @OneToMany(mappedBy = "certificateState", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+
+    private Set<Certificate> certificates;
 
 }

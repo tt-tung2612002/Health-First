@@ -1,11 +1,14 @@
 package com.springboot.userservice.entity;
 
+import lombok.Setter;
+
 // @Entity
-// @Data
+// @Getter
+@Setter
 // @AllArgsConstructor
 // @NoArgsConstructor
 // @Table(name = "app_permission", uniqueConstraints = {
-//         @UniqueConstraint(name = "UNI_PERMISSION", columnNames = "name")
+// @UniqueConstraint(name = "UNI_PERMISSION", columnNames = "name")
 // })
 public class AppPermission {
     // @Id

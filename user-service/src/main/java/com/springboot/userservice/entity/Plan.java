@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,15 +18,15 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@Data
 @AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "plan", uniqueConstraints = {
         @UniqueConstraint(name = "uni_plan_name", columnNames = "name") })
@@ -41,20 +42,18 @@ public class Plan {
     @NonNull
     private String description;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "state_id", nullable = false)
     private PlanState planState;
 
     @Column(name = "created_date")
     private Date publishedDate;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "created_user_id", nullable = false)
     private AppUser createdUser;
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @OneToMany(mappedBy = "plan")
+    @OneToMany(mappedBy = "plan", fetch = FetchType.EAGER, cascade = CascadeType.MERGE, orphanRemoval = true)
     private Set<Activity> activities = new HashSet<>();
 
 }

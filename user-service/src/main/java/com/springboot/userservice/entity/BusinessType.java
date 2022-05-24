@@ -12,14 +12,14 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "business_type", uniqueConstraints = {
@@ -36,8 +36,7 @@ public class BusinessType {
     private String name;
 
     @OneToMany(mappedBy = "businessType")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+
     private Set<Facility> facility;
 
 }

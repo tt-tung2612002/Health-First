@@ -54,4 +54,9 @@ public class ActivityServiceImpl implements ActivityService {
         return activityResultRepository.findById(id);
     }
 
+    @Override
+    public Long deleteActivityById(Integer id) {
+        return activityRepository.deleteById(id);
+    }
+
 }

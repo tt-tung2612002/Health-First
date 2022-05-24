@@ -1,8 +1,10 @@
 package com.springboot.userservice.dto.request;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class UserRegionDto {
     private String username;
     private Integer wardId;

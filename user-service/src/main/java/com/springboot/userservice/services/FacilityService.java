@@ -2,14 +2,10 @@ package com.springboot.userservice.services;
 
 import java.util.List;
 
-import com.springboot.userservice.dto.request.CertificateRequestDto;
-import com.springboot.userservice.dto.response.CertificateResponseDto;
 import com.springboot.userservice.dto.response.FacilityResponseDto;
 import com.springboot.userservice.entity.Address;
 import com.springboot.userservice.entity.AppUser;
 import com.springboot.userservice.entity.BusinessType;
-import com.springboot.userservice.entity.Certificate;
-import com.springboot.userservice.entity.CertificateState;
 import com.springboot.userservice.entity.District;
 import com.springboot.userservice.entity.Facility;
 import com.springboot.userservice.entity.FacilityState;
@@ -27,23 +23,11 @@ public interface FacilityService {
 
     public Facility getFacilityById(Integer id);
 
-    public FacilityState getFacilityStateById(Integer id);
-
     public Long deleteFacility(Integer id);
 
+    public FacilityState getFacilityStateById(Integer id);
+
     public FacilityState getFacilityStateByName(String name);
-
-    public Certificate getCertificateByNumber(String number);
-
-    public int saveCertificate(CertificateRequestDto certificate);
-
-    public Long deleteCertificateById(Integer id);
-
-    public Long deleteCertificateByNumber(String number);
-
-    public List<CertificateResponseDto> getAllCertificateByUser(int id);
-
-    public CertificateState getCertificateStateByName(String name);
 
     public BusinessType getBusinessTypeById(Integer id);
 

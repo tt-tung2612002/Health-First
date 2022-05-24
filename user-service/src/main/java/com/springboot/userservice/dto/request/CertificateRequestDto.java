@@ -1,9 +1,13 @@
 package com.springboot.userservice.dto.request;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class CertificateRequestDto {
+
+    private Integer id;
 
     private Integer facilityId;
 
@@ -13,6 +17,6 @@ public class CertificateRequestDto {
 
     private String expiredDate;
 
-    private String certificateState;
+    private Integer certificateStateId;
 
 }

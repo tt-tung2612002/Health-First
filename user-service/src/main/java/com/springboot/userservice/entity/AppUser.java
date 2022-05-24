@@ -18,14 +18,14 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user", uniqueConstraints = {
@@ -47,23 +47,19 @@ public class AppUser {
 
         @Column(name = "display_name")
         private String displayName;
-
+       
         @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
         @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
         private Set<AppRole> roles = new HashSet<>();
-
+       
         @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(name = "user_region_management", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "ward_id"))
         private Set<Ward> wards = new HashSet<>();
-
-        @EqualsAndHashCode.Exclude
-        @ToString.Exclude
+       
         @OneToMany(mappedBy = "createdUser", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
         private Set<Activity> activities = new HashSet<>();
 
-        @EqualsAndHashCode.Exclude
-        @ToString.Exclude
-        @OneToMany(mappedBy = "createdUser")
+        @OneToMany(mappedBy = "createdUser", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
         private Set<Plan> plans = new HashSet<>();
 
 }

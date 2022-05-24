@@ -2,9 +2,11 @@ package com.springboot.userservice.dto.response;
 
 import java.util.List;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class AppUserResponse {
     private String username;
     private String displayName;

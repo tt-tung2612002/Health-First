@@ -1,11 +1,17 @@
 package com.springboot.userservice.dto.request;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class ActivityRequestDto {
 
+    private Integer id;
+
     private String name;
+
+    private String createdDate;
 
     private String startDate;
 

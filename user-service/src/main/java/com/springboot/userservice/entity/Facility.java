@@ -17,14 +17,14 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "facility", uniqueConstraints = {
@@ -49,22 +49,16 @@ public class Facility {
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "state_id")
-    // @EqualsAndHashCode.Exclude
-    // @ToString.Exclude
     private FacilityState facilityState;
 
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "business_type_id")
     private BusinessType businessType;
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     @OneToMany(mappedBy = "facility", fetch = FetchType.EAGER, cascade = CascadeType.MERGE, orphanRemoval = true)
     private Set<Certificate> certificates = new HashSet<>();
 
-    // @OneToMany(mappedBy = "facility")
-    // @EqualsAndHashCode.Exclude
-    // @ToString.Exclude
-    // private Set<Activity> activities = new HashSet<>();
+    @OneToMany(mappedBy = "facility", fetch = FetchType.EAGER, cascade = CascadeType.MERGE, orphanRemoval = true)
+    private Set<Activity> activities = new HashSet<>();
 
 }

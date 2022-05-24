@@ -2,9 +2,11 @@ package com.springboot.userservice.dto.response;
 
 import com.springboot.userservice.entity.Activity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class ActivityResponseDto {
     private Integer id;
 

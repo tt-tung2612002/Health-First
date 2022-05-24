@@ -2,9 +2,11 @@ package com.springboot.userservice.dto.response;
 
 import com.springboot.userservice.entity.District;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class DistrictResponseDto {
     private Integer id;
     private String name;

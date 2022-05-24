@@ -6,8 +6,10 @@ import java.util.List;
 import com.springboot.userservice.dto.request.FacilityRequestDto;
 import com.springboot.userservice.dto.response.FacilityResponseDto;
 import com.springboot.userservice.entity.Address;
+import com.springboot.userservice.entity.BusinessType;
 import com.springboot.userservice.entity.Facility;
 import com.springboot.userservice.entity.FacilityState;
+import com.springboot.userservice.entity.Ward;
 import com.springboot.userservice.services.FacilityService;
 import com.springboot.userservice.services.UserService;
 import com.springboot.userservice.utils.JwtTokenUtils;
@@ -69,33 +71,51 @@ public class FacilityController {
         return ResponseEntity.created(uri).body("Facility created successfully");
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<?> updateFacility(@RequestBody FacilityRequestDto facilityDto) {
+        URI uri = URI
+                .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/facilities/update")
+                        .toUriString());
+
+        // check if facility exist.
+        Facility facility = facilityService.getFacilityById(facilityDto.getId());
+        if (facility == null) {
+            return ResponseEntity.badRequest().body("Facility with id " + facilityDto.getId() + " not found");
+        }
+
+        String name = facilityDto.getName();
+        if (name != null)
+            facility.setName(name);
+
+        FacilityState facilityState = facilityService.getFacilityStateById(facilityDto.getFacilityStateId());
+        if (facilityState != null)
+            facility.setFacilityState(facilityState);
+
+        String addressName = facilityDto.getAddress();
+        if (addressName != null) {
+            Address address = new Address();
+            address.setName(addressName);
+            Ward ward = facilityService.getWardById(facilityDto.getWardId());
+            if (ward == null)
+                return ResponseEntity.badRequest()
+                        .body("Can not update facility with id " + facilityDto.getId() + ". Ward not found");
+            facilityService.saveAddress(address, ward);
+            facility.setAddress(address);
+        }
+
+        BusinessType businessType = facilityService.getBusinessTypeById(facilityDto.getBusinessTypeId());
+        if (businessType != null)
+            facility.setBusinessType(businessType);
+
+        facilityService.saveFacility(facility);
+
+        return ResponseEntity.created(uri).body("Facility updated successfully");
+    }
+
     @PostMapping("/delete")
     public ResponseEntity<?> deleteFacility(@RequestBody FacilityRequestDto facilityDto) {
         facilityService.deleteFacility(facilityDto.getId());
         return ResponseEntity.ok().body("Facility deleted successfully");
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<?> updateFacility(@RequestBody FacilityRequestDto facilityDto) {
-        // facilityService.addFacility(payload);
-        URI uri = URI
-                .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/facilities/create")
-                        .toUriString());
-        Facility facility = facilityService.getFacilityById(facilityDto.getId());
-        facility.setName(facilityDto.getName());
-        facility.setFacilityCode(facilityDto.getFacilityCode());
-        Address address = new Address();
-        address.setName(facilityDto.getAddress());
-        facilityService.saveAddress(address, facilityService.getWardById(facilityDto.getWardId()));
-
-        facility.setAddress(address);
-        FacilityState facilityState = new FacilityState();
-        facilityState.setName(facilityDto.getFacilityState());
-
-        facility.setFacilityState(facilityService.getFacilityStateByName(facilityDto.getFacilityState()));
-        facility.setBusinessType(facilityService.getBusinessTypeByName(facilityDto.getBusinessType()));
-        // facility.setAddress();
-        facilityService.saveFacility(facility);
-        return ResponseEntity.created(uri).body("Facility updated successfully");
-    }
 }
