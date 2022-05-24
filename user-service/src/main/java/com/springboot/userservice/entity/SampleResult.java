@@ -1,10 +1,12 @@
 package com.springboot.userservice.entity;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -28,7 +30,7 @@ public class SampleResult {
     @NonNull
     private String description;
 
-    @OneToOne(mappedBy = "sampleResult")
-    private Sample sample;
+    @OneToMany(mappedBy = "sampleResult")
+    private Set<Sample> samples;
 
 }

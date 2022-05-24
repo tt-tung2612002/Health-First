@@ -1,10 +1,12 @@
 package com.springboot.userservice.entity;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -30,7 +32,7 @@ public class SampleState {
     @NonNull
     private String name;
 
-    @OneToOne(mappedBy = "sampleState")
-    private Sample sample;
+    @OneToMany(mappedBy = "sampleState")
+    private Set<Sample> samples;
 
 }

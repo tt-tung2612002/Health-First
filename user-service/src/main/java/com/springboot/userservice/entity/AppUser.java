@@ -1,10 +1,10 @@
 package com.springboot.userservice.entity;
 
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -40,12 +40,18 @@ public class AppUser {
         private String username;
 
         @NonNull
+        private Date createdDate;
+
+        @NonNull
         private String password;
 
         @NonNull
         private String email;
 
-        @Column(name = "display_name")
+        @NonNull
+        private String phoneNumber;
+
+        @NonNull
         private String displayName;
 
         @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
