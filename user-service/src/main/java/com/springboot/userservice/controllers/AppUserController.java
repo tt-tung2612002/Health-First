@@ -65,7 +65,7 @@ public class AppUserController {
 
     @PostMapping("/role/addToUser")
     public ResponseEntity<?> addRoleToUser(@RequestBody UserRoleDto payload) {
-        userService.addRoleToUser(payload.getUsername(), payload.getRoleName());
+        userService.addRoleToUser(payload.getUsername(), payload.getRoleId());
         return ResponseEntity.ok().build();
     }
 

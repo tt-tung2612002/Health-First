@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class UserRoleDto {
     private String username;
-    private String roleName;
+    private Integer roleId;
 }
