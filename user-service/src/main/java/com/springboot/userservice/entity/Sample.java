@@ -37,6 +37,7 @@ public class Sample {
     @Column(name = "sample_code")
     private String sampleCode;
 
+    @NonNull
     @Column(name = "created_date")
     private Date createdDate;
 

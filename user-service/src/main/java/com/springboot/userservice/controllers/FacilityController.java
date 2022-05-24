@@ -6,7 +6,6 @@ import java.util.List;
 import com.springboot.userservice.dto.request.FacilityRequestDto;
 import com.springboot.userservice.dto.response.FacilityResponseDto;
 import com.springboot.userservice.entity.Address;
-import com.springboot.userservice.entity.BusinessType;
 import com.springboot.userservice.entity.Facility;
 import com.springboot.userservice.entity.FacilityState;
 import com.springboot.userservice.entity.Ward;
@@ -88,14 +87,13 @@ public class FacilityController {
         if (name != null)
             facility.setName(name);
 
-        FacilityState facilityState = facilityService.getFacilityStateById(facilityDto.getFacilityStateId());
-        if (facilityState != null)
-            facility.setFacilityState(facilityState);
+        if (facilityDto.getFacilityStateId() != null) {
+            facility.setFacilityState(facilityService.getFacilityStateById(facilityDto.getFacilityStateId()));
+        }
 
-        String addressName = facilityDto.getAddress();
-        if (addressName != null) {
+        if (facilityDto.getAddress() != null) {
             Address address = new Address();
-            address.setName(addressName);
+            address.setName(facilityDto.getAddress());
             Ward ward = facilityService.getWardById(facilityDto.getWardId());
             if (ward == null)
                 return ResponseEntity.badRequest()
@@ -104,9 +102,9 @@ public class FacilityController {
             facility.setAddress(address);
         }
 
-        BusinessType businessType = facilityService.getBusinessTypeById(facilityDto.getBusinessTypeId());
-        if (businessType != null)
-            facility.setBusinessType(businessType);
+        if (facilityDto.getBusinessTypeId() != null) {
+            facility.setBusinessType(facilityService.getBusinessTypeById(facilityDto.getBusinessTypeId()));
+        }
 
         facilityService.saveFacility(facility);
 

@@ -14,11 +14,7 @@ public class FacilityRequestDto {
 
     private Integer facilityStateId;
 
-    private String facilityState;
-
     private Integer businessTypeId;
-
-    private String businessType;
 
     private String address;
 

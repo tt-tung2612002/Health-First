@@ -24,8 +24,11 @@ public class ActivityResponseDto {
 
     private String createdUser;
 
+    private Integer facilityId;
+
     public ActivityResponseDto(Activity activity) {
         this.id = activity.getId();
+        this.facilityId = activity.getFacility().getId();
         this.name = activity.getName();
         this.startDate = activity.getStartDate().toString();
         this.endDate = activity.getEndDate().toString();

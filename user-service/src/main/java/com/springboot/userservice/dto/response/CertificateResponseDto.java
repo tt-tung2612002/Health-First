@@ -17,14 +17,20 @@ public class CertificateResponseDto {
 
     private String expiredDate;
 
-    private String certificateState;
+    private Integer certificateStateId;
+
+    private String facilityName;
+
+    private Integer facilityId;
 
     public CertificateResponseDto(Certificate certificate) {
         this.id = certificate.getId();
         this.certificateNumber = certificate.getCertificateNumber();
         this.publishedDate = certificate.getPublishedDate().toString();
         this.expiredDate = certificate.getExpiredDate().toString();
-        this.certificateState = certificate.getCertificateState().getName();
+        this.certificateStateId = certificate.getCertificateState().getId();
+        this.facilityName = certificate.getFacility().getName();
+        this.facilityId = certificate.getFacility().getId();
     }
 
 }

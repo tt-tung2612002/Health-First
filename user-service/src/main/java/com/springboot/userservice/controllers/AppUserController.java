@@ -9,7 +9,6 @@ import com.springboot.userservice.dto.response.AppUserResponseDto;
 import com.springboot.userservice.dto.response.BaseResponse;
 import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
-import com.springboot.userservice.entity.Ward;
 import com.springboot.userservice.services.FacilityService;
 import com.springboot.userservice.services.UserService;
 
@@ -71,8 +70,7 @@ public class AppUserController {
 
     @PostMapping("/region/addToUser")
     public ResponseEntity<?> addRegionToUser(@RequestBody UserRegionDto payload) {
-        Ward ward = facilityService.getWardById(payload.getWardId());
-        userService.addRegionToUser(ward, payload.getUsername());
+        userService.addRegionToUser(payload.getWardId(), payload.getUsername());
         return ResponseEntity.ok().build();
     }
 }

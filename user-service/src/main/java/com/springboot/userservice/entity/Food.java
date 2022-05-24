@@ -34,6 +34,8 @@ public class Food {
     @NonNull
     private String name;
 
+    private String description;
+
     @OneToMany(mappedBy = "food", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private Set<Sample> samples;
 
