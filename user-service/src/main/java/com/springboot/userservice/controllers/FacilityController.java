@@ -61,10 +61,11 @@ public class FacilityController {
         facilityService.saveAddress(address, facilityService.getWardById(facilityDto.getWardId()));
 
         facility.setAddress(address);
-        FacilityState facilityState = new FacilityState();
-        facilityState.setName(facilityDto.getFacilityState());
 
-        facility.setFacilityState(facilityService.getFacilityStateByName(facilityDto.getFacilityState()));
+        FacilityState facilityState = facilityService.getFacilityStateById(facilityDto.getFacilityStateId());
+
+        facility.setFacilityState(facilityState);
+
         facility.setBusinessType(facilityService.getBusinessTypeById(facilityDto.getBusinessTypeId()));
         // facility.setAddress();
         facilityService.saveFacility(facility);

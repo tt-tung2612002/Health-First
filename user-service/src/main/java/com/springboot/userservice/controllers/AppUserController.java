@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.springboot.userservice.dto.request.UserRegionDto;
 import com.springboot.userservice.dto.request.UserRoleDto;
+import com.springboot.userservice.dto.response.AppUserResponseDto;
 import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
 import com.springboot.userservice.entity.Ward;
@@ -30,7 +31,7 @@ public class AppUserController {
     private final FacilityService facilityService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<AppUser>> getUsers() {
+    public ResponseEntity<List<AppUserResponseDto>> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 

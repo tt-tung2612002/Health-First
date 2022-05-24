@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.springboot.userservice.dto.response.AppUserResponseDto;
 import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
 import com.springboot.userservice.entity.Ward;
@@ -55,8 +56,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<AppUser> getUsers() {
-        return userRepository.findAll();
+    public List<AppUserResponseDto> getUsers() {
+        return userRepository.findAll().stream().map(AppUserResponseDto::new).collect(Collectors.toList());
     }
 
     @Override
