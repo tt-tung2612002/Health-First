@@ -1,5 +1,6 @@
 package com.springboot.userservice.dto.response;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import com.springboot.userservice.entity.AppUser;
@@ -19,7 +20,7 @@ public class AppUserResponseDto {
 
     private String phoneNumber;
 
-    private String roles;
+    private List<Integer> roles;
 
     private String createdDate;
 
@@ -27,8 +28,9 @@ public class AppUserResponseDto {
         this.displayName = appUser.getDisplayName();
         this.username = appUser.getUsername();
         this.email = appUser.getEmail();
-        this.roles = appUser.getRoles().stream().map(role -> String.valueOf(role.getId()))
-                .collect(Collectors.joining(","));
+        // use built in function :: getId
+        this.roles = appUser.getRoles().stream().map(role -> role.getId())
+                .collect(Collectors.toList());
         this.phoneNumber = appUser.getPhoneNumber();
         this.createdDate = appUser.getCreatedDate().toString();
     }

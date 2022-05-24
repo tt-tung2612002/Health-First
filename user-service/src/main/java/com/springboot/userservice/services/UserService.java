@@ -19,7 +19,7 @@ public interface UserService {
 
     AppRole saveRole(AppRole role);
 
-    void addRoleToUser(String username, String role);
+    void addRoleToUser(String username, Integer id);
 
     List<AppUserResponseDto> getUsers();
 
