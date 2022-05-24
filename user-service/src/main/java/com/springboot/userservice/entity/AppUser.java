@@ -47,15 +47,15 @@ public class AppUser {
 
         @Column(name = "display_name")
         private String displayName;
-       
+
         @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
         @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
         private Set<AppRole> roles = new HashSet<>();
-       
-        @ManyToMany(fetch = FetchType.EAGER)
+
+        @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
         @JoinTable(name = "user_region_management", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "ward_id"))
         private Set<Ward> wards = new HashSet<>();
-       
+
         @OneToMany(mappedBy = "createdUser", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
         private Set<Activity> activities = new HashSet<>();
 
