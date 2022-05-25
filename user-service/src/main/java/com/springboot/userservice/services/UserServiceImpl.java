@@ -88,4 +88,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public AppUser getCurrentUserById(Integer id) {
         return userRepository.findById(id);
     }
+
+    @Override
+    public int deleteUserById(Integer id) {
+        return userRepository.deleteUserById(id);
+    }
+
+    @Override
+    public void removeRoleFromUser(Integer id, String username) {
+        AppUser user = userRepository.findByUsername(username);
+        AppRole role = roleRepository.findById(id);
+        user.getRoles().remove(role);
+    }
+
+    @Override
+    public void removeRegionFromUser(Integer Id, String username) {
+        AppUser user = userRepository.findByUsername(username);
+        Ward ward = wardRepository.findById(Id);
+        user.getWards().remove(ward);
+    }
 }

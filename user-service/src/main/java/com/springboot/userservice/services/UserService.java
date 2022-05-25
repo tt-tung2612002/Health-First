@@ -17,13 +17,20 @@ public interface UserService {
 
     AppUser saveUser(AppUser user);
 
+    int deleteUserById(Integer id);
+
     AppRole saveRole(AppRole role);
 
     void addRoleToUser(String username, Integer id);
+
+    void removeRoleFromUser(Integer id, String username);
 
     List<AppUserResponseDto> getUsers();
 
     void addRegionToUser(Integer Id, String username);
 
     void addRegionToUser(Ward ward, String username);
+
+    void removeRegionFromUser(Integer Id, String username);
+
 }
