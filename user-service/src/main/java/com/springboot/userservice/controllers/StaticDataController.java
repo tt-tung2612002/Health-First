@@ -1,10 +1,6 @@
 package com.springboot.userservice.controllers;
 
-import java.util.List;
-
-import com.springboot.userservice.dto.response.DistrictResponseDto;
-import com.springboot.userservice.dto.response.ProvinceResponseDto;
-import com.springboot.userservice.dto.response.WardResponseDto;
+import com.springboot.userservice.dto.response.BaseResponse;
 import com.springboot.userservice.entity.District;
 import com.springboot.userservice.entity.Province;
 import com.springboot.userservice.services.StaticDataService;
@@ -25,17 +21,20 @@ public class StaticDataController {
     private final StaticDataService staticDataService;
 
     @PostMapping("/provinces")
-    public ResponseEntity<List<ProvinceResponseDto>> getProvinces() {
-        return ResponseEntity.ok().body(staticDataService.getProvinces());
+    public ResponseEntity<?> getProvinces() {
+        return ResponseEntity.ok().body(new BaseResponse("1", "Get all provinces successfully",
+                staticDataService.getProvinces()));
     }
 
     @PostMapping("/districts")
-    public ResponseEntity<List<DistrictResponseDto>> getDistrictsByProvince(@RequestBody Province province) {
-        return ResponseEntity.ok().body(staticDataService.getDistrictsByProvince(province.getId()));
+    public ResponseEntity<?> getDistrictsByProvince(@RequestBody Province province) {
+        return ResponseEntity.ok().body(new BaseResponse("1", "Get all districts successfully",
+                staticDataService.getDistrictsByProvince(province.getId())));
     }
 
     @PostMapping("/wards")
-    public ResponseEntity<List<WardResponseDto>> getWardsByDistrict(@RequestBody District district) {
-        return ResponseEntity.ok().body(staticDataService.getWardsByDistrict(district.getId()));
+    public ResponseEntity<?> getWardsByDistrict(@RequestBody District district) {
+        return ResponseEntity.ok().body(new BaseResponse("1", "Get all wards successfully",
+                staticDataService.getWardsByDistrict(district.getId())));
     }
 }

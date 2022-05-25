@@ -41,7 +41,7 @@ public class CertificateController {
             @RequestHeader(name = "Authorization") String userToken) {
         userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
         String username = jwtTokenUtils.getUsernameFromToken(userToken);
-        BaseResponse response = new BaseResponse("0", "success",
+        BaseResponse response = new BaseResponse("1", "success",
                 certificateService.getAllCertificateByUser(
                         userService.getCurrentUserByName(username).getId()));
         return ResponseEntity.ok()
@@ -79,7 +79,7 @@ public class CertificateController {
                 certificateDto.getCertificateStateId()));
 
         Certificate result = certificateService.saveCertificate(certificate);
-        BaseResponse response = new BaseResponse(result == null ? "0" : "-1",
+        BaseResponse response = new BaseResponse(result == null ? "0" : "1",
                 result != null ? "Add certificate success" : "Add certificate failed", "");
         return ResponseEntity.created(uri).body(response);
     }
@@ -125,7 +125,7 @@ public class CertificateController {
                     certificateDto.getCertificateStateId()));
 
         Certificate result = certificateService.saveCertificate(certificate);
-        BaseResponse response = new BaseResponse(result == null ? "0" : "-1",
+        BaseResponse response = new BaseResponse(result == null ? "0" : "1",
                 result != null ? "Update certificate success" : "Update certificate failed", "");
         return ResponseEntity.created(uri).body(response);
     }
@@ -147,6 +147,6 @@ public class CertificateController {
         }
 
         certificateService.deleteCertificateById(certificate.getId());
-        return ResponseEntity.created(uri).body("Certificate deleted successfully");
+        return ResponseEntity.created(uri).body(new BaseResponse("1", "Delete certificate success", ""));
     }
 }

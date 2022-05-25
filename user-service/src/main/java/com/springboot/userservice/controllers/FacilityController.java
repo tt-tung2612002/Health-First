@@ -101,7 +101,7 @@ public class FacilityController {
         // check if facility exist.
         Facility facility = facilityService.getFacilityById(facilityDto.getId());
         if (facility == null) {
-            return ResponseEntity.badRequest().body("Facility with id " + facilityDto.getId() + " not found");
+            return ResponseEntity.badRequest().body(new BaseResponse("0", "Facility not found", ""));
         }
 
         String name = facilityDto.getName();
@@ -118,7 +118,8 @@ public class FacilityController {
             Ward ward = facilityService.getWardById(facilityDto.getWardId());
             if (ward == null)
                 return ResponseEntity.badRequest()
-                        .body("Can not update facility with id " + facilityDto.getId() + ". Ward not found");
+                        .body(new BaseResponse("0",
+                                "Can not update facility with id " + facilityDto.getId() + ". Ward not found", ""));
             facilityService.saveAddress(address, ward);
             facility.setAddress(address);
         }
@@ -129,7 +130,7 @@ public class FacilityController {
 
         facilityService.saveFacility(facility);
 
-        BaseResponse response = new BaseResponse("1", "Facility updated successfully", null);
+        BaseResponse response = new BaseResponse("1", "Facility updated successfully", "");
 
         return ResponseEntity.created(uri).body(response);
     }
@@ -137,7 +138,7 @@ public class FacilityController {
     @PostMapping("/delete")
     public ResponseEntity<?> deleteFacility(@RequestBody FacilityRequestDto facilityDto) {
         facilityService.deleteFacility(facilityDto.getId());
-        return ResponseEntity.ok().body("Facility deleted successfully");
+        return ResponseEntity.ok().body(new BaseResponse("1", "Facility deleted successfully", ""));
     }
 
 }

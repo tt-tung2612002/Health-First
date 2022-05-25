@@ -40,7 +40,7 @@ public class SampleController {
         if (samples == null) {
             return ResponseEntity.badRequest().body(new BaseResponse("0", "No samples found", ""));
         }
-        BaseResponse response = new BaseResponse("-1", "Get all activities successfully",
+        BaseResponse response = new BaseResponse("1", "Get all activities successfully",
                 samples);
 
         return ResponseEntity.ok().body(response);
@@ -92,7 +92,7 @@ public class SampleController {
         sample.setFood(staticDataService.getFoodById(sampleRequestDto.getFoodId()));
 
         sampleService.saveSample(sample);
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(new BaseResponse("1", "Create sample successfully", sample));
     }
 
     @PostMapping("/update")
@@ -133,7 +133,7 @@ public class SampleController {
             sample.setFood(staticDataService.getFoodById(sampleRequestDto.getFoodId()));
 
         sampleService.saveSample(sample);
-        BaseResponse response = new BaseResponse("-1", "Update sample successfully", "");
+        BaseResponse response = new BaseResponse("1", "Update sample successfully", "");
         return ResponseEntity.created(uri).body(response);
     }
 
@@ -152,7 +152,7 @@ public class SampleController {
         }
 
         sampleService.deleteSampleById(sample.getId());
-        BaseResponse response = new BaseResponse("-1", "Delete sample successfully", "");
+        BaseResponse response = new BaseResponse("1", "Delete sample successfully", "");
         return ResponseEntity.created(uri).body(response);
     }
 

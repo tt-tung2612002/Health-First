@@ -1,7 +1,6 @@
 package com.springboot.userservice.controllers;
 
 import java.net.URI;
-import java.util.List;
 
 import com.springboot.userservice.dto.request.UserRegionDto;
 import com.springboot.userservice.dto.request.UserRoleDto;
@@ -28,8 +27,8 @@ public class AppUserController {
     private final UserService userService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<AppUserResponseDto>> getUsers() {
-        return ResponseEntity.ok().body(userService.getUsers());
+    public ResponseEntity<?> getUsers() {
+        return ResponseEntity.ok().body(new BaseResponse("1", "success", userService.getUsers()));
     }
 
     @PostMapping("/create")
@@ -48,28 +47,30 @@ public class AppUserController {
 
         AppUserResponseDto userResponseDto = new AppUserResponseDto(userService.saveUser(user));
 
-        BaseResponse baseResponse = new BaseResponse(userResponseDto == null ? "0" : "-1",
+        BaseResponse baseResponse = new BaseResponse(userResponseDto == null ? "0" : "1",
                 userResponseDto == null ? "Can't create user" : "User created successfully", userResponseDto);
         return ResponseEntity.created(uri).body(baseResponse);
     }
 
     @PostMapping("/role/create")
-    public ResponseEntity<AppRole> saveRole(@RequestBody AppRole role) {
+    public ResponseEntity<?> saveRole(@RequestBody AppRole role) {
         URI uri = URI
                 .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/role/create")
                         .toUriString());
-        return ResponseEntity.created(uri).body(userService.saveRole(role));
+        // return BaseResponse
+        return ResponseEntity.created(uri).body(new BaseResponse("1", "Role created successfully",
+                ""));
     }
 
     @PostMapping("/role/addToUser")
     public ResponseEntity<?> addRoleToUser(@RequestBody UserRoleDto payload) {
         userService.addRoleToUser(payload.getUsername(), payload.getRoleId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(new BaseResponse("1", "Role added to user successfully", ""));
     }
 
     @PostMapping("/region/addToUser")
     public ResponseEntity<?> addRegionToUser(@RequestBody UserRegionDto payload) {
         userService.addRegionToUser(payload.getWardId(), payload.getUsername());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(new BaseResponse("1", "Region added to user successfully", ""));
     }
 }

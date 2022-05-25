@@ -2,10 +2,8 @@ package com.springboot.userservice.controllers;
 
 import java.net.URI;
 import java.sql.Date;
-import java.util.List;
 
 import com.springboot.userservice.dto.request.ActivityRequestDto;
-import com.springboot.userservice.dto.response.ActivityResponseDto;
 import com.springboot.userservice.dto.response.BaseResponse;
 import com.springboot.userservice.entity.Activity;
 import com.springboot.userservice.entity.ActivityResult;
@@ -46,8 +44,8 @@ public class ActivityController {
     private final JwtTokenUtils jwtTokenUtils;
 
     @GetMapping("/list")
-    public ResponseEntity<List<ActivityResponseDto>> getAllActivities() {
-        return ResponseEntity.ok().body(activityService.getAllActivities());
+    public ResponseEntity<?> getAllActivities() {
+        return ResponseEntity.ok().body(new BaseResponse("1", "success", activityService.getAllActivities()));
     }
 
     @PostMapping("/create")
@@ -67,7 +65,6 @@ public class ActivityController {
         userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
         String username = jwtTokenUtils.getUsernameFromToken(userToken);
         activity.setCreatedUser(userService.getCurrentUserByName(username));
-
 
         activity.setCreatedDate(new Date(System.currentTimeMillis()));
         activity.setStartDate(Date.valueOf(activityDto.getStartDate()));
@@ -102,7 +99,8 @@ public class ActivityController {
 
         if (activity == null) {
             // return activity not found with requested id.
-            return ResponseEntity.badRequest().body("Activity not found with id: " + activityDto.getId());
+            return ResponseEntity.badRequest()
+                    .body(new BaseResponse("0", "Activity not found with id: " + activityDto.getId(), ""));
         }
 
         // set name if exists.
@@ -154,7 +152,7 @@ public class ActivityController {
 
         activityService.saveActivity(activity);
 
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(new BaseResponse("1", "success", activity));
     }
 
     @PostMapping("/delete")
@@ -167,12 +165,13 @@ public class ActivityController {
 
         if (activity == null) {
             // return activity not found with requested id.
-            return ResponseEntity.badRequest().body("Activity not found with id: " + activityRequestDto.getId());
+            return ResponseEntity.badRequest()
+                    .body(new BaseResponse("0", "Activity not found with id: " + activityRequestDto.getId(), ""));
         }
 
         activityService.deleteActivityById(activity.getId());
 
-        BaseResponse response = new BaseResponse("-1",
+        BaseResponse response = new BaseResponse("0",
                 "Update certificate success", "");
 
         return ResponseEntity.created(uri).body(response);

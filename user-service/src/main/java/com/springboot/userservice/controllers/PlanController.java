@@ -35,7 +35,7 @@ public class PlanController {
 
     @GetMapping("/list")
     public ResponseEntity<?> getAllPlans() {
-        BaseResponse response = new BaseResponse("0", "Get plans successfully", planService.getAllPlans());
+        BaseResponse response = new BaseResponse("1", "Get plans successfully", planService.getAllPlans());
         return ResponseEntity.ok().body(response);
     }
 
@@ -82,7 +82,8 @@ public class PlanController {
         Plan plan = planService.getPlanById(planRequestDto.getId());
         if (plan == null) {
             // return a error message.
-            return ResponseEntity.badRequest().body("Plan with id " + planRequestDto.getId() + " not found.");
+            return ResponseEntity.badRequest()
+                    .body(new BaseResponse("0", "Plan with id " + planRequestDto.getId() + " not found", ""));
         }
 
         // set name if exist.
