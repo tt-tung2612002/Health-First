@@ -19,6 +19,8 @@ public interface CertificateService {
 
     public CertificateState getCertificateStateById(Integer id);
 
+    public Certificate getLastCertificate();
+
     public Long deleteCertificateById(Integer id);
 
 }

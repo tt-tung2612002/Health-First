@@ -42,7 +42,7 @@ public class SampleServiceImpl implements SampleService {
     public List<SampleResponseDto> getAllSamples() {
         sampleRepository.findAll();
         return sampleRepository.findAll()
-        .stream().map(SampleResponseDto::new).collect(Collectors.toList());
+                .stream().map(SampleResponseDto::new).collect(Collectors.toList());
     }
 
     @Override
@@ -58,6 +58,11 @@ public class SampleServiceImpl implements SampleService {
     @Override
     public SampleState getSampleStateById(Integer id) {
         return sampleStateRepository.findById(id);
+    }
+
+    @Override
+    public Sample getLastSample() {
+        return sampleRepository.findTopByOrderByIdDesc();
     }
 
 }

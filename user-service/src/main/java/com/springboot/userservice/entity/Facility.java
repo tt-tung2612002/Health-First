@@ -32,6 +32,8 @@ import lombok.Setter;
 })
 public class Facility {
 
+    public static final String FACILITY_CODE_PREFIX = "FAC-0T";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

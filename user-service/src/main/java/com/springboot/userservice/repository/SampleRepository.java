@@ -11,6 +11,8 @@ public interface SampleRepository extends JpaRepository<Sample, Long> {
 
     Sample findBySampleCode(String name);
 
+    Sample findTopByOrderByIdDesc();
+
     Long deleteById(Integer Id);
 
     Long deleteBySampleCode(String name);

@@ -52,4 +52,9 @@ public class CertificateServiceImpl implements CertificateService {
         return certificateRepository.deleteById(id);
     }
 
+    @Override
+    public Certificate getLastCertificate() {
+        return certificateRepository.findTopByOrderByIdDesc();
+    }
+
 }

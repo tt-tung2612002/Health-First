@@ -17,11 +17,13 @@ import com.springboot.userservice.services.ActivityService;
 import com.springboot.userservice.services.FacilityService;
 import com.springboot.userservice.services.PlanService;
 import com.springboot.userservice.services.UserService;
+import com.springboot.userservice.utils.JwtTokenUtils;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -41,13 +43,16 @@ public class ActivityController {
 
     private final PlanService planService;
 
+    private final JwtTokenUtils jwtTokenUtils;
+
     @GetMapping("/list")
     public ResponseEntity<List<ActivityResponseDto>> getAllActivities() {
         return ResponseEntity.ok().body(activityService.getAllActivities());
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> addActivity(@RequestBody ActivityRequestDto activityDto) {
+    public ResponseEntity<?> addActivity(@RequestHeader(name = "Authorization") String userToken,
+            @RequestBody ActivityRequestDto activityDto) {
         // facilityService.addFacility(payload);
         URI uri = URI
                 .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/activities/create")
@@ -59,10 +64,12 @@ public class ActivityController {
         activity.setName(activityDto.getName());
 
         // set created user
-        activity.setCreatedUser(userService.getCurrentUserById(activityDto.getCreatedUserId()));
+        userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
+        String username = jwtTokenUtils.getUsernameFromToken(userToken);
+        activity.setCreatedUser(userService.getCurrentUserByName(username));
 
-        // set created, start, end date
-        activity.setCreatedDate(Date.valueOf(activityDto.getCreatedDate()));
+
+        activity.setCreatedDate(new Date(System.currentTimeMillis()));
         activity.setStartDate(Date.valueOf(activityDto.getStartDate()));
         activity.setEndDate(Date.valueOf(activityDto.getEndDate()));
 

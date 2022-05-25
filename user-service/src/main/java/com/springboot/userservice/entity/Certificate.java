@@ -30,6 +30,8 @@ import lombok.Setter;
 })
 public class Certificate {
 
+    public static final String CERTIFICATE_PREFIX = "CERT-0";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

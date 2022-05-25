@@ -44,6 +44,8 @@ public class AppUserController {
             return ResponseEntity.badRequest().body(new BaseResponse("0", "User already exist", ""));
         }
 
+        user.setCreatedDate(new java.sql.Date(System.currentTimeMillis()));
+
         AppUserResponseDto userResponseDto = new AppUserResponseDto(userService.saveUser(user));
 
         BaseResponse baseResponse = new BaseResponse(userResponseDto == null ? "0" : "-1",

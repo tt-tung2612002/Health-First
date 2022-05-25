@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import com.springboot.userservice.dto.request.FacilityRequestDto;
+import com.springboot.userservice.dto.response.BaseResponse;
 import com.springboot.userservice.dto.response.FacilityResponseDto;
 import com.springboot.userservice.entity.Address;
 import com.springboot.userservice.entity.Facility;
@@ -52,23 +53,43 @@ public class FacilityController {
                 .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/facilities/create")
                         .toUriString());
         Facility facility = new Facility();
+
         facility.setName(facilityDto.getName());
+
+        Facility lastFacility = facilityService.getLastFacility();
+        facility.setFacilityCode(Facility.FACILITY_CODE_PREFIX + String.valueOf(lastFacility.getId() + 1));
+
+        if (facilityDto.getFacilityStateId() == null) {
+            BaseResponse response = new BaseResponse("0", "facilityStateId is null", null);
+            return ResponseEntity.badRequest().body(response);
+        }
         facility.setFacilityState(facilityService.getFacilityStateById(facilityDto.getFacilityStateId()));
+
+        if (facilityDto.getAddress() == null) {
+            BaseResponse response = new BaseResponse("0", "address is null", null);
+            return ResponseEntity.badRequest().body(response);
+        }
         Address address = new Address();
         address.setName(facilityDto.getAddress());
-        // address.setWard(facilityService.getWardById());
         facilityService.saveAddress(address, facilityService.getWardById(facilityDto.getWardId()));
-
         facility.setAddress(address);
 
+        // set facility state.
+        if (facilityDto.getFacilityStateId() == null) {
+            BaseResponse response = new BaseResponse("0", "facilityStateId is null", "");
+            return ResponseEntity.badRequest().body(response);
+        }
         FacilityState facilityState = facilityService.getFacilityStateById(facilityDto.getFacilityStateId());
-
         facility.setFacilityState(facilityState);
 
+        if (facilityDto.getBusinessTypeId() == null) {
+            return ResponseEntity.badRequest().body(new BaseResponse("0", "businessTypeId is null", ""));
+        }
         facility.setBusinessType(facilityService.getBusinessTypeById(facilityDto.getBusinessTypeId()));
-        // facility.setAddress();
         facilityService.saveFacility(facility);
-        return ResponseEntity.created(uri).body("Facility created successfully");
+
+        BaseResponse response = new BaseResponse("1", "Facility created successfully", "");
+        return ResponseEntity.created(uri).body(response);
     }
 
     @PostMapping("/update")
@@ -108,7 +129,9 @@ public class FacilityController {
 
         facilityService.saveFacility(facility);
 
-        return ResponseEntity.created(uri).body("Facility updated successfully");
+        BaseResponse response = new BaseResponse("1", "Facility updated successfully", null);
+
+        return ResponseEntity.created(uri).body(response);
     }
 
     @PostMapping("/delete")

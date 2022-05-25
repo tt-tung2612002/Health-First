@@ -23,11 +23,13 @@ public interface FacilityService {
 
     public Facility getFacilityById(Integer id);
 
-    public Long deleteFacility(Integer id);
+    public Facility getLastFacility();
 
     public FacilityState getFacilityStateById(Integer id);
 
     public FacilityState getFacilityStateByName(String name);
+
+    public Long deleteFacility(Integer id);
 
     public BusinessType getBusinessTypeById(Integer id);
 

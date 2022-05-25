@@ -29,6 +29,8 @@ import lombok.Setter;
         @UniqueConstraint(name = "uni_sample_code", columnNames = "sample_code") })
 public class Sample {
 
+    public static final String SAMPLE_PREFIX = "SPC-0A";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

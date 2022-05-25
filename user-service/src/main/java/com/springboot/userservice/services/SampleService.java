@@ -16,6 +16,8 @@ public interface SampleService {
 
     public Sample getSampleById(Integer id);
 
+    public Sample getLastSample();
+
     public List<SampleResponseDto> getAllSamples();
 
     public Long deleteSampleById(Integer id);

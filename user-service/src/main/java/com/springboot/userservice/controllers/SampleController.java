@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -46,7 +47,8 @@ public class SampleController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> addSample(@RequestBody SampleRequestDto sampleRequestDto) {
+    public ResponseEntity<?> addSample(@RequestHeader(name = "Authorization") String userToken,
+            @RequestBody SampleRequestDto sampleRequestDto) {
         // facilityService.addFacility(payload);
         URI uri = URI
                 .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/activities/samples/create")
@@ -54,20 +56,39 @@ public class SampleController {
 
         Sample sample = new Sample();
 
-        // set sampleCode
-        sample.setSampleCode(sampleRequestDto.getSampleCode());
-        sample.setCreatedDate(Date.valueOf(sampleRequestDto.getCreatedDate()));
+        // set sample code.
+        Sample lastSample = sampleService.getLastSample();
+        sample.setSampleCode(Sample.SAMPLE_PREFIX + String.valueOf(lastSample.getId() + 1));
+
+        // set created date.
+        sample.setCreatedDate(new Date(System.currentTimeMillis()));
 
         if (sampleRequestDto.getResultedDate() != null)
             sample.setResultedDate(Date.valueOf(sampleRequestDto.getResultedDate()));
 
+        if (sampleService.getSampleStateById(sampleRequestDto.getSampleStateId()) == null) {
+            return ResponseEntity.badRequest().body(new BaseResponse("0", "Sample state is required", ""));
+        }
         sample.setSampleState(sampleService.getSampleStateById(sampleRequestDto.getSampleStateId()));
+
+        if (sampleService.getSampleResultById(sampleRequestDto.getSampleResultId()) == null) {
+            return ResponseEntity.badRequest().body(new BaseResponse("0", "Sample result is required", ""));
+        }
         sample.setSampleResult(sampleService.getSampleResultById(sampleRequestDto.getSampleResultId()));
 
+        if (activityService.getActivityById(sampleRequestDto.getActivityId()) == null) {
+            return ResponseEntity.badRequest().body(new BaseResponse("0", "Activity id is required", ""));
+        }
         sample.setActivity(activityService.getActivityById(sampleRequestDto.getActivityId()));
 
+        if (staticDataService.getInspectionUnitById(sampleRequestDto.getInspectionUnitId()) == null) {
+            return ResponseEntity.badRequest().body(new BaseResponse("0", "Inspection unit id is required", ""));
+        }
         sample.setInspectionUnit(staticDataService.getInspectionUnitById(sampleRequestDto.getInspectionUnitId()));
 
+        if (staticDataService.getFoodById(sampleRequestDto.getFoodId()) == null) {
+            return ResponseEntity.badRequest().body(new BaseResponse("0", "Food sample id is required", ""));
+        }
         sample.setFood(staticDataService.getFoodById(sampleRequestDto.getFoodId()));
 
         sampleService.saveSample(sample);
@@ -91,7 +112,7 @@ public class SampleController {
         // set sampleCode
         if (sampleRequestDto.getSampleCode() != null)
             sample.setSampleCode(sampleRequestDto.getSampleCode());
-        sample.setCreatedDate(Date.valueOf(sampleRequestDto.getCreatedDate()));
+        sample.setCreatedDate(new Date(System.currentTimeMillis()));
 
         if (sampleRequestDto.getResultedDate() != null)
             sample.setResultedDate(Date.valueOf(sampleRequestDto.getResultedDate()));

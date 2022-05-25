@@ -24,6 +24,8 @@ public interface CertificateRepository extends JpaRepository<Certificate, Long> 
 
     Certificate findByCertificateNumber(String number);
 
+    Certificate findTopByOrderByIdDesc();
+
     Long deleteByCertificateNumber(String name);
 
     Long deleteById(Integer id);

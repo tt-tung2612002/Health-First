@@ -60,10 +60,12 @@ public class CertificateController {
         Certificate certificate = new Certificate();
 
         // set certificate number
-        certificate.setCertificateNumber(certificateDto.getCertificateNumber());
+        Certificate lastCertificate = certificateService.getLastCertificate();
+        // increase next certificate number by 1.
+        certificate.setCertificateNumber(Certificate.CERTIFICATE_PREFIX + String.valueOf(lastCertificate.getId() + 1));
 
         // // // convert string to SQL date.
-        Date publishedDate = Date.valueOf(certificateDto.getPublishedDate());
+        Date publishedDate = new Date(System.currentTimeMillis());
         Date expiredDate = Date.valueOf(certificateDto.getExpiredDate());
         certificate.setPublishedDate(publishedDate);
         certificate.setExpiredDate(expiredDate);

@@ -15,16 +15,19 @@ public class FacilityResponseDto {
 
     private String name;
 
-    private String FacilityState;
+    private Integer FacilityStateId;
 
     private String businessType;
+
+    private String address;
 
     public FacilityResponseDto(Facility facility) {
         this.id = facility.getId();
         this.facilityCode = facility.getFacilityCode();
         this.name = facility.getName();
-        this.FacilityState = facility.getFacilityState().getName();
+        this.FacilityStateId = facility.getFacilityState().getId();
         this.businessType = facility.getBusinessType().getName();
+        this.address = facility.getAddress().getName();
     }
 
 }

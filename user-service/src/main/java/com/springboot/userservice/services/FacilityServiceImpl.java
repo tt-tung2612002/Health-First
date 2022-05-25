@@ -134,4 +134,9 @@ public class FacilityServiceImpl implements FacilityService {
         return facilityStateRepository.findById(id);
     }
 
+    @Override
+    public Facility getLastFacility() {
+        return facilityRepository.findTopByOrderByIdDesc();
+    }
+
 }
