@@ -3,6 +3,7 @@ package com.springboot.userservice.controllers;
 import java.net.URI;
 import java.util.List;
 
+import com.google.gson.Gson;
 import com.springboot.userservice.dto.request.FacilityRequestDto;
 import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.BaseResponse;
@@ -43,10 +44,17 @@ public class FacilityController {
 
         userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
         String username = jwtTokenUtils.getUsernameFromToken(userToken);
-        List<FacilityResponseDto> response = facilityService
-                .getAllFacilityByUser(userService.getCurrentUserByName(username));
+
+        ;
+        searchFilterRequest.setUserId(userService.getCurrentUserByName(username).getId());
+        // List<FacilityResponseDto> response = facilityService
+        // .getAllFacilityByUser(userService.getCurrentUserByName(username));
+
+        List<FacilityResponseDto> filteredResponse = facilityService
+                .getAllFacilityWithFilter(new Gson().toJson(searchFilterRequest));
+
         return ResponseEntity.ok()
-                .body(new BaseResponse("1", "success", response));
+                .body(new BaseResponse("1", "success", filteredResponse));
 
     }
 

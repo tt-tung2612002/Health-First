@@ -139,4 +139,14 @@ public class FacilityServiceImpl implements FacilityService {
         return facilityRepository.findTopByOrderByIdDesc();
     }
 
+    @Override
+    public List<FacilityResponseDto> getAllFacilityWithFilter(String filter) {
+
+        List<Facility> facilities = facilityRepository.getFacilityWithFilter(filter);
+
+        return facilities.stream()
+                .map(FacilityResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
 }

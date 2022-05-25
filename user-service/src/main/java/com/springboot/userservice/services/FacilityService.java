@@ -19,6 +19,8 @@ public interface FacilityService {
 
     public List<FacilityResponseDto> getAllFacilityByUser(AppUser user);
 
+    public List<FacilityResponseDto> getAllFacilityWithFilter(String filter);
+
     public Facility saveFacility(Facility facility);
 
     public Facility getFacilityById(Integer id);
