@@ -92,7 +92,7 @@ public class SampleController {
         sample.setFood(staticDataService.getFoodById(sampleRequestDto.getFoodId()));
 
         sampleService.saveSample(sample);
-        return ResponseEntity.created(uri).body(new BaseResponse("1", "Create sample successfully", sample));
+        return ResponseEntity.created(uri).body(new BaseResponse("1", "Create sample successfully", ""));
     }
 
     @PostMapping("/update")

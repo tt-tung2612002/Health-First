@@ -30,11 +30,20 @@ public class ActivityResponseDto {
         this.id = activity.getId();
         this.facilityId = activity.getFacility().getId();
         this.name = activity.getName();
-        this.startDate = activity.getStartDate().toString();
-        this.endDate = activity.getEndDate().toString();
-        this.conclusion = activity.getConclusion();
-        this.activityState = activity.getActivityState().getName();
-        this.activityResult = activity.getActivityResult().getName();
+
+        if (activity.getStartDate() != null)
+            this.startDate = activity.getStartDate().toString();
+        if (activity.getEndDate() != null)
+            this.endDate = activity.getEndDate().toString();
+
+        if (activity.getConclusion() != null)
+            this.conclusion = activity.getConclusion();
+        if (activity.getActivityState() != null)
+            this.activityState = activity.getActivityState().getName();
+
+        if (activity.getActivityResult() != null)
+            this.activityResult = activity.getActivityResult().getName();
+
         this.createdUser = activity.getCreatedUser().getUsername();
     }
 

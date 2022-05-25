@@ -1,5 +1,7 @@
 package com.springboot.userservice.dto.request;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +10,8 @@ import lombok.Setter;
 public class PlanRequestDto {
 
     private Integer id;
+
+    private List<Integer> facilityIds;
 
     private String name;
 

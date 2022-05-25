@@ -1,5 +1,8 @@
 package com.springboot.userservice.dto.response;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.springboot.userservice.entity.Plan;
 
 import lombok.Getter;
@@ -20,6 +23,8 @@ public class PlanResponseDto {
 
     private Integer createdUserId;
 
+    private List<Integer> facilityIds;
+
     public PlanResponseDto(Plan plan) {
         this.id = plan.getId();
         this.name = plan.getName();
@@ -27,6 +32,8 @@ public class PlanResponseDto {
         this.publishedDate = plan.getPublishedDate().toString();
         this.createdUser = plan.getCreatedUser().getUsername();
         this.createdUserId = plan.getCreatedUser().getId();
+        this.facilityIds = plan.getFacilities().stream()
+                .map(facility -> facility.getId()).collect(Collectors.toList());
     }
 
 }

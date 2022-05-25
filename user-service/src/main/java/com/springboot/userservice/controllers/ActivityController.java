@@ -152,7 +152,7 @@ public class ActivityController {
 
         activityService.saveActivity(activity);
 
-        return ResponseEntity.created(uri).body(new BaseResponse("1", "success", activity));
+        return ResponseEntity.created(uri).body(new BaseResponse("1", "success", ""));
     }
 
     @PostMapping("/delete")

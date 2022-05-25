@@ -50,4 +50,10 @@ public class PlanServiceImpl implements PlanService {
         return planRepository.deleteById(id);
     }
 
+    @Override
+    public Long updateFacilityFromPlan(Integer planId, List<Integer> facilityIds) {
+        String facilityIdsString = facilityIds.stream().map(String::valueOf).collect(Collectors.joining(","));
+        return planRepository.updateFacilityFromPlan(planId, facilityIdsString);
+    }
+
 }

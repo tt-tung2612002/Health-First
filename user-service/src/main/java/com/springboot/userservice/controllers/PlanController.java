@@ -2,11 +2,16 @@ package com.springboot.userservice.controllers;
 
 import java.net.URI;
 import java.sql.Date;
+import java.util.Set;
 
 import com.springboot.userservice.dto.request.PlanRequestDto;
 import com.springboot.userservice.dto.response.BaseResponse;
+import com.springboot.userservice.entity.Activity;
+import com.springboot.userservice.entity.Facility;
 import com.springboot.userservice.entity.Plan;
 import com.springboot.userservice.entity.PlanState;
+import com.springboot.userservice.services.ActivityService;
+import com.springboot.userservice.services.FacilityService;
 import com.springboot.userservice.services.PlanService;
 import com.springboot.userservice.services.UserService;
 import com.springboot.userservice.utils.JwtTokenUtils;
@@ -29,9 +34,13 @@ public class PlanController {
 
     private final PlanService planService;
 
+    private final FacilityService facilityService;
+
     private final UserService userService;
 
     private final JwtTokenUtils jwtTokenUtils;
+
+    private final ActivityService activityService;
 
     @GetMapping("/list")
     public ResponseEntity<?> getAllPlans() {
@@ -66,7 +75,11 @@ public class PlanController {
         // set plan state.
         plan.setPlanState(planService.getPlanStateById(planRequestDto.getPlanStateId()));
 
+        planRequestDto.getFacilityIds().stream().map(id -> facilityService.getFacilityById(id))
+                .forEach(facility -> plan.getFacilities().add(facility));
+
         planService.savePlan(plan);
+        planService.updateFacilityFromPlan(plan.getId(), planRequestDto.getFacilityIds());
 
         return ResponseEntity.created(uri).body(new BaseResponse("1", "Create plan successfully", ""));
 
@@ -76,7 +89,7 @@ public class PlanController {
     public ResponseEntity<?> updatePlan(@RequestBody PlanRequestDto planRequestDto) {
 
         URI uri = URI
-                .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/plans/create")
+                .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/plans/update")
                         .toUriString());
 
         Plan plan = planService.getPlanById(planRequestDto.getId());
@@ -91,9 +104,10 @@ public class PlanController {
         if (name != null)
             plan.setName(name);
 
-        Date publishedDate = Date.valueOf(planRequestDto.getPublishedDate());
-        if (publishedDate != null)
+        if (planRequestDto.getPublishedDate() != null) {
+            Date publishedDate = Date.valueOf(planRequestDto.getPublishedDate());
             plan.setPublishedDate(publishedDate);
+        }
 
         // set description if exist.
         String description = planRequestDto.getDescription();
@@ -101,10 +115,12 @@ public class PlanController {
             plan.setDescription(description);
 
         // set plan state if exist.
-        PlanState planState = planService.getPlanStateById(planRequestDto.getPlanStateId());
-        if (planState != null)
+        if (planRequestDto.getPlanStateId() != null) {
+            PlanState planState = planService.getPlanStateById(planRequestDto.getPlanStateId());
             plan.setPlanState(planState);
+        }
 
+        planService.updateFacilityFromPlan(plan.getId(), planRequestDto.getFacilityIds());
         planService.savePlan(plan);
 
         return ResponseEntity.created(uri).body(new BaseResponse("1", "Update plan successfully", ""));
@@ -119,6 +135,35 @@ public class PlanController {
         planService.deletePlanById(planRequestDto.getId());
 
         return ResponseEntity.created(uri).body(new BaseResponse("1", "Delete plan successfully", ""));
+    }
+
+    @PostMapping("/active")
+    public ResponseEntity<?> activePlan(@RequestHeader(name = "Authorization") String userToken,
+            @RequestBody PlanRequestDto planRequestDto) {
+        URI uri = URI
+                .create(ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/api/plans/active")
+                        .toUriString());
+
+        Plan plan = planService.getPlanById(planRequestDto.getId());
+        userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
+        String username = jwtTokenUtils.getUsernameFromToken(userToken);
+        Set<Facility> facilities = plan.getFacilities();
+        plan.setPlanState(planService.getPlanStateById(1));
+        // planService.sa
+
+        facilities.stream().map(facility -> {
+            Activity activity = new Activity();
+            activity.setName(plan.getName() + "_" + facility.getName());
+            activity.setCreatedDate(new Date(System.currentTimeMillis()));
+            activity.setPlan(plan);
+            activity.setCreatedUser(userService.getCurrentUserByName(username));
+            activity.setActivityState(activityService.getActivityStateById(1));
+            activity.setFacility(facility);
+            return activity;
+        }).forEach(activity -> activityService.saveActivity(activity));
+
+        return ResponseEntity.created(uri).body(new BaseResponse("1", "Active plan successfully", ""));
     }
 
 }

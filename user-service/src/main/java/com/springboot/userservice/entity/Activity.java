@@ -44,27 +44,27 @@ public class Activity {
     @Column(name = "ended_date")
     private Date endDate;
 
-    @NonNull
+    // @NonNull
     private String conclusion;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "plan_id", nullable = false)
+    @JoinColumn(name = "plan_id")
     private Plan plan;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "created_user_id", nullable = false)
+    @JoinColumn(name = "created_user_id")
     private AppUser createdUser;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "result_id", nullable = false)
+    @JoinColumn(name = "result_id")
     private ActivityResult activityResult;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "state_id", nullable = false)
+    @JoinColumn(name = "state_id")
     private ActivityState activityState;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "facility_id", nullable = false)
+    @JoinColumn(name = "facility_id")
     private Facility facility;
 
     // @OneToMany(mappedBy = "activity")

@@ -69,7 +69,7 @@ public class AppUserController {
     @PostMapping("/update")
     public ResponseEntity<?> updateUser(@RequestBody AppUserRequestDto appUserRequestDto) {
         URI uri = URI
-                .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/create").toUriString());
+                .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/update").toUriString());
 
         // check if user exist in database.
         AppUser appUser = userService.getCurrentUserByName(appUserRequestDto.getUsername());
@@ -122,7 +122,6 @@ public class AppUserController {
         URI uri = URI
                 .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/role/create")
                         .toUriString());
-        // return BaseResponse
         return ResponseEntity.created(uri).body(new BaseResponse("1", "Role created successfully",
                 ""));
     }

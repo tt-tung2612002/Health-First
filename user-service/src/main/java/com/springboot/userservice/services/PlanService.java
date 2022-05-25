@@ -21,4 +21,6 @@ public interface PlanService {
 
     public Long deletePlanById(Integer id);
 
+    public Long updateFacilityFromPlan(Integer planId, List<Integer> facilityIds);
+
 }
