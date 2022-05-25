@@ -18,6 +18,6 @@ public interface FacilityRepository extends JpaRepository<Facility, Long> {
 
     Long deleteById(Integer id);
 
-    @Query(value = "SELECT * FROM facility f INNER JOIN address a ON f.address_id = a.id INNER JOIN ward w on w.id = a.ward_id INNER JOIN user_region_management u ON u.ward_id = w.id INNER JOIN user ON user.id = u.user_id WHERE user.id = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM facility f INNER JOIN address a ON f.address_id = a.id INNER JOIN ward w on w.id = a.ward_id INNER JOIN user_region_management u ON u.ward_id = w.id INNER JOIN user ON user.id = u.user_id WHERE user.id = ?1 order by f.id asc", nativeQuery = true)
     public List<Facility> getFacilitiesByUser(int id);
 }
