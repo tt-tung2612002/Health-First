@@ -12,6 +12,8 @@ import lombok.Setter;
 @Setter
 public class AppUserResponseDto {
 
+    private Integer id;
+
     private String displayName;
 
     private String username;
@@ -25,6 +27,7 @@ public class AppUserResponseDto {
     private String createdDate;
 
     public AppUserResponseDto(AppUser appUser) {
+        this.id = appUser.getId();
         this.displayName = appUser.getDisplayName();
         this.username = appUser.getUsername();
         this.email = appUser.getEmail();

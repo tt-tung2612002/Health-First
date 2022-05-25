@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import com.springboot.userservice.dto.request.FacilityRequestDto;
+import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.BaseResponse;
 import com.springboot.userservice.dto.response.FacilityResponseDto;
 import com.springboot.userservice.entity.Address;
@@ -15,7 +16,6 @@ import com.springboot.userservice.services.UserService;
 import com.springboot.userservice.utils.JwtTokenUtils;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -36,14 +36,18 @@ public class FacilityController {
 
     private final JwtTokenUtils jwtTokenUtils;
 
-    @GetMapping("/list")
-    public ResponseEntity<List<FacilityResponseDto>> getAllFacility(
-            @RequestHeader(name = "Authorization") String userToken) {
+    @PostMapping("/list")
+    public ResponseEntity<?> getAllFacility(
+            @RequestHeader(name = "Authorization") String userToken,
+            @RequestBody SearchFilterRequest searchFilterRequest) {
+
         userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
         String username = jwtTokenUtils.getUsernameFromToken(userToken);
+        List<FacilityResponseDto> response = facilityService
+                .getAllFacilityByUser(userService.getCurrentUserByName(username));
         return ResponseEntity.ok()
-                .body(
-                        facilityService.getAllFacilityByUser(userService.getCurrentUserByName(username)));
+                .body(new BaseResponse("1", "success", response));
+
     }
 
     @PostMapping("/create")

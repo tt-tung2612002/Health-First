@@ -7,4 +7,14 @@ import lombok.Setter;
 @Setter
 public class SearchFilterRequest {
 
+    private String searchText;
+    private Integer provinceId;
+    private Integer districtId;
+    private Integer wardId;
+    private Integer businessTypeId;
+    private Integer facilityStateId;
+    private String sortOrder;
+    private Integer pageNumber;
+    private Integer pageSize;
+
 }
