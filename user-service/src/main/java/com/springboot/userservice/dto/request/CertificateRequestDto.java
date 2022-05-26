@@ -17,6 +17,8 @@ public class CertificateRequestDto {
 
     private String expiredDate;
 
+    private String description;
+
     private Integer certificateStateId;
 
 }

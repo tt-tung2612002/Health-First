@@ -14,8 +14,8 @@ public class SearchFilterRequest {
     private Integer wardId;
     private Integer businessTypeId;
     private Integer facilityStateId;
-    private String sortOrder;
-    private Integer pageNumber;
-    private Integer pageSize;
+    // private String sortOrder;
+    // private Integer pageNumber;
+    // private Integer pageSize;
 
 }

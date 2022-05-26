@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.google.gson.Gson;
+import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.CertificateResponseDto;
 import com.springboot.userservice.entity.Certificate;
 import com.springboot.userservice.entity.CertificateState;
@@ -55,6 +57,17 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     public Certificate getLastCertificate() {
         return certificateRepository.findTopByOrderByIdDesc();
+    }
+
+    @Override
+    public List<CertificateResponseDto> getAllCertificateWithFilter(SearchFilterRequest filter) {
+
+        String json = new Gson().toJson(filter);
+        List<Certificate> certificates = certificateRepository.findAllWithFilter(new Gson().toJson(filter));
+
+        return certificates.stream()
+                .map(CertificateResponseDto::new)
+                .collect(Collectors.toList());
     }
 
 }

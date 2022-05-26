@@ -4,6 +4,7 @@ import java.net.URI;
 import java.sql.Date;
 
 import com.springboot.userservice.dto.request.CertificateRequestDto;
+import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.BaseResponse;
 import com.springboot.userservice.entity.Certificate;
 import com.springboot.userservice.entity.Facility;
@@ -13,7 +14,6 @@ import com.springboot.userservice.services.UserService;
 import com.springboot.userservice.utils.JwtTokenUtils;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -28,125 +28,135 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CertificateController {
 
-    private final CertificateService certificateService;
+	private final CertificateService certificateService;
 
-    private final FacilityService facilityService;
+	private final FacilityService facilityService;
 
-    private final JwtTokenUtils jwtTokenUtils;
+	private final JwtTokenUtils jwtTokenUtils;
 
-    private final UserService userService;
+	private final UserService userService;
 
-    @GetMapping("/list")
-    public ResponseEntity<BaseResponse> getAllCertificate(
-            @RequestHeader(name = "Authorization") String userToken) {
-        userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
-        String username = jwtTokenUtils.getUsernameFromToken(userToken);
-        BaseResponse response = new BaseResponse("1", "success",
-                certificateService.getAllCertificateByUser(
-                        userService.getCurrentUserByName(username).getId()));
-        return ResponseEntity.ok()
-                .body(response);
-    }
+	@PostMapping("/list")
+	public ResponseEntity<BaseResponse> getAllCertificate(
+			@RequestHeader(name = "Authorization") String userToken,
+			@RequestBody SearchFilterRequest filter) {
 
-    @PostMapping("/create")
-    public ResponseEntity<?> addCertificateToFacility(
-            @RequestBody CertificateRequestDto certificateDto) {
-        // facilityService.addFacility(payload);
-        URI uri = URI
-                .create(ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("/api/certificates/create")
-                        .toUriString());
+		userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
+		String username = jwtTokenUtils.getUsernameFromToken(userToken);
+		filter.setUserId(userService.getCurrentUserByName(username).getId());
 
-        Certificate certificate = new Certificate();
+		BaseResponse response = new BaseResponse("1", "success",
+				certificateService.getAllCertificateWithFilter(filter));
+		return ResponseEntity.ok()
+				.body(response);
+	}
 
-        // set certificate number
-        Certificate lastCertificate = certificateService.getLastCertificate();
-        // increase next certificate number by 1.
-        certificate.setCertificateNumber(Certificate.CERTIFICATE_PREFIX + String.valueOf(lastCertificate.getId() + 1));
+	@PostMapping("/create")
+	public ResponseEntity<?> addCertificateToFacility(
+			@RequestBody CertificateRequestDto certificateDto) {
+		// facilityService.addFacility(payload);
+		URI uri = URI
+				.create(ServletUriComponentsBuilder.fromCurrentContextPath()
+						.path("/api/certificates/create")
+						.toUriString());
 
-        // // // convert string to SQL date.
-        Date publishedDate = new Date(System.currentTimeMillis());
-        Date expiredDate = Date.valueOf(certificateDto.getExpiredDate());
-        certificate.setPublishedDate(publishedDate);
-        certificate.setExpiredDate(expiredDate);
+		Certificate certificate = new Certificate();
 
-        Facility facility = facilityService.getFacilityById(certificateDto.getFacilityId());
+		if (certificateDto.getDescription() != null)
+			certificate.setDescription(certificateDto.getDescription());
 
-        certificate.setFacility(facility);
+		// set certificate number
+		Certificate lastCertificate = certificateService.getLastCertificate();
+		// increase next certificate number by 1.
+		certificate.setCertificateNumber(
+				Certificate.CERTIFICATE_PREFIX + String.valueOf(lastCertificate.getId() + 1));
 
-        // set certificate state.
-        certificate.setCertificateState(certificateService.getCertificateStateById(
-                certificateDto.getCertificateStateId()));
+		// // // convert string to SQL date.
+		Date publishedDate = new Date(System.currentTimeMillis());
+		certificate.setPublishedDate(publishedDate);
 
-        Certificate result = certificateService.saveCertificate(certificate);
-        BaseResponse response = new BaseResponse(result == null ? "0" : "1",
-                result != null ? "Add certificate success" : "Add certificate failed", "");
-        return ResponseEntity.created(uri).body(response);
-    }
+		if (certificateDto.getExpiredDate() != null) {
+			Date expiredDate = Date.valueOf(certificateDto.getExpiredDate());
+			certificate.setExpiredDate(expiredDate);
+		}
 
-    @PostMapping("/update")
-    public ResponseEntity<?> updateCertificateToFacility(
-            @RequestBody CertificateRequestDto certificateDto) {
-        // facilityService.addFacility(payload);
-        URI uri = URI
-                .create(ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("/api/certificates/update")
-                        .toUriString());
+		Facility facility = facilityService.getFacilityById(certificateDto.getFacilityId());
 
-        Certificate certificate = certificateService.getCertificateById(certificateDto.getId());
+		certificate.setFacility(facility);
 
-        if (certificate == null) {
-            BaseResponse response = new BaseResponse("0",
-                    "Certificate with id " + certificateDto.getId() + " not found!", "");
-            return ResponseEntity.created(uri).body(response);
-        }
-        // set certificate number
-        if (certificateDto.getCertificateNumber() != null)
-            certificate.setCertificateNumber(certificateDto.getCertificateNumber());
+		// set certificate state.
+		certificate.setCertificateState(certificateService.getCertificateStateById(
+				certificateDto.getCertificateStateId()));
 
-        // // // convert string to SQL date.
-        if (certificateDto.getPublishedDate() != null) {
-            Date publishedDate = Date.valueOf(certificateDto.getPublishedDate());
-            certificate.setPublishedDate(publishedDate);
-        }
-        if (certificateDto.getExpiredDate() != null) {
-            Date expiredDate = Date.valueOf(certificateDto.getExpiredDate());
-            certificate.setExpiredDate(expiredDate);
-        }
+		Certificate result = certificateService.saveCertificate(certificate);
+		BaseResponse response = new BaseResponse(result == null ? "0" : "1",
+				result != null ? "Add certificate success" : "Add certificate failed", "");
+		return ResponseEntity.created(uri).body(response);
+	}
 
-        if (certificateDto.getFacilityId() != null) {
-            Facility facility = facilityService.getFacilityById(certificateDto.getFacilityId());
-            certificate.setFacility(facility);
-        }
+	@PostMapping("/update")
+	public ResponseEntity<?> updateCertificateToFacility(
+			@RequestBody CertificateRequestDto certificateDto) {
+		// facilityService.addFacility(payload);
+		URI uri = URI
+				.create(ServletUriComponentsBuilder.fromCurrentContextPath()
+						.path("/api/certificates/update")
+						.toUriString());
 
-        // set certificate state.
-        if (certificateDto.getCertificateStateId() != null)
-            certificate.setCertificateState(certificateService.getCertificateStateById(
-                    certificateDto.getCertificateStateId()));
+		Certificate certificate = certificateService.getCertificateById(certificateDto.getId());
 
-        Certificate result = certificateService.saveCertificate(certificate);
-        BaseResponse response = new BaseResponse(result == null ? "0" : "1",
-                result != null ? "Update certificate success" : "Update certificate failed", "");
-        return ResponseEntity.created(uri).body(response);
-    }
+		if (certificate == null) {
+			BaseResponse response = new BaseResponse("0",
+					"Certificate with id " + certificateDto.getId() + " not found!", "");
+			return ResponseEntity.created(uri).body(response);
+		}
+		// set certificate number
+		if (certificateDto.getCertificateNumber() != null)
+			certificate.setCertificateNumber(certificateDto.getCertificateNumber());
 
-    @PostMapping("/delete")
-    public ResponseEntity<?> deleteCertificate(@RequestBody CertificateRequestDto certificateDto) {
-        // facilityService.addFacility(payload);
-        URI uri = URI
-                .create(ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("/api/certificates/delete")
-                        .toUriString());
+		// // // convert string to SQL date.
+		if (certificateDto.getPublishedDate() != null) {
+			Date publishedDate = Date.valueOf(certificateDto.getPublishedDate());
+			certificate.setPublishedDate(publishedDate);
+		}
+		if (certificateDto.getExpiredDate() != null) {
+			Date expiredDate = Date.valueOf(certificateDto.getExpiredDate());
+			certificate.setExpiredDate(expiredDate);
+		}
 
-        Certificate certificate = certificateService.getCertificateById(certificateDto.getId());
+		if (certificateDto.getFacilityId() != null) {
+			Facility facility = facilityService.getFacilityById(certificateDto.getFacilityId());
+			certificate.setFacility(facility);
+		}
 
-        if (certificate == null) {
-            BaseResponse response = new BaseResponse("0",
-                    "Certificate with id " + certificateDto.getId() + " not found!", "");
-            return ResponseEntity.created(uri).body(response);
-        }
+		// set certificate state.
+		if (certificateDto.getCertificateStateId() != null)
+			certificate.setCertificateState(certificateService.getCertificateStateById(
+					certificateDto.getCertificateStateId()));
 
-        certificateService.deleteCertificateById(certificate.getId());
-        return ResponseEntity.created(uri).body(new BaseResponse("1", "Delete certificate success", ""));
-    }
+		Certificate result = certificateService.saveCertificate(certificate);
+		BaseResponse response = new BaseResponse(result == null ? "0" : "1",
+				result != null ? "Update certificate success" : "Update certificate failed", "");
+		return ResponseEntity.created(uri).body(response);
+	}
+
+	@PostMapping("/delete")
+	public ResponseEntity<?> deleteCertificate(@RequestBody CertificateRequestDto certificateDto) {
+		// facilityService.addFacility(payload);
+		URI uri = URI
+				.create(ServletUriComponentsBuilder.fromCurrentContextPath()
+						.path("/api/certificates/delete")
+						.toUriString());
+
+		Certificate certificate = certificateService.getCertificateById(certificateDto.getId());
+
+		if (certificate == null) {
+			BaseResponse response = new BaseResponse("0",
+					"Certificate with id " + certificateDto.getId() + " not found!", "");
+			return ResponseEntity.created(uri).body(response);
+		}
+
+		certificateService.deleteCertificateById(certificate.getId());
+		return ResponseEntity.created(uri).body(new BaseResponse("1", "Delete certificate success", ""));
+	}
 }

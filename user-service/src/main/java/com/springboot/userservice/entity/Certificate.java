@@ -40,11 +40,13 @@ public class Certificate {
     @Column(name = "certificate_number")
     private String certificateNumber;
 
+    private String description;
+
     @NonNull
     @Column(name = "published_date")
     private Date publishedDate;
 
-    @NonNull
+    // @NonNull
     @Column(name = "expired_date")
     private Date expiredDate;
 
