@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.Set;
 
 import com.springboot.userservice.dto.request.PlanRequestDto;
+import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.BaseResponse;
 import com.springboot.userservice.entity.Activity;
 import com.springboot.userservice.entity.Facility;
@@ -17,7 +18,6 @@ import com.springboot.userservice.services.UserService;
 import com.springboot.userservice.utils.JwtTokenUtils;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -42,9 +42,17 @@ public class PlanController {
 
     private final ActivityService activityService;
 
-    @GetMapping("/list")
-    public ResponseEntity<?> getAllPlans() {
-        BaseResponse response = new BaseResponse("1", "Get plans successfully", planService.getAllPlans());
+    @PostMapping("/list")
+    public ResponseEntity<?> getAllPlans(@RequestHeader("Authorization") String userToken,
+            @RequestBody SearchFilterRequest searchFilterRequest) {
+
+        userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
+        String username = jwtTokenUtils.getUsernameFromToken(userToken);
+
+        searchFilterRequest.setUserId(userService.getCurrentUserByName(username).getId());
+        BaseResponse response = new BaseResponse("1", "Get plans successfully",
+                planService.getAllPlans(searchFilterRequest));
+
         return ResponseEntity.ok().body(response);
     }
 

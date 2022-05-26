@@ -1,5 +1,7 @@
 package com.springboot.userservice.repository;
 
+import java.util.List;
+
 import com.springboot.userservice.entity.Plan;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,5 +18,8 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
 
     @Procedure(procedureName = "updatePlanFacility")
     Long updateFacilityFromPlan(Integer planId, String facilityIds);
+
+    @Procedure(procedureName = "getPlanWithFilter")
+    List<Plan> findAllPlanWithFilter(String filter);
 
 }

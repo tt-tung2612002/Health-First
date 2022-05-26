@@ -2,6 +2,7 @@ package com.springboot.userservice.services;
 
 import java.util.List;
 
+import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.PlanResponseDto;
 import com.springboot.userservice.entity.Plan;
 import com.springboot.userservice.entity.PlanState;
@@ -13,7 +14,7 @@ public interface PlanService {
 
     public Plan savePlan(Plan plan);
 
-    public List<PlanResponseDto> getAllPlans();
+    public List<PlanResponseDto> getAllPlans(SearchFilterRequest searchFilterRequest);
 
     public Plan getPlanById(Integer id);
 
@@ -21,6 +22,6 @@ public interface PlanService {
 
     public Long deletePlanById(Integer id);
 
-    public Long updateFacilityFromPlan(Integer planId, List<Integer> facilityIds);
+    public void updateFacilityFromPlan(Integer planId, List<Integer> facilityIds);
 
 }

@@ -4,6 +4,7 @@ import java.net.URI;
 import java.sql.Date;
 
 import com.springboot.userservice.dto.request.ActivityRequestDto;
+import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.BaseResponse;
 import com.springboot.userservice.entity.Activity;
 import com.springboot.userservice.entity.ActivityResult;
@@ -18,7 +19,6 @@ import com.springboot.userservice.services.UserService;
 import com.springboot.userservice.utils.JwtTokenUtils;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -43,9 +43,12 @@ public class ActivityController {
 
     private final JwtTokenUtils jwtTokenUtils;
 
-    @GetMapping("/list")
-    public ResponseEntity<?> getAllActivities() {
-        return ResponseEntity.ok().body(new BaseResponse("1", "success", activityService.getAllActivities()));
+    @PostMapping("/list")
+    public ResponseEntity<?> getAllActivities(@RequestHeader("Authorization") String userToken,
+            @RequestBody SearchFilterRequest searchFilterRequest) {
+        return ResponseEntity.ok()
+                .body(new BaseResponse("1", "success",
+                        activityService.getAllActivitiesWithFilter(searchFilterRequest)));
     }
 
     @PostMapping("/create")

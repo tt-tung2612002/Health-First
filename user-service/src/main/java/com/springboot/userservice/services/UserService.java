@@ -2,6 +2,7 @@ package com.springboot.userservice.services;
 
 import java.util.List;
 
+import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.AppUserResponseDto;
 import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
@@ -23,14 +24,14 @@ public interface UserService {
 
     void addRoleToUser(String username, Integer id);
 
-    void removeRoleFromUser(Integer id, String username);
+    void removeRoleFromUser(String username, Integer id);
 
-    List<AppUserResponseDto> getUsers();
+    List<AppUserResponseDto> getUsers(SearchFilterRequest searchFilterRequest);
 
     void addRegionToUser(Integer Id, String username);
 
     void addRegionToUser(Ward ward, String username);
 
-    void removeRegionFromUser(Integer Id, String username);
+    void removeRegionFromUser(String username, Integer Id);
 
 }

@@ -8,14 +8,39 @@ import lombok.Setter;
 public class SearchFilterRequest {
 
     private Integer userId;
-    private String searchText;
-    private Integer provinceId;
-    private Integer districtId;
-    private Integer wardId;
-    private Integer businessTypeId;
+
     private Integer facilityStateId;
-    // private String sortOrder;
-    // private Integer pageNumber;
-    // private Integer pageSize;
+
+    private Integer certificateStateId;
+
+    private Integer businessTypeId;
+
+    private Integer provinceId;
+
+    private Integer districtId;
+
+    private Integer wardId;
+
+    private Integer planStateId;
+
+    private Integer activityStateId;
+
+    private Integer sampleStateId;
+
+    private Integer sampleResultId;
+
+    private Integer foodId;
+
+    private String activityName;
+
+    private String phoneNumber;
+
+    private String email;
+
+    private String username;
+
+    private String facilityName;
+
+    private String planName;
 
 }

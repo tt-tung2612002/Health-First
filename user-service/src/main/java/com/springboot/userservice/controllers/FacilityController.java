@@ -45,7 +45,6 @@ public class FacilityController {
         userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
         String username = jwtTokenUtils.getUsernameFromToken(userToken);
 
-        ;
         searchFilterRequest.setUserId(userService.getCurrentUserByName(username).getId());
         // List<FacilityResponseDto> response = facilityService
         // .getAllFacilityByUser(userService.getCurrentUserByName(username));

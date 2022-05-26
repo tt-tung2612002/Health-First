@@ -2,6 +2,7 @@ package com.springboot.userservice.services;
 
 import java.util.List;
 
+import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.ActivityResponseDto;
 import com.springboot.userservice.entity.Activity;
 import com.springboot.userservice.entity.ActivityResult;
@@ -14,7 +15,7 @@ public interface ActivityService {
 
     public Activity saveActivity(Activity activity);
 
-    public List<ActivityResponseDto> getAllActivities();
+    public List<ActivityResponseDto> getAllActivitiesWithFilter(SearchFilterRequest searchFilterRequest);
 
     public Activity getActivityById(Integer id);
 

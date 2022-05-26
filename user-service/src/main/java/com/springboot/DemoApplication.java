@@ -20,10 +20,19 @@ public class DemoApplication extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) {
+        // EntityManagerFactory emf =
+        // Persistence.createEntityManagerFactory("com.baeldung.movie_catalog");
         SpringApplication.run(applicationClass, args);
     }
 
     private static Class<DemoApplication> applicationClass = DemoApplication.class;
+
+    // @Bean(name = "entityManagerFactory")
+    // public LocalSessionFactoryBean sessionFactory() {
+    // LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+
+    // return sessionFactory;
+    // }
 
     // @Bean
     // CommandLineRunner run(FacilityService facilityService, UserService

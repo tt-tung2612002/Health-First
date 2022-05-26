@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.google.gson.Gson;
+import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.ActivityResponseDto;
 import com.springboot.userservice.entity.Activity;
 import com.springboot.userservice.entity.ActivityResult;
@@ -34,8 +36,8 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public List<ActivityResponseDto> getAllActivities() {
-        return activityRepository.findAll()
+    public List<ActivityResponseDto> getAllActivitiesWithFilter(SearchFilterRequest searchFilterRequest) {
+        return activityRepository.getAllActivitiesWithFilter(new Gson().toJson(searchFilterRequest))
                 .stream().map(ActivityResponseDto::new).collect(Collectors.toList());
     }
 

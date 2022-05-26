@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.google.gson.Gson;
+import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.AppUserResponseDto;
 import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
@@ -56,8 +58,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<AppUserResponseDto> getUsers() {
-        return userRepository.findAll().stream().map(AppUserResponseDto::new).collect(Collectors.toList());
+    public List<AppUserResponseDto> getUsers(SearchFilterRequest searchFilterRequest) {
+
+        return userRepository.findAllUserWithFilter(new Gson().toJson(searchFilterRequest)).stream()
+                .map(AppUserResponseDto::new).collect(Collectors.toList());
     }
 
     @Override
@@ -95,14 +99,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void removeRoleFromUser(Integer id, String username) {
+    public void removeRoleFromUser(String username, Integer id) {
         AppUser user = userRepository.findByUsername(username);
         AppRole role = roleRepository.findById(id);
         user.getRoles().remove(role);
     }
 
     @Override
-    public void removeRegionFromUser(Integer Id, String username) {
+    public void removeRegionFromUser(String username, Integer Id) {
         AppUser user = userRepository.findByUsername(username);
         Ward ward = wardRepository.findById(Id);
         user.getWards().remove(ward);
