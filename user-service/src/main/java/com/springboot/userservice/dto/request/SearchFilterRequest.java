@@ -29,6 +29,8 @@ public class SearchFilterRequest {
 
     private Integer sampleResultId;
 
+    private Integer inspectionUnitId;
+
     private Integer foodId;
 
     private String activityName;

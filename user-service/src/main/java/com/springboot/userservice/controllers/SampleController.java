@@ -5,15 +5,17 @@ import java.sql.Date;
 import java.util.List;
 
 import com.springboot.userservice.dto.request.SampleRequestDto;
+import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.BaseResponse;
 import com.springboot.userservice.dto.response.SampleResponseDto;
 import com.springboot.userservice.entity.Sample;
 import com.springboot.userservice.services.ActivityService;
 import com.springboot.userservice.services.SampleService;
 import com.springboot.userservice.services.StaticDataService;
+import com.springboot.userservice.services.UserService;
+import com.springboot.userservice.utils.JwtTokenUtils;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -34,9 +36,19 @@ public class SampleController {
 
     private final StaticDataService staticDataService;
 
-    @GetMapping("/list")
-    public ResponseEntity<?> getAllActivities() {
-        List<SampleResponseDto> samples = sampleService.getAllSamples();
+    private final UserService userService;
+
+    private final JwtTokenUtils jwtTokenUtils;
+
+    @PostMapping("/list")
+    public ResponseEntity<?> getAllSamples(@RequestHeader(name = "Authorization") String userToken,
+            @RequestBody SearchFilterRequest searchFilterRequest) {
+
+        userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
+        String username = jwtTokenUtils.getUsernameFromToken(userToken);
+        searchFilterRequest.setUserId(userService.getCurrentUserByName(username).getId());
+
+        List<SampleResponseDto> samples = sampleService.getAllSamplesWithFilter(searchFilterRequest);
         if (samples == null) {
             return ResponseEntity.badRequest().body(new BaseResponse("0", "No samples found", ""));
         }

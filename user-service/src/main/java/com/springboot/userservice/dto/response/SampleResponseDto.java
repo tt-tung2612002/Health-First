@@ -15,9 +15,9 @@ public class SampleResponseDto {
 
     private String resultedDate;
 
-    private String sampleState;
+    private Integer sampleStateId;
 
-    private String sampleResult;
+    private Integer sampleResultId;
 
     private Integer activityId;
 
@@ -31,8 +31,8 @@ public class SampleResponseDto {
         if (sample.getResultedDate() != null) {
             this.resultedDate = sample.getResultedDate().toString();
         }
-        this.sampleState = sample.getSampleState().getName();
-        this.sampleResult = sample.getSampleResult().getDescription();
+        this.sampleStateId = sample.getSampleState().getId();
+        this.sampleResultId = sample.getSampleResult().getId();
         this.activityId = sample.getActivity().getId();
         this.inspectionUnitId = sample.getInspectionUnit().getId();
         this.foodId = sample.getFood().getId();

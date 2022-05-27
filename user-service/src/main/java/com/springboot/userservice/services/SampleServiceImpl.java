@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.google.gson.Gson;
+import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.SampleResponseDto;
 import com.springboot.userservice.entity.Sample;
 import com.springboot.userservice.entity.SampleResult;
@@ -39,10 +41,10 @@ public class SampleServiceImpl implements SampleService {
     }
 
     @Override
-    public List<SampleResponseDto> getAllSamples() {
-        sampleRepository.findAll();
-        return sampleRepository.findAll()
-                .stream().map(SampleResponseDto::new).collect(Collectors.toList());
+    public List<SampleResponseDto> getAllSamplesWithFilter(SearchFilterRequest searchFilterRequest) {
+
+        return sampleRepository.findAllSampleWithFilter(new Gson().toJson(searchFilterRequest)).stream()
+                .map(SampleResponseDto::new).collect(Collectors.toList());
     }
 
     @Override
