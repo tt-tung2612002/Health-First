@@ -175,8 +175,8 @@ public class ActivityController {
 
         activityService.deleteActivityById(activity.getId());
 
-        BaseResponse response = new BaseResponse("0",
-                "Update certificate success", "");
+        BaseResponse response = new BaseResponse("1",
+                "Delete certificate success", "");
 
         return ResponseEntity.created(uri).body(response);
     }

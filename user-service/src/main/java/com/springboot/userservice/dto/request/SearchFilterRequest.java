@@ -25,6 +25,8 @@ public class SearchFilterRequest {
 
     private Integer activityStateId;
 
+    private Integer activityResultId;
+
     private Integer sampleStateId;
 
     private Integer sampleResultId;
