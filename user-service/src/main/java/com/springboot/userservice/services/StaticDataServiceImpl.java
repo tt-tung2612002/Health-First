@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import com.springboot.userservice.dto.response.DistrictResponseDto;
 import com.springboot.userservice.dto.response.FoodResponseDto;
+import com.springboot.userservice.dto.response.InspectionUnitResponseDto;
 import com.springboot.userservice.dto.response.ProvinceResponseDto;
 import com.springboot.userservice.dto.response.WardResponseDto;
 import com.springboot.userservice.entity.Food;
@@ -57,8 +58,9 @@ public class StaticDataServiceImpl implements StaticDataService {
     }
 
     @Override
-    public List<InspectionUnit> getInspectionUnits() {
-        return inspectionUnitRepository.findAll();
+    public List<InspectionUnitResponseDto> getInspectionUnits() {
+        return inspectionUnitRepository.findAll().stream().map(InspectionUnitResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -25,10 +25,13 @@ public class PlanResponseDto {
 
     private List<Integer> facilityIds;
 
+    private String description;
+
     public PlanResponseDto(Plan plan) {
         this.id = plan.getId();
         this.name = plan.getName();
         this.planStateId = plan.getPlanState().getId();
+        this.description = plan.getDescription();
         this.publishedDate = plan.getPublishedDate().toString();
         this.createdUser = plan.getCreatedUser().getUsername();
         this.createdUserId = plan.getCreatedUser().getId();

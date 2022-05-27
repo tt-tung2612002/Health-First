@@ -158,7 +158,6 @@ public class PlanController {
         String username = jwtTokenUtils.getUsernameFromToken(userToken);
         Set<Facility> facilities = plan.getFacilities();
         plan.setPlanState(planService.getPlanStateById(1));
-        // planService.sa
 
         facilities.stream().map(facility -> {
             Activity activity = new Activity();

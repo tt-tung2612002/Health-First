@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.springboot.userservice.dto.response.DistrictResponseDto;
 import com.springboot.userservice.dto.response.FoodResponseDto;
+import com.springboot.userservice.dto.response.InspectionUnitResponseDto;
 import com.springboot.userservice.dto.response.ProvinceResponseDto;
 import com.springboot.userservice.dto.response.WardResponseDto;
 import com.springboot.userservice.entity.Food;
@@ -22,7 +23,7 @@ public interface StaticDataService {
 
     public List<FoodResponseDto> getFoods();
 
-    public List<InspectionUnit> getInspectionUnits();
+    public List<InspectionUnitResponseDto> getInspectionUnits();
 
     public InspectionUnit getInspectionUnitById(int id);
 

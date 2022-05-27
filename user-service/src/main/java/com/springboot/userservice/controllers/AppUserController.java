@@ -3,9 +3,6 @@ package com.springboot.userservice.controllers;
 import java.net.URI;
 import java.sql.Date;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import com.springboot.userservice.dto.request.AppUserRequestDto;
 import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.request.UserRegionDto;
@@ -34,10 +31,6 @@ public class AppUserController {
     private final UserService userService;
 
     private final JwtTokenUtils jwtTokenUtils;
-
-    // private final JPAQueryFactory queryFactory;
-    @PersistenceContext
-    private final EntityManager em;
 
     @PostMapping("/list")
     public ResponseEntity<?> getUsers(@RequestBody SearchFilterRequest searchFilterRequest) {
@@ -88,17 +81,12 @@ public class AppUserController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateUser(@RequestHeader(name = "Authorization") String userToken,
+    public ResponseEntity<?> updateUser(
             @RequestBody AppUserRequestDto appUserRequestDto) {
         URI uri = URI
                 .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/update").toUriString());
 
-        // check if user exist in database.
-
-        userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
-        String username = jwtTokenUtils.getUsernameFromToken(userToken);
-
-        AppUser appUser = userService.getCurrentUserByName(username);
+        AppUser appUser = userService.getCurrentUserByName(appUserRequestDto.getUsername());
 
         if (appUser == null) {
             return ResponseEntity.badRequest().body(
@@ -131,10 +119,7 @@ public class AppUserController {
     public ResponseEntity<?> deleteUser(@RequestHeader(name = "Authorization") String userToken,
             @RequestBody AppUserRequestDto appUserRequestDto) {
 
-        userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
-        String username = jwtTokenUtils.getUsernameFromToken(userToken);
-
-        AppUser appUser = userService.getCurrentUserByName(username);
+        AppUser appUser = userService.getCurrentUserById(appUserRequestDto.getId());
 
         if (appUser == null) {
             return ResponseEntity.badRequest().body(new BaseResponse("0", "Can't find user", ""));

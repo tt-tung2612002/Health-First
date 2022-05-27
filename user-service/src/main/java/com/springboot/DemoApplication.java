@@ -20,8 +20,6 @@ public class DemoApplication extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) {
-        // EntityManagerFactory emf =
-        // Persistence.createEntityManagerFactory("com.baeldung.movie_catalog");
         SpringApplication.run(applicationClass, args);
     }
 
