@@ -18,9 +18,9 @@ public class ActivityResponseDto {
 
     private String conclusion;
 
-    private String activityState;
+    private Integer activityStateId;
 
-    private String activityResult;
+    private Integer activityResultId;
 
     private String createdUser;
 
@@ -39,10 +39,10 @@ public class ActivityResponseDto {
         if (activity.getConclusion() != null)
             this.conclusion = activity.getConclusion();
         if (activity.getActivityState() != null)
-            this.activityState = activity.getActivityState().getName();
+            this.activityStateId = activity.getActivityState().getId();
 
         if (activity.getActivityResult() != null)
-            this.activityResult = activity.getActivityResult().getName();
+            this.activityResultId = activity.getActivityResult().getId();
 
         this.createdUser = activity.getCreatedUser().getUsername();
     }
