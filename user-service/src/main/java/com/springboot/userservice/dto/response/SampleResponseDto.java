@@ -15,6 +15,8 @@ public class SampleResponseDto {
 
     private String resultedDate;
 
+    private Integer id;
+
     private Integer sampleStateId;
 
     private Integer sampleResultId;
@@ -26,6 +28,7 @@ public class SampleResponseDto {
     private Integer foodId;
 
     public SampleResponseDto(Sample sample) {
+        this.id = sample.getId();
         this.sampleCode = sample.getSampleCode();
         this.createdDate = sample.getCreatedDate().toString();
         if (sample.getResultedDate() != null) {
