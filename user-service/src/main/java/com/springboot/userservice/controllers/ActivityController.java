@@ -88,7 +88,8 @@ public class ActivityController {
 
         activityService.saveActivity(activity);
 
-        return ResponseEntity.created(uri).build();
+        BaseResponse response = new BaseResponse("1", "success", activity);
+        return ResponseEntity.created(uri).body(response);
     }
 
     @PostMapping("/update")

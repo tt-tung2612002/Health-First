@@ -37,6 +37,18 @@ public class DemoApplication extends SpringBootServletInitializer {
     // userService,
     // StaticDataService staticDataService) {
     // return args -> {
+    // AppUser user = userService.getCurrentUserById(1);
+
+    // user.setPassword("tung00deptrai");
+
+    // userService.addRoleToUser("tt-tung261", 1);
+    // userService.addRoleToUser("tt-tung261", 2);
+    // userService.addRoleToUser("tt-tung261", 3);
+
+    // userService.addRegionToUser(1, "tt-tung261");
+
+    // };
+    // }
 
     // // // add a new user named duytuan28
 
