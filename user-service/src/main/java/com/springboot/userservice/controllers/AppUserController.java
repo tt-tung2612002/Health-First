@@ -169,7 +169,13 @@ public class AppUserController {
     public ResponseEntity<?> addRegionToUser(@RequestHeader(name = "Authorization") String userToken,
             @RequestBody UserRegionDto payload) {
 
-        userService.addRegionToUser(payload.getWardId(), payload.getUsername());
+        if (payload.getWardId() != null) {
+            userService.addRegionToUser(payload.getWardId(), payload.getUsername());
+        } else if (payload.getDistrictId() != null) {
+            userService.addRegionToUser(payload.getDistrictId(), payload.getUsername());
+        } else if (payload.getProvinceId() != null) {
+            userService.addRegionToUser(payload.getProvinceId(), payload.getUsername());
+        }
         return ResponseEntity.ok().body(new BaseResponse("1", "Region added to user successfully", ""));
     }
 
