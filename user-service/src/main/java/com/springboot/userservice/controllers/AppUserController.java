@@ -165,19 +165,21 @@ public class AppUserController {
 
     }
 
+    @PostMapping("/region/addToUser")
+    public ResponseEntity<?> addRegionToUser(@RequestHeader(name = "Authorization") String userToken,
+            @RequestBody UserRegionDto payload) {
+
+        userService.addRegionToUser(payload.getWardId(), payload.getUsername());
+        return ResponseEntity.ok().body(new BaseResponse("1", "Region added to user successfully", ""));
+    }
+
     @PostMapping("/region/removeFromUser")
     public ResponseEntity<?> removeRegionFromUser(@RequestHeader(name = "Authorization") String userToken,
             @RequestBody UserRegionDto payload) {
 
         userService.removeRegionFromUser(payload.getUsername(), payload.getWardId());
         return ResponseEntity.ok().body(new BaseResponse("1", "Region removed from user successfully", ""));
-    }
 
-    @PostMapping("/region/addToUser")
-    public ResponseEntity<?> addRegionToUser(@RequestHeader(name = "Authorization") String userToken,
-            @RequestBody UserRegionDto payload) {
-        userService.addRegionToUser(payload.getWardId(), payload.getUsername());
-        return ResponseEntity.ok().body(new BaseResponse("1", "Region added to user successfully", ""));
     }
 
 }

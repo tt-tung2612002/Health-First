@@ -8,4 +8,6 @@ import lombok.Setter;
 public class UserRegionDto {
     private String username;
     private Integer wardId;
+    private Integer districtId;
+    private Integer provinceId;
 }

@@ -3,6 +3,7 @@ package com.springboot.userservice.filter;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -60,10 +61,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String username = jwtTokenUtils.getUsernameFromToken(accessToken.substring("HealthFirst".length()));
 
         String displayName = userService.getCurrentUserByName(username).getDisplayName();
-        String roles = userService.getCurrentUserByName(username).getRoles().stream().map(x -> x.getName())
-                .collect(Collectors.joining(", "));
+        List<Integer> roles = userService.getCurrentUserByName(username).getRoles().stream().map(x -> x.getId())
+                .collect(Collectors.toList());
 
-        Map<String, String> tokenMap = new java.util.HashMap<>();
+        Map<String, Object> tokenMap = new java.util.HashMap<>();
         tokenMap.put("accessToken", accessToken);
         tokenMap.put("refreshToken", refreshToken);
         tokenMap.put("username", username);
