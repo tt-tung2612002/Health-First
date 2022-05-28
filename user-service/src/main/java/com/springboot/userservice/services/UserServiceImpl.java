@@ -86,12 +86,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void addRegionToUser(Ward ward, String username) {
-        AppUser user = userRepository.findByUsername(username);
-        user.getWards().add(ward);
-    }
-
-    @Override
     public AppUser getCurrentUserById(Integer id) {
         return userRepository.findById(id);
     }
@@ -131,6 +125,33 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         for (District district : province.getDistricts()) {
             for (Ward ward : district.getWards()) {
                 user.getWards().add(ward);
+            }
+        }
+    }
+
+    @Override
+    public void removeWardFromUser(Integer id, String username) {
+        Ward ward = wardRepository.findById(id);
+        AppUser user = userRepository.findByUsername(username);
+        user.getWards().remove(ward);
+    }
+
+    @Override
+    public void removeDistrictFromUser(Integer id, String username) {
+        District district = staticDataService.getDistrictById(id);
+        AppUser user = userRepository.findByUsername(username);
+        for (Ward ward : district.getWards()) {
+            user.getWards().remove(ward);
+        }
+    }
+
+    @Override
+    public void removeProvinceFromUser(Integer id, String username) {
+        Province province = staticDataService.getProvinceById(id);
+        AppUser user = userRepository.findByUsername(username);
+        for (District district : province.getDistricts()) {
+            for (Ward ward : district.getWards()) {
+                user.getWards().remove(ward);
             }
         }
     }

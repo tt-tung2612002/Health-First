@@ -6,7 +6,6 @@ import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.AppUserResponseDto;
 import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
-import com.springboot.userservice.entity.Ward;
 
 import org.springframework.stereotype.Service;
 
@@ -34,7 +33,11 @@ public interface UserService {
 
     void addProvinceToUser(Integer id, String username);
 
-    void addRegionToUser(Ward ward, String username);
+    void removeWardFromUser(Integer id, String username);
+
+    void removeDistrictFromUser(Integer id, String username);
+
+    void removeProvinceFromUser(Integer id, String username);
 
     void removeRegionFromUser(String username, Integer Id);
 

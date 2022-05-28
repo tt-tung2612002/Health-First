@@ -26,6 +26,10 @@ public class AppUserResponseDto {
 
     private List<String> wards;
 
+    private List<String> districts;
+
+    private List<String> provinces;
+
     private String createdDate;
 
     public AppUserResponseDto(AppUser appUser) {
@@ -40,5 +44,14 @@ public class AppUserResponseDto {
         this.createdDate = appUser.getCreatedDate().toString();
         this.wards = appUser.getWards().stream().map(ward -> ward.getName())
                 .collect(Collectors.toList());
+
+        this.districts = appUser.getWards().stream().map(ward -> ward.getDistrict().getName())
+                .collect(Collectors.toSet()).stream()
+                .collect(Collectors.toList());
+
+        this.provinces = appUser.getWards().stream().map(ward -> ward.getDistrict().getProvince().getName())
+                .collect(Collectors.toSet()).stream()
+                .collect(Collectors.toList());
+
     }
 }

@@ -174,6 +174,8 @@ public class AppUserController {
             userService.addDistrictToUser(payload.getDistrictId(), payload.getUsername());
         } else if (payload.getProvinceId() != null) {
             userService.addProvinceToUser(payload.getProvinceId(), payload.getUsername());
+        } else {
+            return ResponseEntity.badRequest().body(new BaseResponse("0", "Can't find region", ""));
         }
         return ResponseEntity.ok().body(new BaseResponse("1", "Region added to user successfully", ""));
     }
@@ -182,7 +184,15 @@ public class AppUserController {
     public ResponseEntity<?> removeRegionFromUser(@RequestHeader(name = "Authorization") String userToken,
             @RequestBody UserRegionDto payload) {
 
-        userService.removeRegionFromUser(payload.getUsername(), payload.getWardId());
+        if (payload.getWardId() != null) {
+            userService.removeWardFromUser(payload.getWardId(), payload.getUsername());
+        } else if (payload.getDistrictId() != null) {
+            userService.removeDistrictFromUser(payload.getDistrictId(), payload.getUsername());
+        } else if (payload.getProvinceId() != null) {
+            userService.removeProvinceFromUser(payload.getProvinceId(), payload.getUsername());
+        } else {
+            return ResponseEntity.badRequest().body(new BaseResponse("0", "Can't find region", ""));
+        }
         return ResponseEntity.ok().body(new BaseResponse("1", "Region removed from user successfully", ""));
 
     }
