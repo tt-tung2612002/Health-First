@@ -24,6 +24,8 @@ public class AppUserResponseDto {
 
     private List<Integer> roles;
 
+    private List<Integer> wards;
+
     private String createdDate;
 
     public AppUserResponseDto(AppUser appUser) {
@@ -36,5 +38,7 @@ public class AppUserResponseDto {
                 .collect(Collectors.toList());
         this.phoneNumber = appUser.getPhoneNumber();
         this.createdDate = appUser.getCreatedDate().toString();
+        this.wards = appUser.getWards().stream().map(ward -> ward.getId())
+                .collect(Collectors.toList());
     }
 }
