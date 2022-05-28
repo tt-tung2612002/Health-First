@@ -8,8 +8,11 @@ import com.springboot.userservice.dto.response.FoodResponseDto;
 import com.springboot.userservice.dto.response.InspectionUnitResponseDto;
 import com.springboot.userservice.dto.response.ProvinceResponseDto;
 import com.springboot.userservice.dto.response.WardResponseDto;
+import com.springboot.userservice.entity.District;
 import com.springboot.userservice.entity.Food;
 import com.springboot.userservice.entity.InspectionUnit;
+import com.springboot.userservice.entity.Province;
+import com.springboot.userservice.entity.Ward;
 import com.springboot.userservice.repository.DistrictRepository;
 import com.springboot.userservice.repository.FoodRepository;
 import com.springboot.userservice.repository.InspectionUnitRepository;
@@ -71,6 +74,21 @@ public class StaticDataServiceImpl implements StaticDataService {
     @Override
     public Food getFoodById(int id) {
         return foodRepository.findById(id);
+    }
+
+    @Override
+    public Province getProvinceById(int provinceId) {
+        return provinceRepository.findById(provinceId);
+    }
+
+    @Override
+    public District getDistrictById(int districtId) {
+        return districtRepository.findById(districtId);
+    }
+
+    @Override
+    public Ward getWardById(int wardId) {
+        return wardRepository.findById(wardId);
     }
 
 }

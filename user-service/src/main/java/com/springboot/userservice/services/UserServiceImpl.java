@@ -9,6 +9,8 @@ import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.AppUserResponseDto;
 import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
+import com.springboot.userservice.entity.District;
+import com.springboot.userservice.entity.Province;
 import com.springboot.userservice.entity.Ward;
 import com.springboot.userservice.repository.AppRoleRepository;
 import com.springboot.userservice.repository.AppUserRepository;
@@ -33,6 +35,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final AppRoleRepository roleRepository;
     private final WardRepository wardRepository;
     private final PasswordEncoder passwordEncoder;
+    private final StaticDataService staticDataService;
 
     @Override
     public AppUser getCurrentUserByName(String username) {
@@ -76,7 +79,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void addRegionToUser(Integer id, String username) {
+    public void addWardToUser(Integer id, String username) {
         AppUser user = userRepository.findByUsername(username);
         Ward ward = wardRepository.findById(id);
         user.getWards().add(ward);
@@ -110,5 +113,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         AppUser user = userRepository.findByUsername(username);
         Ward ward = wardRepository.findById(Id);
         user.getWards().remove(ward);
+    }
+
+    @Override
+    public void addDistrictToUser(Integer id, String username) {
+        District district = staticDataService.getDistrictById(id);
+        AppUser user = userRepository.findByUsername(username);
+        for (Ward ward : district.getWards()) {
+            user.getWards().add(ward);
+        }
+    }
+
+    @Override
+    public void addProvinceToUser(Integer id, String username) {
+        Province province = staticDataService.getProvinceById(id);
+        AppUser user = userRepository.findByUsername(username);
+        for (District district : province.getDistricts()) {
+            for (Ward ward : district.getWards()) {
+                user.getWards().add(ward);
+            }
+        }
     }
 }

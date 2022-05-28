@@ -28,7 +28,11 @@ public interface UserService {
 
     List<AppUserResponseDto> getUsers(SearchFilterRequest searchFilterRequest);
 
-    void addRegionToUser(Integer Id, String username);
+    void addWardToUser(Integer id, String username);
+
+    void addDistrictToUser(Integer id, String username);
+
+    void addProvinceToUser(Integer id, String username);
 
     void addRegionToUser(Ward ward, String username);
 

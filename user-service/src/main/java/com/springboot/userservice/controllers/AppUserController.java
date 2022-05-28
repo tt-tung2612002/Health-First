@@ -168,13 +168,12 @@ public class AppUserController {
     @PostMapping("/region/addToUser")
     public ResponseEntity<?> addRegionToUser(@RequestHeader(name = "Authorization") String userToken,
             @RequestBody UserRegionDto payload) {
-
         if (payload.getWardId() != null) {
-            userService.addRegionToUser(payload.getWardId(), payload.getUsername());
+            userService.addWardToUser(payload.getWardId(), payload.getUsername());
         } else if (payload.getDistrictId() != null) {
-            userService.addRegionToUser(payload.getDistrictId(), payload.getUsername());
+            userService.addDistrictToUser(payload.getDistrictId(), payload.getUsername());
         } else if (payload.getProvinceId() != null) {
-            userService.addRegionToUser(payload.getProvinceId(), payload.getUsername());
+            userService.addProvinceToUser(payload.getProvinceId(), payload.getUsername());
         }
         return ResponseEntity.ok().body(new BaseResponse("1", "Region added to user successfully", ""));
     }
