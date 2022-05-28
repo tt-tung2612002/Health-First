@@ -21,6 +21,12 @@ public class FacilityResponseDto {
 
     private String address;
 
+    private String province;
+
+    private String district;
+
+    private String ward;
+
     public FacilityResponseDto(Facility facility) {
         this.id = facility.getId();
         this.facilityCode = facility.getFacilityCode();
@@ -28,6 +34,9 @@ public class FacilityResponseDto {
         this.FacilityStateId = facility.getFacilityState().getId();
         this.businessType = facility.getBusinessType().getName();
         this.address = facility.getAddress().getName();
+        this.province = facility.getAddress().getWard().getDistrict().getProvince().getName();
+        this.district = facility.getAddress().getWard().getDistrict().getName();
+        this.ward = facility.getAddress().getWard().getName();
     }
 
 }

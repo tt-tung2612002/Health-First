@@ -20,7 +20,7 @@ public interface PlanService {
 
     public PlanState getPlanStateById(Integer id);
 
-    public Long deletePlanById(Integer id);
+    public int deletePlanById(Integer id);
 
     public void updateFacilityFromPlan(Integer planId, List<Integer> facilityIds);
 

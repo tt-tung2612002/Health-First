@@ -14,7 +14,8 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
 
     Plan findByName(String name);
 
-    Long deleteById(Integer Id);
+    @Procedure(procedureName = "deletePlan")
+    int deleteById(Integer id);
 
     @Procedure(procedureName = "updatePlanFacility")
     Long updateFacilityFromPlan(Integer planId, String facilityIds);

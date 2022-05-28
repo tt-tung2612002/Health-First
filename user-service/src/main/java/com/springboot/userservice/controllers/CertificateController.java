@@ -110,33 +110,22 @@ public class CertificateController {
 					"Certificate with id " + certificateDto.getId() + " not found!", "");
 			return ResponseEntity.created(uri).body(response);
 		}
-		// set certificate number
-		if (certificateDto.getCertificateNumber() != null)
-			certificate.setCertificateNumber(certificateDto.getCertificateNumber());
 
-		// // // convert string to SQL date.
-		if (certificateDto.getPublishedDate() != null) {
-			Date publishedDate = Date.valueOf(certificateDto.getPublishedDate());
-			certificate.setPublishedDate(publishedDate);
-		}
+		certificate.setPublishedDate(new Date(System.currentTimeMillis()));
 		if (certificateDto.getExpiredDate() != null) {
 			Date expiredDate = Date.valueOf(certificateDto.getExpiredDate());
 			certificate.setExpiredDate(expiredDate);
 		}
 
-		if (certificateDto.getFacilityId() != null) {
-			Facility facility = facilityService.getFacilityById(certificateDto.getFacilityId());
-			certificate.setFacility(facility);
-		}
-
 		// set certificate state.
 		if (certificateDto.getCertificateStateId() != null)
-			certificate.setCertificateState(certificateService.getCertificateStateById(
-					certificateDto.getCertificateStateId()));
+			certificate.setCertificateState(
+					certificateService.getCertificateStateById(certificateDto.getCertificateStateId()));
 
 		Certificate result = certificateService.saveCertificate(certificate);
 		BaseResponse response = new BaseResponse(result == null ? "0" : "1",
-				result != null ? "Update certificate success" : "Update certificate failed", "");
+				result != null ? "Update certificate success" : "Update certificate failed",
+				"");
 		return ResponseEntity.created(uri).body(response);
 	}
 

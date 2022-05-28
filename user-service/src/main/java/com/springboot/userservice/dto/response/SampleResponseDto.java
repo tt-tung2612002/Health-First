@@ -28,8 +28,8 @@ public class SampleResponseDto {
     private Integer foodId;
 
     public SampleResponseDto(Sample sample) {
-        this.id = sample.getId();
         this.sampleCode = sample.getSampleCode();
+        this.id = sample.getId();
         this.createdDate = sample.getCreatedDate().toString();
         if (sample.getResultedDate() != null) {
             this.resultedDate = sample.getResultedDate().toString();

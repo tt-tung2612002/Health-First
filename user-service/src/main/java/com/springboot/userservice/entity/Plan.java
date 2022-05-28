@@ -17,7 +17,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,8 +29,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "plan", uniqueConstraints = {
-        @UniqueConstraint(name = "uni_plan_name", columnNames = "name") })
+@Table(name = "plan")
 public class Plan {
 
     @Id
@@ -41,7 +39,7 @@ public class Plan {
     @NonNull
     private String name;
 
-    @NonNull
+    // @NonNull
     private String description;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
@@ -55,7 +53,8 @@ public class Plan {
     @JoinColumn(name = "created_user_id", nullable = false)
     private AppUser createdUser;
 
-    @OneToMany(mappedBy = "plan", fetch = FetchType.EAGER, cascade = CascadeType.MERGE, orphanRemoval = true)
+    // @JsonIgnore
+    @OneToMany(mappedBy = "plan", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private Set<Activity> activities = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

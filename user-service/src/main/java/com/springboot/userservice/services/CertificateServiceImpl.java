@@ -62,8 +62,7 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     public List<CertificateResponseDto> getAllCertificateWithFilter(SearchFilterRequest filter) {
 
-        String filterString = new Gson().toJson(filter);
-        List<Certificate> certificates = certificateRepository.findAllWithFilter(new Gson().toJson(filterString));
+        List<Certificate> certificates = certificateRepository.findAllWithFilter(new Gson().toJson(filter));
 
         return certificates.stream()
                 .map(CertificateResponseDto::new)

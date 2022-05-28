@@ -78,7 +78,8 @@ public class PlanController {
         plan.setPublishedDate(new Date(System.currentTimeMillis()));
 
         // set description.
-        plan.setDescription(planRequestDto.getDescription());
+        if (planRequestDto.getDescription() != null)
+            plan.setDescription(planRequestDto.getDescription());
 
         // set plan state.
         plan.setPlanState(planService.getPlanStateById(planRequestDto.getPlanStateId()));

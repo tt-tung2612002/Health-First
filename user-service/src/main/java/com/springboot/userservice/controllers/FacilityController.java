@@ -124,15 +124,13 @@ public class FacilityController {
         }
 
         if (facilityDto.getAddress() != null) {
-            Address address = new Address();
-            address.setName(facilityDto.getAddress());
+            facility.getAddress().setName(facilityDto.getAddress());
             Ward ward = facilityService.getWardById(facilityDto.getWardId());
+            facility.getAddress().setWard(ward);
             if (ward == null)
                 return ResponseEntity.badRequest()
                         .body(new BaseResponse("0",
                                 "Can not update facility with id " + facilityDto.getId() + ". Ward not found", ""));
-            facilityService.saveAddress(address, ward);
-            facility.setAddress(address);
         }
 
         if (facilityDto.getBusinessTypeId() != null) {

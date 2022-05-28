@@ -3,7 +3,9 @@ package com.springboot.userservice.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,6 +35,6 @@ public class ActivityResult {
     @NonNull
     private String name;
 
-    @OneToMany(mappedBy = "activityResult")
+    @OneToMany(mappedBy = "activityResult", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private Set<Activity> activities = new HashSet<>();
 }

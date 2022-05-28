@@ -51,7 +51,7 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public Long deletePlanById(Integer id) {
+    public int deletePlanById(Integer id) {
         return planRepository.deleteById(id);
     }
 

@@ -70,21 +70,27 @@ public class ActivityController {
         activity.setCreatedUser(userService.getCurrentUserByName(username));
 
         activity.setCreatedDate(new Date(System.currentTimeMillis()));
-        activity.setStartDate(Date.valueOf(activityDto.getStartDate()));
-        activity.setEndDate(Date.valueOf(activityDto.getEndDate()));
+        if (activityDto.getStartDate() != null)
+            activity.setStartDate(Date.valueOf(activityDto.getStartDate()));
+
+        if (activityDto.getEndDate() != null)
+            activity.setEndDate(Date.valueOf(activityDto.getEndDate()));
 
         // set conclusion
         activity.setConclusion(activityDto.getConclusion());
 
         // set activity result and state
-        activity.setActivityResult(activityService.getActivityResultById(activityDto.getActivityResultId()));
-        activity.setActivityState(activityService.getActivityStateById(activityDto.getActivityStateId()));
+        if (activityDto.getActivityResultId() != null)
+            activity.setActivityResult(activityService.getActivityResultById(activityDto.getActivityResultId()));
 
-        // set facility
-        activity.setFacility(facilityService.getFacilityById(activityDto.getFacilityId()));
+        if (activityService.getActivityStateById(activityDto.getActivityStateId()) != null)
+            activity.setActivityState(activityService.getActivityStateById(activityDto.getActivityStateId()));
 
-        // set plan
-        activity.setPlan(planService.getPlanById(activityDto.getPlanId()));
+        // // set facility
+        // activity.setFacility(facilityService.getFacilityById(activityDto.getFacilityId()));
+
+        // // set plan
+        // activity.setPlan(planService.getPlanById(activityDto.getPlanId()));
 
         activityService.saveActivity(activity);
 

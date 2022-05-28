@@ -1,6 +1,8 @@
 package com.springboot.userservice.entity;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,13 +12,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
@@ -24,15 +27,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "activity", uniqueConstraints = {
-        @UniqueConstraint(name = "uni_activity_name", columnNames = "name") })
+@Table(name = "activity")
 public class Activity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NonNull
     private String name;
 
     @Column(name = "created_date")
@@ -44,30 +45,34 @@ public class Activity {
     @Column(name = "ended_date")
     private Date endDate;
 
-    // @NonNull
     private String conclusion;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "plan_id")
     private Plan plan;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "created_user_id")
     private AppUser createdUser;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "result_id")
     private ActivityResult activityResult;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "state_id")
     private ActivityState activityState;
 
+    // @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "facility_id")
     private Facility facility;
 
-    // @OneToMany(mappedBy = "activity")
-    // private Set<Sample> samples;
+    @OneToMany(mappedBy = "activity")
+    private Set<Sample> samples = new HashSet<>();
 
 }
