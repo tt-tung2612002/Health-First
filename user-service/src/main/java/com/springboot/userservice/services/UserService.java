@@ -2,12 +2,12 @@ package com.springboot.userservice.services;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.AppUserResponseDto;
 import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
-
-import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
@@ -16,6 +16,8 @@ public interface UserService {
     AppUser getCurrentUserById(Integer id);
 
     AppUser saveUser(AppUser user);
+
+    AppUser getUserByToken(String token);
 
     int deleteUserById(Integer id);
 

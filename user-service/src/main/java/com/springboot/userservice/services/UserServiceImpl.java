@@ -4,6 +4,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.google.gson.Gson;
 import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.AppUserResponseDto;
@@ -15,15 +24,7 @@ import com.springboot.userservice.entity.Ward;
 import com.springboot.userservice.repository.AppRoleRepository;
 import com.springboot.userservice.repository.AppUserRepository;
 import com.springboot.userservice.repository.WardRepository;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.springboot.userservice.utils.JwtTokenUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,6 +37,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final WardRepository wardRepository;
     private final PasswordEncoder passwordEncoder;
     private final StaticDataService staticDataService;
+    private final JwtTokenUtils jwtTokenUtils;
 
     @Override
     public AppUser getCurrentUserByName(String username) {
@@ -154,5 +156,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user.getWards().remove(ward);
             }
         }
+    }
+
+    @Override
+    public AppUser getUserByToken(String userToken) {
+        userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
+        String username = jwtTokenUtils.getUsernameFromToken(userToken);
+        return userRepository.findByUsername(username);
     }
 }
