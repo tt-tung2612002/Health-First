@@ -3,12 +3,18 @@ package com.springboot.userservice.controllers;
 import java.net.URI;
 import java.sql.Date;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import com.springboot.userservice.dto.request.ActivityRequestDto;
 import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.BaseResponse;
 import com.springboot.userservice.entity.Activity;
-import com.springboot.userservice.entity.ActivityResult;
-import com.springboot.userservice.entity.ActivityState;
 import com.springboot.userservice.entity.AppUser;
 import com.springboot.userservice.entity.Facility;
 import com.springboot.userservice.entity.Plan;
@@ -17,14 +23,6 @@ import com.springboot.userservice.services.FacilityService;
 import com.springboot.userservice.services.PlanService;
 import com.springboot.userservice.services.UserService;
 import com.springboot.userservice.utils.JwtTokenUtils;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import lombok.RequiredArgsConstructor;
 
@@ -143,12 +141,11 @@ public class ActivityController {
             activity.setConclusion(conclusion);
 
         // set activity result and state if exist.
-        ActivityResult result = activityService.getActivityResultById(activityDto.getActivityResultId());
-        if (result != null)
-            activity.setActivityResult(result);
-        ActivityState state = activityService.getActivityStateById(activityDto.getActivityStateId());
-        if (state != null)
-            activity.setActivityState(state);
+        if (activityDto.getActivityResultId() != null)
+            activity.setActivityResult(activityService.getActivityResultById(activityDto.getActivityResultId()));
+
+        if (activityDto.getActivityStateId() != null)
+            activity.setActivityState(activityService.getActivityStateById(activityDto.getActivityStateId()));
 
         // set facility if exist.
         Facility facility = facilityService.getFacilityById(activityDto.getFacilityId());

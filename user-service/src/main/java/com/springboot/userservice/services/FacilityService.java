@@ -2,6 +2,9 @@ package com.springboot.userservice.services;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+import com.springboot.userservice.dto.request.FacilityRequestDto;
 import com.springboot.userservice.dto.response.FacilityResponseDto;
 import com.springboot.userservice.entity.Address;
 import com.springboot.userservice.entity.AppUser;
@@ -12,8 +15,6 @@ import com.springboot.userservice.entity.FacilityState;
 import com.springboot.userservice.entity.Province;
 import com.springboot.userservice.entity.Ward;
 
-import org.springframework.stereotype.Service;
-
 @Service
 public interface FacilityService {
 
@@ -21,7 +22,7 @@ public interface FacilityService {
 
     public List<FacilityResponseDto> getAllFacilityWithFilter(String filter);
 
-    public Facility saveFacility(Facility facility);
+    public Facility saveFacility(FacilityRequestDto facility, boolean isUpdate);
 
     public Facility getFacilityById(Integer id);
 

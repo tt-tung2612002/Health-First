@@ -5,6 +5,9 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.springframework.stereotype.Service;
+
+import com.springboot.userservice.dto.request.FacilityRequestDto;
 import com.springboot.userservice.dto.response.FacilityResponseDto;
 import com.springboot.userservice.entity.Address;
 import com.springboot.userservice.entity.AppUser;
@@ -21,8 +24,6 @@ import com.springboot.userservice.repository.FacilityRepository;
 import com.springboot.userservice.repository.FacilityStateRepository;
 import com.springboot.userservice.repository.ProvinceRepository;
 import com.springboot.userservice.repository.WardRepository;
-
-import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
@@ -100,8 +101,65 @@ public class FacilityServiceImpl implements FacilityService {
         return businessTypeRepository.findById(id);
     }
 
+    public Facility updateFacility(FacilityRequestDto facilityRequestDto) {
+        Facility facilityToUpdate = facilityRepository.findById(facilityRequestDto.getId());
+        if (facilityToUpdate != null) {
+            if (facilityRequestDto.getName() != null) {
+                facilityToUpdate.setName(facilityRequestDto.getName());
+            }
+
+            if (facilityRequestDto.getFacilityStateId() != null) {
+                facilityToUpdate
+                        .setFacilityState(facilityStateRepository.findById(facilityRequestDto.getFacilityStateId()));
+            }
+
+            if (facilityRequestDto.getBusinessTypeId() != null) {
+                facilityToUpdate
+                        .setBusinessType(businessTypeRepository.findById(facilityRequestDto.getBusinessTypeId()));
+            }
+
+        }
+
+        return facilityToUpdate;
+    }
+
     @Override
-    public Facility saveFacility(Facility facility) {
+    public Facility saveFacility(FacilityRequestDto facilityDto, boolean isUpdate) {
+
+        if (isUpdate) {
+            return updateFacility(facilityDto);
+        }
+        Facility facility = new Facility();
+
+        facility.setName(facilityDto.getName());
+
+        Facility lastFacility = getLastFacility();
+        facility.setFacilityCode(Facility.FACILITY_CODE_PREFIX + String.valueOf(lastFacility.getId() + 1));
+
+        if (facilityDto.getFacilityStateId() == null) {
+            return null;
+        }
+        facility.setFacilityState(getFacilityStateById(facilityDto.getFacilityStateId()));
+
+        if (facilityDto.getAddress() == null) {
+            return null;
+        }
+        Address address = new Address();
+        address.setName(facilityDto.getAddress());
+        saveAddress(address, getWardById(facilityDto.getWardId()));
+        facility.setAddress(address);
+
+        // set facility state.
+        if (facilityDto.getFacilityStateId() == null) {
+            return null;
+        }
+        FacilityState facilityState = getFacilityStateById(facilityDto.getFacilityStateId());
+        facility.setFacilityState(facilityState);
+
+        if (facilityDto.getBusinessTypeId() == null) {
+            return null;
+        }
+        facility.setBusinessType(getBusinessTypeById(facilityDto.getBusinessTypeId()));
         return facilityRepository.save(facility);
     }
 

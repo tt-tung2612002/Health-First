@@ -2,12 +2,6 @@ package com.springboot.userservice.configuration;
 
 import java.util.List;
 
-import com.springboot.userservice.filter.JwtAuthenticationFilter;
-import com.springboot.userservice.filter.UserAuthorizationFilter;
-import com.springboot.userservice.services.UserService;
-import com.springboot.userservice.utils.ConfigUtils;
-import com.springboot.userservice.utils.JwtTokenUtils;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,8 +15,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import com.springboot.userservice.filter.JwtAuthenticationFilter;
+import com.springboot.userservice.filter.UserAuthorizationFilter;
+import com.springboot.userservice.services.UserService;
+import com.springboot.userservice.utils.ConfigUtils;
+import com.springboot.userservice.utils.JwtTokenUtils;
+
 import lombok.RequiredArgsConstructor;
-import lombok.var;
 
 @Configuration
 @EnableWebSecurity
@@ -42,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().configurationSource(request -> {
-            var cors = new CorsConfiguration();
+            CorsConfiguration cors = new CorsConfiguration();
             cors.setAllowedOrigins(List.of("http://localhost:3000"));
             cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
             cors.setAllowedHeaders(List.of("*"));
