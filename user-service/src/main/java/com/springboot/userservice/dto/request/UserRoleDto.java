@@ -1,9 +1,11 @@
 package com.springboot.userservice.dto.request;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class UserRoleDto {
     private String username;
-    private String roleName;
+    private Integer roleId;
 }

@@ -8,21 +8,23 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.Setter;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@Table(name = "app_role", uniqueConstraints = {
-        @UniqueConstraint(name = "UNI_ROLE", columnNames = "name")
+@Getter
+@Setter
+@Table(name = "role", uniqueConstraints = {
+        @UniqueConstraint(name = "uni_role", columnNames = "name")
 })
 public class AppRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NonNull
     private String name;
