@@ -3,10 +3,6 @@ package com.springboot.userservice.controllers;
 import java.net.URI;
 import java.sql.Date;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.springboot.userservice.dto.request.AppUserRequestDto;
 import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.request.UserRegionDto;
@@ -33,13 +28,10 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(path = "/api/users")
 @RequiredArgsConstructor
 public class AppUserController {
+
     private final UserService userService;
 
     private final JwtTokenUtils jwtTokenUtils;
-
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.springboot.userservice");
-    EntityManager em = emf.createEntityManager();
-    JPAQueryFactory queryFactory = new JPAQueryFactory(em);
 
     @PostMapping("/list")
     public ResponseEntity<?> getUsers(@RequestBody SearchFilterRequest searchFilterRequest) {

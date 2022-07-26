@@ -1,28 +1,33 @@
 package com.springboot;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import com.querydsl.core.support.QueryBase;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.springboot.userservice.entity.QAppUser;
 
 @Component
 public class CodeRunner implements CommandLineRunner {
 
-    // @PersistenceContext
-    // private EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     // @Autowired
     // private UserService userService;
 
     @Override
-    // @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public void run(String... args) throws Exception {
 
-        // QAppUser user = QAppUser.appUser;
+        JPAQuery query = new JPAQuery(entityManager);
 
-        // JPAQuery query = new JPAQuery(entityManager);
+        QueryBase result = query.from(QAppUser.appUser).where(QAppUser.appUser.username.eq("tung00deptrai"));
 
-        // QueryBase result = query.select(qUser).from(qUser).where(qUser.id.eq(1));
-
-        // System.out.println(result.toString());
+        System.out.println(result.toString());
 
     }
 
