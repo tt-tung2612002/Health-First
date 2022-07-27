@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -31,6 +32,39 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
 
     private final UserDetailsService userDetailsService;
+
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors().configurationSource(request -> {
+            CorsConfiguration cors = new CorsConfiguration();
+            cors.setAllowedOrigins(List.of("http://localhost:3000"));
+            cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+            cors.setAllowedHeaders(List.of("*"));
+            return cors;
+        });
+        http.csrf().disable();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.authorizeRequests().antMatchers("/login").permitAll();
+        // .and().formLogin()
+        // .loginProcessingUrl("/api/v1/login");
+
+        // only allow authenticated users to access the rest of the application
+        http.authorizeRequests()
+                .antMatchers("/api/users/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().anyRequest().authenticated();
+
+        // apply filter for authentication and authorization
+        JwtTokenUtils tokenUtils = new JwtTokenUtils();
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(userService, authenticationManagerBean(),
+                tokenUtils);
+        // filter.setFilterProcessesUrl("/api/v1/login");
+        http.addFilter(filter);
+        http.addFilterBefore(new UserAuthorizationFilter(tokenUtils),
+                UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
 
     // tell spring how to look for users and check passwords
     @Override
