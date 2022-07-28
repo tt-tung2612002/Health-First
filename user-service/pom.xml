@@ -21,6 +21,18 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>org.openjdk.jmh</groupId>
+			<artifactId>jmh-core</artifactId>
+			<version>1.35</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjdk.jmh</groupId>
+			<artifactId>jmh-generator-annprocess</artifactId>
+			<version>1.35</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-maven-plugin</artifactId>
 			<version>5.0.0</version>
@@ -213,6 +225,14 @@
 	</dependencyManagement>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.4.0</version>
+				<configuration>
+					<mainClass>my.Benchmark</mainClass>
+				</configuration>
+			</plugin>
 			<!--			<plugin>-->
 			<!--				<groupId>org.springframework.boot</groupId>-->
 			<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
@@ -230,6 +250,16 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>3.1.2</version>
 				<executions>
+					<execution>
+						<id>build-classpath</id>
+						<goals>
+							<goal>build-classpath</goal>
+						</goals>
+						<configuration>
+							<includeScope>runtime</includeScope>
+							<outputProperty>depClasspath</outputProperty>
+						</configuration>
+					</execution>
 					<execution>
 						<?m2e execute onConfiguration?>
 						<goals>

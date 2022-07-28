@@ -1,7 +1,16 @@
 package com.springboot.userservice.services;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.springboot.userservice.dto.response.DistrictResponseDto;
 import com.springboot.userservice.dto.response.FoodResponseDto;
@@ -18,10 +27,6 @@ import com.springboot.userservice.repository.FoodRepository;
 import com.springboot.userservice.repository.InspectionUnitRepository;
 import com.springboot.userservice.repository.ProvinceRepository;
 import com.springboot.userservice.repository.WardRepository;
-
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -41,6 +46,9 @@ public class StaticDataServiceImpl implements StaticDataService {
 
     }
 
+    // @Benchmark
+    // @OutputTimeUnit(TimeUnit.NANOSECONDS)
+    // @BenchmarkMode(Mode.AverageTime)
     public List<DistrictResponseDto> getDistrictsByProvince(int provinceId) {
         return districtRepository.findAllByProvince(provinceRepository.findById(provinceId)).stream()
                 .map(DistrictResponseDto::new)

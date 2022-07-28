@@ -1,5 +1,6 @@
 package com.springboot;
 
+import org.openjdk.jmh.runner.RunnerException;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +19,7 @@ public class DemoApplication extends SpringBootServletInitializer {
         return builder.sources(applicationClass).bannerMode(Banner.Mode.OFF);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RunnerException {
         SpringApplication.run(applicationClass, args);
     }
 
