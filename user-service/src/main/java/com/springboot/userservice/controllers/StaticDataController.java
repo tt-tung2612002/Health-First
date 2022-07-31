@@ -1,8 +1,14 @@
 package com.springboot.userservice.controllers;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.Threads;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,12 +26,21 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping(path = "/api/static/data")
 @RequiredArgsConstructor
+@Threads(1)
+@State(Scope.Thread)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class StaticDataController {
 
-    @PersistenceContext
-    private final EntityManager entityManager;
-
     private final StaticDataService staticDataService;
+
+    public List<?> benchmarkMethod1() {
+        return staticDataService.testBenchmarkMethod1();
+    }
+
+    public List<?> benchmarkMethod2() {
+        return staticDataService.testBenchmarkMethod1();
+    }
 
     @PostMapping("/provinces")
     public ResponseEntity<?> getProvinces() {

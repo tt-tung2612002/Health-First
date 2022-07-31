@@ -38,4 +38,7 @@ public interface StaticDataService {
 
     public Food getFoodById(int id);
 
+    public List<?> testBenchmarkMethod1();
+
+    public List<?> testBenchmarkMethod2();
 }

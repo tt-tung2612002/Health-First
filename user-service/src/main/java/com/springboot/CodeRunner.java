@@ -25,7 +25,7 @@ public class CodeRunner implements CommandLineRunner {
         QAppUser user = QAppUser.appUser;
         var ans = queryFactory.select(user).from(user).where(user.username.eq("tt-tung261")).fetch();
 
-        System.out.println(ans.get(0).getDisplayName());
+//        System.out.println(ans.get(0).getDisplayName());
 
     }
 

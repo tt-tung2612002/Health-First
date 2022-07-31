@@ -1,103 +1,125 @@
 package com.springboot;
 
+import java.util.concurrent.TimeUnit;
+
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.TearDown;
+import org.openjdk.jmh.infra.Blackhole;
+import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
-import org.springframework.boot.Banner;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
+import org.openjdk.jmh.runner.options.TimeValue;
+import org.openjdk.jmh.runner.options.VerboseMode;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 
+import com.springboot.userservice.controllers.StaticDataController;
+
+// @Threads(1)
+// @State(Scope.Benchmark)
+// @BenchmarkMode(Mode.SingleShotTime)
+// @OutputTimeUnit(TimeUnit.MILLISECONDS)
+// @Fork(jvmArgsAppend = { "-Xms2g", "-Xmx2g" })
+@BenchmarkMode(Mode.Throughput)
+@OutputTimeUnit(TimeUnit.MINUTES)
+@State(Scope.Benchmark)
 @SpringBootApplication
-public class DemoApplication extends SpringBootServletInitializer {
+public class DemoApplication {
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return configureApplication(builder);
+    private StaticDataController staticDataController;
+    // extends SpringBootServletInitializer {
+
+    // private ConfigurableApplicationContext context;
+
+    // @Override
+    // protected SpringApplicationBuilder configure(SpringApplicationBuilder
+    // builder) {
+    // return configureApplication(builder);
+    // }
+
+    // private static SpringApplicationBuilder
+    // configureApplication(SpringApplicationBuilder builder) {
+    // return builder.sources(applicationClass).bannerMode(Banner.Mode.OFF);
+    // }
+
+    // @Benchmark
+    // public ConfigurableApplicationContext startUp() {
+    // return context = SpringApplication.run(applicationClass);
+    // }
+
+    // @TearDown(Level.Invocation)
+    // public void close() {
+    // context.close();
+    // }
+
+    private ConfigurableApplicationContext context;
+
+    @Setup
+    public synchronized void initialize() {
+        try {
+            String args = "";
+            if (context == null) {
+                context = SpringApplication.run(DemoApplication.class, args);
+            }
+
+            // get the entity manager from the spring context
+            // entityManager = context.getBean(EntityManager.class);
+            staticDataController = context.getBean(StaticDataController.class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private static SpringApplicationBuilder configureApplication(SpringApplicationBuilder builder) {
-        return builder.sources(applicationClass).bannerMode(Banner.Mode.OFF);
+    @TearDown
+    public void closeContext() {
+        context.close();
     }
 
     public static void main(String[] args) throws RunnerException {
-        SpringApplication.run(applicationClass, args);
+        Options opt = new OptionsBuilder()
+                .include(applicationClass.getSimpleName())
+                .threads(1)
+                .shouldDoGC(false)
+                .warmupIterations(3)
+                .warmupTime(TimeValue.microseconds(1000))
+                .measurementIterations(10)
+                .measurementTime(TimeValue.microseconds(1000))
+                // .resultFormat(ResultFormatType.JSON)
+                // .jvmArgs("-server")
+                .verbosity(VerboseMode.EXTRA)
+                .forks(0) // 0 makes debugging possible
+                .shouldFailOnError(true)
+                // .addProfiler(GCProfiler.class)
+                .build();
+
+        new Runner(opt).run();
     }
 
-    private static Class<DemoApplication> applicationClass = DemoApplication.class;
+    @Benchmark
+    @BenchmarkMode(Mode.AverageTime)
+    @OutputTimeUnit(TimeUnit.MICROSECONDS)
+    public void retrieveDataUsingQueryDSL(Blackhole blackhole) {
+//        var list = staticDataController.benchmarkMethod1();
+//        blackhole.consume(list);
+    }
 
-    // @Bean(name = "entityManagerFactory")
-    // public LocalSessionFactoryBean sessionFactory() {
-    // LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+    @Benchmark
+    @BenchmarkMode(Mode.AverageTime)
+    @OutputTimeUnit(TimeUnit.MICROSECONDS)
+    public void retrieveDataUsingSQL(Blackhole blackhole) {
+//        var list = staticDataController.benchmarkMethod2();
+//        blackhole.consume(list);
+    }
 
-    // return sessionFactory;
-    // }
-
-    // @Bean
-    // CommandLineRunner run(FacilityService facilityService, UserService
-    // userService,
-    // StaticDataService staticDataService) {
-    // return args -> {
-    // AppUser user = userService.getCurrentUserById(1);
-
-    // user.setPassword("tung00deptrai");
-
-    // userService.addRoleToUser("tt-tung261", 1);
-    // userService.addRoleToUser("tt-tung261", 2);
-    // userService.addRoleToUser("tt-tung261", 3);
-
-    // userService.addRegionToUser(1, "tt-tung261");
-
-    // };
-    // }
-
-    // // // add a new user named duytuan28
-
-    // // // List<DistrictResponseDto> list =
-    // // staticDataService.getDistrictsByProvince(1);
-    // // // userService.saveRole(new AppRole(null, "ROLE_SUPER_ADMIN"));
-    // // // userService.saveRole(new AppRole(null, "ROLE_ADMIN"));
-    // // // userService.saveRole(new AppRole(null, "ROLE_USER"));
-    // // // userService.saveRole(new AppRole(null, "ROLE_MANAGER"));
-
-    // // userService
-    // // .saveUser(new AppUser(null, "david208", "tung00deptrai",
-    // // "david@gmail.com", "Duy Tuan",
-    // // new HashSet<>(), null, null));
-
-    // // userService.addRoleToUser("david208", "ROLE_ADMIN");
-
-    // // Address address = new Address();
-    // // address.setName("117 Nguyen Van Giap");
-    // // facilityService.saveAddress(address, facilityService.getWardById(3));
-
-    // // // add region to user.
-    // // userService.addAddressToUser(address, "david208");
-
-    // Facility facility = new Facility();
-    // facility.setFacilityCode("FAC-004");
-    // facility.setAddress(facilityService.getAddressById(19));
-    // facility.setName("The Coffee House");
-
-    // //
-    // facility.setFacilityState(facilityService.getFacilityStateByName("active"));
-    // // facility.setBusinessType(facilityService.getBusinessTypeById(1));
-
-    // Certificate certificate = new Certificate();
-    // certificate.setCertificateNumber("CERT-005");
-    // // certificate.setFacility(facility);
-    // certificate.setPublishedDate(new java.sql.Date(System.currentTimeMillis()));
-
-    // // // set expired date equal to published date + 1 year.
-    // certificate.setExpiredDate(new java.sql.Date(System.currentTimeMillis() +
-    // (1000 * 60 * 60 * 24 * 365)));
-
-    // certificate.setCertificateState(facilityService.getCertificateStateByName("active"));
-    // facilityService.saveCertificate(certificate);
-
-    // // facility.getCertificates().add(certificate);
-    // facilityService.saveFacility(facility);
-
-    // };
-    // }
+    private static final Class<DemoApplication> applicationClass = DemoApplication.class;
 
 }
