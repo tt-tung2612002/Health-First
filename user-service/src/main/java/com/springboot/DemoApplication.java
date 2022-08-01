@@ -75,7 +75,7 @@ public class DemoApplication {
     }
 
     public static void main(String[] args) {
-        Options opt = new OptionsBuilder()
+        Options options = new OptionsBuilder()
                 .include(applicationClass.getSimpleName())
                 .threads(1)
                 .shouldDoGC(false)
