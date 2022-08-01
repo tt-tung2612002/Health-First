@@ -3,7 +3,6 @@ package com.springboot;
 import com.springboot.userservice.controllers.StaticDataController;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
-import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
@@ -75,7 +74,7 @@ public class DemoApplication {
         context.close();
     }
 
-    public static void main(String[] args) throws RunnerException {
+    public static void main(String[] args) {
         Options opt = new OptionsBuilder()
                 .include(applicationClass.getSimpleName())
                 .threads(1)

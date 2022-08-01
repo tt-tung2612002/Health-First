@@ -1,16 +1,5 @@
 package com.springboot.userservice.controllers;
 
-import java.net.URI;
-import java.sql.Date;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.springboot.userservice.dto.request.ActivityRequestDto;
 import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.response.BaseResponse;
@@ -23,8 +12,13 @@ import com.springboot.userservice.services.FacilityService;
 import com.springboot.userservice.services.PlanService;
 import com.springboot.userservice.services.UserService;
 import com.springboot.userservice.utils.JwtTokenUtils;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.sql.Date;
 
 @RestController
 @RequestMapping(path = "/api/activities")
@@ -43,7 +37,7 @@ public class ActivityController {
 
     @PostMapping("/list")
     public ResponseEntity<?> getAllActivities(@RequestHeader("Authorization") String userToken,
-            @RequestBody SearchFilterRequest searchFilterRequest) {
+                                              @RequestBody SearchFilterRequest searchFilterRequest) {
         return ResponseEntity.ok()
                 .body(new BaseResponse("1", "success",
                         activityService.getAllActivitiesWithFilter(searchFilterRequest)));
@@ -51,7 +45,7 @@ public class ActivityController {
 
     @PostMapping("/create")
     public ResponseEntity<?> addActivity(@RequestHeader(name = "Authorization") String userToken,
-            @RequestBody ActivityRequestDto activityDto) {
+                                         @RequestBody ActivityRequestDto activityDto) {
         // facilityService.addFacility(payload);
         URI uri = URI
                 .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/activities/create")
@@ -68,21 +62,25 @@ public class ActivityController {
         activity.setCreatedUser(userService.getCurrentUserByName(username));
 
         activity.setCreatedDate(new Date(System.currentTimeMillis()));
-        if (activityDto.getStartDate() != null)
+        if (activityDto.getStartDate() != null) {
             activity.setStartDate(Date.valueOf(activityDto.getStartDate()));
+        }
 
-        if (activityDto.getEndDate() != null)
+        if (activityDto.getEndDate() != null) {
             activity.setEndDate(Date.valueOf(activityDto.getEndDate()));
+        }
 
         // set conclusion
         activity.setConclusion(activityDto.getConclusion());
 
         // set activity result and state
-        if (activityDto.getActivityResultId() != null)
+        if (activityDto.getActivityResultId() != null) {
             activity.setActivityResult(activityService.getActivityResultById(activityDto.getActivityResultId()));
+        }
 
-        if (activityService.getActivityStateById(activityDto.getActivityStateId()) != null)
+        if (activityService.getActivityStateById(activityDto.getActivityStateId()) != null) {
             activity.setActivityState(activityService.getActivityStateById(activityDto.getActivityStateId()));
+        }
 
         // // set facility
         // activity.setFacility(facilityService.getFacilityById(activityDto.getFacilityId()));
@@ -113,13 +111,15 @@ public class ActivityController {
 
         // set name if exists.
         String name = activityDto.getName();
-        if (name != null)
+        if (name != null) {
             activity.setName(name);
+        }
 
         // set created user if exists.
         AppUser createdUser = userService.getCurrentUserById(activityDto.getCreatedUserId());
-        if (createdUser != null)
+        if (createdUser != null) {
             activity.setCreatedUser(createdUser);
+        }
 
         // set created, start, end date if exists.
         if (activityDto.getCreatedDate() != null) {
@@ -137,25 +137,30 @@ public class ActivityController {
 
         // set conclusion if exist.
         String conclusion = activityDto.getConclusion();
-        if (conclusion != null)
+        if (conclusion != null) {
             activity.setConclusion(conclusion);
+        }
 
         // set activity result and state if exist.
-        if (activityDto.getActivityResultId() != null)
+        if (activityDto.getActivityResultId() != null) {
             activity.setActivityResult(activityService.getActivityResultById(activityDto.getActivityResultId()));
+        }
 
-        if (activityDto.getActivityStateId() != null)
+        if (activityDto.getActivityStateId() != null) {
             activity.setActivityState(activityService.getActivityStateById(activityDto.getActivityStateId()));
+        }
 
         // set facility if exist.
         Facility facility = facilityService.getFacilityById(activityDto.getFacilityId());
-        if (facility != null)
+        if (facility != null) {
             activity.setFacility(facility);
+        }
 
         // set plan if exist.
         Plan plan = planService.getPlanById(activityDto.getPlanId());
-        if (plan != null)
+        if (plan != null) {
             activity.setPlan(plan);
+        }
 
         activityService.saveActivity(activity);
 
