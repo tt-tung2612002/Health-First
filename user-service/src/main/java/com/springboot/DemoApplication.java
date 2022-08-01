@@ -1,17 +1,8 @@
 package com.springboot;
 
-import java.util.concurrent.TimeUnit;
-
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.BenchmarkMode;
-import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.annotations.TearDown;
+import com.springboot.userservice.controllers.StaticDataController;
+import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
-import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
@@ -21,7 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import com.springboot.userservice.controllers.StaticDataController;
+import java.util.concurrent.TimeUnit;
 
 // @Threads(1)
 // @State(Scope.Benchmark)
@@ -94,14 +85,16 @@ public class DemoApplication {
                 .measurementIterations(10)
                 .measurementTime(TimeValue.microseconds(1000))
                 // .resultFormat(ResultFormatType.JSON)
-                // .jvmArgs("-server")
+                .jvmArgs("-server")
                 .verbosity(VerboseMode.EXTRA)
                 .forks(0) // 0 makes debugging possible
                 .shouldFailOnError(true)
                 // .addProfiler(GCProfiler.class)
                 .build();
 
-        new Runner(opt).run();
+
+        SpringApplication.run(DemoApplication.class, args);
+//        new Runner(opt).run();
     }
 
     @Benchmark

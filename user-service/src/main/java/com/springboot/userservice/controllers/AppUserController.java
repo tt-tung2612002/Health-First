@@ -1,16 +1,5 @@
 package com.springboot.userservice.controllers;
 
-import java.net.URI;
-import java.sql.Date;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.springboot.userservice.dto.request.AppUserRequestDto;
 import com.springboot.userservice.dto.request.SearchFilterRequest;
 import com.springboot.userservice.dto.request.UserRegionDto;
@@ -21,8 +10,13 @@ import com.springboot.userservice.entity.AppRole;
 import com.springboot.userservice.entity.AppUser;
 import com.springboot.userservice.services.UserService;
 import com.springboot.userservice.utils.JwtTokenUtils;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.sql.Date;
 
 @RestController
 @RequestMapping(path = "/api/users")
@@ -42,6 +36,7 @@ public class AppUserController {
         // return ResponseEntity.ok().body(new BaseResponse("1", "success",
         // userService.getUsers()));
         return ResponseEntity.ok().body(response);
+
     }
 
     @PostMapping("/create")
@@ -62,11 +57,13 @@ public class AppUserController {
         appUser.setUsername(appUserRequestDto.getUsername());
         appUser.setPassword(appUserRequestDto.getPassword());
         appUser.setDisplayName(appUserRequestDto.getDisplayName());
-        if (appUserRequestDto.getPhoneNumber() != null)
+        if (appUserRequestDto.getPhoneNumber() != null) {
             appUser.setPhoneNumber(appUserRequestDto.getPhoneNumber());
+        }
 
-        if (appUserRequestDto.getEmail() != null)
+        if (appUserRequestDto.getEmail() != null) {
             appUser.setEmail(appUserRequestDto.getEmail());
+        }
 
         userService.saveUser(appUser);
 
@@ -97,11 +94,13 @@ public class AppUserController {
         if (appUserRequestDto.getDisplayName() != null) {
             appUser.setDisplayName(appUserRequestDto.getDisplayName());
         }
-        if (appUserRequestDto.getPhoneNumber() != null)
+        if (appUserRequestDto.getPhoneNumber() != null) {
             appUser.setPhoneNumber(appUserRequestDto.getPhoneNumber());
+        }
 
-        if (appUserRequestDto.getEmail() != null)
+        if (appUserRequestDto.getEmail() != null) {
             appUser.setEmail(appUserRequestDto.getEmail());
+        }
 
         userService.saveUser(appUser);
 
@@ -118,7 +117,7 @@ public class AppUserController {
 
     @PostMapping("/delete")
     public ResponseEntity<?> deleteUser(@RequestHeader(name = "Authorization") String userToken,
-            @RequestBody AppUserRequestDto appUserRequestDto) {
+                                        @RequestBody AppUserRequestDto appUserRequestDto) {
 
         AppUser appUser = userService.getCurrentUserById(appUserRequestDto.getId());
 
@@ -132,25 +131,25 @@ public class AppUserController {
 
     @PostMapping("/role/create")
     public ResponseEntity<?> saveRole(@RequestHeader(name = "Authorization") String userToken,
-            @RequestBody AppRole role) {
+                                      @RequestBody AppRole role) {
         URI uri = URI
                 .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/role/create")
                         .toUriString());
-        return ResponseEntity.created(uri).body(new BaseResponse("1", "Role created successfully",
-                ""));
+        return ResponseEntity.created(uri).body(new BaseResponse("1", "Role created successfully", ""));
     }
 
     @PostMapping("/role/addToUser")
     public ResponseEntity<?> addRoleToUser(@RequestHeader(name = "Authorization") String userToken,
-            @RequestBody UserRoleDto payload) {
+                                           @RequestBody UserRoleDto payload) {
 
         String username = "";
         if (payload.getUsername() == null) {
             userToken = userToken.substring("Bearer ".length() + JwtTokenUtils.preToken.length());
             username = jwtTokenUtils.getUsernameFromToken(userToken);
             userService.addRoleToUser(username, payload.getRoleId());
-        } else
+        } else {
             username = payload.getUsername();
+        }
 
         userService.addRoleToUser(username, payload.getRoleId());
 
@@ -159,7 +158,7 @@ public class AppUserController {
 
     @PostMapping("/role/removeFromUser")
     public ResponseEntity<?> removeRoleFromUser(@RequestHeader(name = "Authorization") String userToken,
-            @RequestBody UserRoleDto payload) {
+                                                @RequestBody UserRoleDto payload) {
 
         userService.removeRoleFromUser(payload.getUsername(), payload.getRoleId());
         return ResponseEntity.ok().body(new BaseResponse("1", "Role removed from user successfully", ""));
@@ -168,7 +167,7 @@ public class AppUserController {
 
     @PostMapping("/region/addToUser")
     public ResponseEntity<?> addRegionToUser(@RequestHeader(name = "Authorization") String userToken,
-            @RequestBody UserRegionDto payload) {
+                                             @RequestBody UserRegionDto payload) {
         if (payload.getWardId() != null) {
             userService.addWardToUser(payload.getWardId(), payload.getUsername());
         } else if (payload.getDistrictId() != null) {
@@ -183,7 +182,7 @@ public class AppUserController {
 
     @PostMapping("/region/removeFromUser")
     public ResponseEntity<?> removeRegionFromUser(@RequestHeader(name = "Authorization") String userToken,
-            @RequestBody UserRegionDto payload) {
+                                                  @RequestBody UserRegionDto payload) {
 
         if (payload.getWardId() != null) {
             userService.removeWardFromUser(payload.getWardId(), payload.getUsername());
